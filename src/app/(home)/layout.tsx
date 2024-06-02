@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import {Roboto} from "next/font/google";
-import "./globals.scss";
+import "../global.scss";
+import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700", "900"],
@@ -19,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body className={roboto.className}>
+        <DashBoardLayout>{children}</DashBoardLayout>
+      </body>
     </html>
   );
 }

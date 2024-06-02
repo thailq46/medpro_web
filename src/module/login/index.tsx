@@ -27,11 +27,9 @@ export default function Login() {
             </Link>
           </div>
         </div>
-        <div className={styles.body}>
-          <div className={styles.login_form}>
-            <LoginForm />
-            <LoginSocial />
-          </div>
+        <div>
+          <LoginForm />
+          <LoginSocial />
         </div>
       </div>
       <div className={styles.right}>
