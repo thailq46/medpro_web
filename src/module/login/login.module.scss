@@ -1,0 +1,54 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: #f1eff2;
+}
+
+.right {
+  position: relative;
+  background-image: url("/img/banner.jpg");
+  background-size: cover;
+  background-position: 50%;
+}
+.left {
+  width: 500px;
+  margin: 0 auto;
+  .header {
+    margin-top: 10px;
+  }
+}
+
+.shape {
+  background-color: #f1eff2;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 50px;
+  -webkit-clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 5% 100%, 0 100%);
+}
+
+.input {
+  height: 40px;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+}
+.btn_submit {
+  background-color: #1da1f2;
+  color: white;
+  width: 100%;
+  padding: 25px 0;
+  font-size: 16px;
+  margin-top: 15px !important;
+  font-weight: normal;
+  &:hover {
+    outline: 0;
+    background-color: #1da1f2;
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+      0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  }
+}
