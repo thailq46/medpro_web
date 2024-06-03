@@ -1,5 +1,6 @@
 import React from "react";
+import Home from "@/module/home";
 
 export default function index() {
-  return <div>Content</div>;
+  return <Home />;
 }

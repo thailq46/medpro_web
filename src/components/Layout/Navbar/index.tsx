@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
 import React from "react";
 import styles from "./Navbar.module.scss";
 import {
@@ -60,7 +61,7 @@ export default function Navbar() {
                 {category.name} {!!category.children && <TriangleDownIcon />}
               </MenubarTrigger>
               {Boolean(category.children) && (
-                <MenubarContent className="cursor-pointer">
+                <MenubarContent className="cursor-pointer relative z-[999]">
                   {category.children?.map((child) => (
                     <MenubarItem
                       key={child.name}
