@@ -1,0 +1,108 @@
+.container {
+  background: linear-gradient(
+    180deg,
+    #fff 52.32%,
+    hsla(0, 0%, 100%, 0) 100%,
+    #e8f2f7 0
+  );
+}
+.content {
+  max-width: 1180px !important;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 30px 0;
+}
+.title {
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 46px;
+  color: #12263f;
+  padding: 30px 0;
+  span {
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 46px;
+    color: #00b5f1;
+    text-transform: uppercase;
+  }
+}
+.store {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 35px;
+}
+.service {
+  display: grid;
+  grid-template-columns: 1fr 457px 1fr;
+}
+.left,
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+  justify-content: center;
+}
+
+.serviceBox {
+  display: flex;
+  gap: 12px;
+}
+
+.left {
+  .serviceBox {
+    position: relative;
+    &:nth-child(1) {
+      right: -8%;
+    }
+    &:nth-child(2) {
+      right: 8%;
+    }
+    &:nth-child(3) {
+      right: -8%;
+    }
+  }
+}
+
+.right {
+  .serviceBox {
+    position: relative;
+    &:nth-child(1) {
+      left: -8%;
+    }
+    &:nth-child(2) {
+      left: 8%;
+    }
+    &:nth-child(3) {
+      left: -8%;
+    }
+  }
+}
+.middle {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.rounded {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.serviceTitle {
+  color: #003553;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  margin-bottom: 8px;
+}
+
+.serviceDesc {
+  display: block;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #858585;
+}

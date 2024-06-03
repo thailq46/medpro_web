@@ -1,0 +1,59 @@
+.container {
+  background: url("/img/banner_booking.png") no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+.main {
+  max-width: 1180px !important;
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+}
+.content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 100px;
+  padding-top: 55px;
+}
+.title {
+  font-weight: 800;
+  font-size: 45px;
+  line-height: 48px;
+  color: #00b5f1;
+  margin-top: 45px;
+  margin-bottom: 20px;
+}
+.desc {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+  color: #003553;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 30px 50px;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  line-height: 19px;
+  background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
+  border-radius: 30px;
+  text-align: center;
+  border-color: transparent;
+  transition: all 0.5s;
+  &:hover {
+    background: linear-gradient(
+      83.63deg,
+      #1ea0ff 33.34%,
+      #00bfff 113.91%
+    ) !important;
+  }
+}
+.overlay {
+  background: linear-gradient(0deg, #fff, hsla(0, 0%, 100%, 0) 72.87%);
+  position: absolute;
+  width: 100%;
+  min-height: 235px;
+  bottom: 0;
+}

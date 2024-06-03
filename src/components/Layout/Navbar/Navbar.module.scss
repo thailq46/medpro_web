@@ -2,13 +2,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 25px 50px;
+  padding: 15px 50px;
   position: sticky;
   top: 0;
   right: 0;
   left: 0;
   z-index: 997;
-  background-color: #ccc;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
   .left {
     display: flex;
     align-items: center;

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import styles from "./HomeHospital.module.scss";
 import {Card, CardContent} from "@/components/ui/card";
@@ -46,7 +47,7 @@ export default function HomeHospital() {
   ];
 
   return (
-    <div className={styles.container}>
+    <section className={styles.container}>
       <h2 className={styles.title}>Bệnh viện tiêu biểu</h2>
       <span className={styles.desc}>
         Đặt lịch khám với hơn 70 bệnh viện trên khắp cả nước
@@ -80,6 +81,6 @@ export default function HomeHospital() {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-    </div>
+    </section>
   );
 }
