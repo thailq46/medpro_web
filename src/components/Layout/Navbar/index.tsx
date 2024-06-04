@@ -45,7 +45,7 @@ export default function Navbar() {
     {name: "Liên hệ hợp tác"},
   ];
   return (
-    <div className={styles.container}>
+    <nav className={styles.container}>
       <div className={styles.left}>
         <a href="#" className="block w-[130px]">
           <img
@@ -104,6 +104,6 @@ export default function Navbar() {
           </DropdownMenu>
         )}
       </div>
-    </div>
+    </nav>
   );
 }
