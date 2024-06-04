@@ -1,0 +1,44 @@
+.main {
+  max-width: 1180px !important;
+  width: 100%;
+  margin: 0 auto;
+  background-color: white;
+  text-align: center;
+  box-shadow: 0 4px 30px 0 rgba(116, 157, 206, 0.2);
+  border-radius: 55px;
+  padding: 56px 73px;
+  margin-top: 50px;
+}
+.header {
+  margin-bottom: 50px;
+}
+.title {
+  font-weight: 700;
+  font-size: 39px;
+  line-height: 48px;
+  color: #00b5f1;
+  margin-bottom: 4px;
+}
+.desc {
+  color: #858585;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+}
+
+.logo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 55px 10px;
+  margin-bottom: 50px;
+}
+
+.video {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+  iframe {
+    border-radius: 12px;
+  }
+}

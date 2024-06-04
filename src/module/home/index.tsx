@@ -1,4 +1,5 @@
 "use client";
+import HomeAchievement from "@/module/home/_component/HomeAchievement";
 import HomeBooking from "@/module/home/_component/HomeBooking";
 import HomeDownload from "@/module/home/_component/HomeDownload";
 import HomeHeader from "@/module/home/_component/HomeHeader";
@@ -11,6 +12,7 @@ export default function Home() {
       <HomeHospital />
       <HomeBooking />
       <HomeDownload />
+      <HomeAchievement />
     </div>
   );
 }
