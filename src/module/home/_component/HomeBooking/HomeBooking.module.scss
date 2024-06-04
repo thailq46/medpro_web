@@ -2,6 +2,7 @@
   background: url("/img/banner_booking.png") no-repeat center center;
   background-size: cover;
   position: relative;
+  overflow: hidden;
 }
 .main {
   max-width: 1180px !important;
@@ -56,4 +57,10 @@
   width: 100%;
   min-height: 235px;
   bottom: 0;
+}
+@media (max-width: 1024.98px) {
+  .main {
+    padding-left: 35px;
+    padding-right: 35px;
+  }
 }

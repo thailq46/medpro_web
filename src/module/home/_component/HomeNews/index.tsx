@@ -26,7 +26,7 @@ export default function HomeNews() {
     },
   ];
   return (
-    <section className="home-news">
+    <section className={`home-news ${styles.container}`}>
       <div className={styles.main}>
         <h3 className={styles.title}>Tin tức Y Tế</h3>
         <div className={styles.content}>

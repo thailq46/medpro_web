@@ -26,11 +26,11 @@ export default function HomeService() {
     <div className={styles.services}>
       <Carousel
         opts={{align: "start"}}
-        className="w-full max-w-[1180px] mx-auto relative top-[50px]"
+        className="w-full max-w-[1180px] mx-auto relative top-[50px] px-4"
       >
         <CarouselContent>
           {services.map((v, index) => (
-            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/6">
+            <CarouselItem key={index} className={styles.carouselItem}>
               <div className="p-1">
                 <Card>
                   <CardContent
@@ -47,8 +47,8 @@ export default function HomeService() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
         <CarouselNext />
+        <CarouselPrevious />
       </Carousel>
     </div>
   );

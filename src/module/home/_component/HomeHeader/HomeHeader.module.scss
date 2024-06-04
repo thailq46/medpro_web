@@ -1,9 +1,10 @@
 .container {
   padding-bottom: 50px;
+  overflow: hidden;
 }
 .banner {
   text-align: center;
-  background: url("/img/home_banner.png") no-repeat center center;
+  background: url("/img/home_banner.png") no-repeat;
   width: 100%;
   height: 100%;
   background-size: cover;
@@ -16,6 +17,7 @@
   padding-top: 95px;
   margin-left: auto;
   margin-right: auto;
+  padding: 0 20px;
 }
 
 .title {
@@ -46,6 +48,9 @@
   margin-top: 144px;
 }
 
+.carouselItem {
+  flex-basis: 16.666667%;
+}
 .card {
   display: flex;
   flex-direction: column;
@@ -76,6 +81,10 @@
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+}
+.homeHeaderTitle {
+  font-size: 39px;
+  font-weight: 500;
 }
 .homeCardBox {
   overflow: hidden;
@@ -140,4 +149,22 @@
   font-size: 18px;
   line-height: normal;
   flex: 1;
+}
+
+@media (max-width: 1024.98px) {
+  .main {
+    padding-left: 35px;
+    padding-right: 35px;
+    overflow: hidden;
+  }
+  .carouselItem {
+    flex-basis: 20%;
+  }
+  .homeHeaderTitle {
+    font-size: 30px;
+  }
+  .homeCardBox {
+    padding: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
 }

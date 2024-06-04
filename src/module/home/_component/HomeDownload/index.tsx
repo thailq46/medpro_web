@@ -33,7 +33,7 @@ export default function HomeDownload() {
         <div className={styles.service}>
           <div className={styles.left}>
             <div className={styles.serviceBox}>
-              <div className="text-right">
+              <div className={styles.serviceMessageLeft}>
                 <h4 className={styles.serviceTitle}>
                   Lấy số thứ tự khám nhanh trực tuyến
                 </h4>
@@ -56,7 +56,7 @@ export default function HomeDownload() {
             </div>
 
             <div className={styles.serviceBox}>
-              <div className="text-right">
+              <div className={styles.serviceMessageLeft}>
                 <h4 className={styles.serviceTitle}>Tư vấn sức khỏe từ xa</h4>
                 <span className={styles.serviceDesc}>
                   Tư vấn sức khỏe từ xa, cuộc gọi video với các bác sĩ chuyên
@@ -75,7 +75,7 @@ export default function HomeDownload() {
             </div>
 
             <div className={styles.serviceBox}>
-              <div className="text-right">
+              <div className={styles.serviceMessageLeft}>
                 <h4 className={styles.serviceTitle}>
                   Tra cứu kết quả cận lâm sàng
                 </h4>
@@ -101,7 +101,7 @@ export default function HomeDownload() {
               alt="Dịch vụ Medpro"
               width={1000}
               height={1000}
-              className="w-[330px] h-[670px] object-cover relative z-10"
+              className={styles.imgPhone}
             />
             <Image
               src="/img/home_rounded.png"
@@ -123,7 +123,7 @@ export default function HomeDownload() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="text-left">
+              <div className={styles.serviceMessageRight}>
                 <h4 className={styles.serviceTitle}>Thanh toán viện phí</h4>
                 <span className={styles.serviceDesc}>
                   Đa dạng hệ thống thanh toán trực tuyến
@@ -144,7 +144,7 @@ export default function HomeDownload() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="text-left">
+              <div className={styles.serviceMessageRight}>
                 <h4 className={styles.serviceTitle}>Chăm sóc Y tế tại nhà</h4>
                 <span className={styles.serviceDesc}>
                   Dịch vụ Y tế tại nhà (điều dưỡng, xét nghiệm) chuyên nghiệp,
@@ -163,7 +163,7 @@ export default function HomeDownload() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="text-left">
+              <div className={styles.serviceMessageRight}>
                 <h4 className={styles.serviceTitle}>Mạng lưới Cơ sở hợp tác</h4>
                 <span className={styles.serviceDesc}>
                   Mạng lưới kết nối với các bệnh viện, phòng khám, phòng mạch

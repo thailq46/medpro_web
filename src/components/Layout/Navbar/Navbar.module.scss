@@ -32,3 +32,43 @@
     }
   }
 }
+
+.tablet {
+  display: none;
+  visibility: hidden;
+}
+
+@media (max-width: 1024.98px) {
+  .container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .nav {
+    display: none;
+    visibility: hidden;
+  }
+  .avatar {
+    display: none;
+    visibility: hidden;
+  }
+  .btnLogin {
+    display: none;
+    visibility: hidden;
+  }
+  .tablet {
+    display: block;
+    visibility: visible;
+  }
+  .navTablet {
+    z-index: 99999;
+    padding: 0;
+    max-width: 60vw !important;
+  }
+  .accordionTrigger {
+    justify-content: start;
+    gap: 12px;
+    svg {
+      margin-left: auto;
+    }
+  }
+}

@@ -3,17 +3,10 @@ import React from "react";
 
 export default function HomeSupport() {
   return (
-    <section className="home-support">
+    <section className="home-support overflow-hidden px-3">
       <div className="main !max-w-[1180px] w-full mx-auto pb-8">
-        <div className="border border-white rounded-xl shadow relative">
-          <Image
-            src="/img/banner_support.png"
-            alt="banner_support"
-            width={2000}
-            height={2000}
-            className="w-full h-full object-cover rounded-xl"
-          />
-          <div className="flex items-center justify-center gap-10 absolute top-[50%] left-[40%] -translate-y-2/4 z-10">
+        <div className="border border-white rounded-xl shadow relative bg-[url('/img/banner_support.png')] bg-center bg-no-repeat bg-cover py-[75px] px-[15px]">
+          <div className="flex items-center justify-end gap-10 ">
             <div className="w-[62px] h-[62px] bg-white rounded-full p-3">
               <Image
                 src="/img/mobile.svg"

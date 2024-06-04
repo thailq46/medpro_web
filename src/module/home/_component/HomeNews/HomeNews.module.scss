@@ -1,3 +1,6 @@
+.container {
+  overflow: hidden;
+}
 .main {
   max-width: 1180px !important;
   width: 100%;
@@ -83,4 +86,10 @@
 .cardLeftDesc {
   font-size: 16px;
   line-height: 140%;
+}
+@media (max-width: 1024.98px) {
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }

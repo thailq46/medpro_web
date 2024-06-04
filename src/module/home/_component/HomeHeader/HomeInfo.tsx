@@ -14,7 +14,7 @@ export default function HomeInfo() {
             alt="Logo"
             className="w-[170px] h-[50px] object-contain"
           />
-          <span className="text-[39px] font-medium">Đặt khám nhanh</span>
+          <span className={styles.homeHeaderTitle}>Đặt khám nhanh</span>
         </div>
         <p>
           <strong>Medpro</strong> cung cấp dịch vụ đặt lịch khám bệnh và chăm

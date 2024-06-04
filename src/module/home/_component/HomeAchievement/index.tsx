@@ -38,7 +38,7 @@ export default function HomeAchievement() {
     },
   ];
   return (
-    <section className="home-achievement">
+    <section className={`home-achievement ${styles.container}`}>
       <div className={styles.main}>
         <div className={styles.header}>
           <h4 className={styles.title}>Truyền thông nói gì về Medpro</h4>
@@ -66,7 +66,7 @@ export default function HomeAchievement() {
             width={660}
             height={370}
             frameBorder={0}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           ></iframe>
         </div>
       </div>

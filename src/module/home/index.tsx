@@ -1,4 +1,5 @@
 "use client";
+import {useMediaQuery} from "@/hooks/useMediaQuery";
 import HomeAchievement from "@/module/home/_component/HomeAchievement";
 import HomeBooking from "@/module/home/_component/HomeBooking";
 import HomeDownload from "@/module/home/_component/HomeDownload";

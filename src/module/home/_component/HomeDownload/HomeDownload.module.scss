@@ -5,6 +5,7 @@
     hsla(0, 0%, 100%, 0) 100%,
     #e8f2f7 0
   );
+  overflow: hidden;
 }
 .content {
   max-width: 1180px !important;
@@ -85,11 +86,25 @@
   display: flex;
   justify-content: center;
 }
+.imgPhone {
+  width: 330px;
+  height: 670px;
+  object-fit: cover;
+  position: relative;
+  z-index: 10;
+}
 .rounded {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.serviceMessageLeft {
+  text-align: right;
+}
+.serviceMessageRight {
+  text-align: left;
 }
 .serviceTitle {
   color: #003553;
@@ -105,4 +120,23 @@
   font-size: 16px;
   line-height: 19px;
   color: #858585;
+}
+
+@media (max-width: 1024.98px) {
+  .service {
+    grid-template-columns: 1fr 357px 1fr;
+  }
+  .imgPhone {
+    width: 250px;
+    height: 520px;
+  }
+  .left {
+    .serviceBox {
+      justify-content: end;
+    }
+  }
+  .serviceMessageLeft,
+  .serviceMessageRight {
+    width: 67%;
+  }
 }

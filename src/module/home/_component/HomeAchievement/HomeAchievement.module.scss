@@ -1,3 +1,6 @@
+.container {
+  overflow: hidden;
+}
 .main {
   max-width: 1180px !important;
   width: 100%;
@@ -21,7 +24,6 @@
 }
 .desc {
   color: #858585;
-  font-weight: 400;
   font-size: 20px;
   line-height: 23px;
 }
@@ -40,5 +42,11 @@
   width: 100%;
   iframe {
     border-radius: 12px;
+  }
+}
+@media (max-width: 1024.98px) {
+  .container {
+    padding-left: 35px;
+    padding-right: 35px;
   }
 }

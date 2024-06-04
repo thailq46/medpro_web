@@ -2,6 +2,13 @@ import React from "react";
 import styles from "./Footer.module.scss";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  HomeIcon,
+  FileTextIcon,
+  ClipboardIcon,
+  BellIcon,
+  PersonIcon,
+} from "@radix-ui/react-icons";
 
 export default function Footer() {
   const footerList = [
@@ -134,7 +141,7 @@ export default function Footer() {
                   width={100}
                   height={100}
                   alt={order.alt}
-                  className="w-full h-full object-cover rounded-md"
+                  className="w-full h-full object-contain rounded-md"
                 />
               </div>
             ))}
@@ -151,6 +158,29 @@ export default function Footer() {
             alt="dmca-badge"
             className="w-full h-full object-cover ml-3"
           />
+        </div>
+      </div>
+      {/* FOOTER MOBILE */}
+      <div className={styles.footerMobile}>
+        <div className={styles.footerMobileBox}>
+          <HomeIcon className="w-6 h-6" />
+          <Link href={"#"}>Trang chủ</Link>
+        </div>
+        <div className={styles.footerMobileBox}>
+          <FileTextIcon className="w-6 h-6" />
+          <Link href={"#"}>Hướng dẫn</Link>
+        </div>
+        <div className={styles.footerMobileBox}>
+          <ClipboardIcon className="w-6 h-6" />
+          <Link href={"#"}>Phiếu phám</Link>
+        </div>
+        <div className={styles.footerMobileBox}>
+          <BellIcon className="w-6 h-6" />
+          <Link href={"#"}>Thông báo</Link>
+        </div>
+        <div className={styles.footerMobileBox}>
+          <PersonIcon className="w-6 h-6" />
+          <Link href={"#"}>Hồ sơ</Link>
         </div>
       </div>
     </footer>
