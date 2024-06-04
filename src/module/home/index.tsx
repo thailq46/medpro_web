@@ -5,6 +5,7 @@ import HomeDownload from "@/module/home/_component/HomeDownload";
 import HomeHeader from "@/module/home/_component/HomeHeader";
 import HomeHospital from "@/module/home/_component/HomeHospital";
 import HomeNews from "@/module/home/_component/HomeNews";
+import HomeSupport from "@/module/home/_component/HomeSupport";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <HomeDownload />
       <HomeAchievement />
       <HomeNews />
+      <HomeSupport />
     </div>
   );
 }
