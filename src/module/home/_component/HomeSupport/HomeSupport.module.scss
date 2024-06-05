@@ -1,0 +1,27 @@
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 40px;
+}
+.image {
+  width: 62px;
+  height: 62px;
+  background-color: white;
+  border-radius: 100rem;
+  padding: 12px;
+}
+@media (max-width: 800.98px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 40px;
+  }
+  .image {
+    width: 80px;
+    height: 80px;
+    padding: 20px;
+  }
+}

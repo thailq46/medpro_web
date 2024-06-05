@@ -140,3 +140,15 @@
     width: 67%;
   }
 }
+@media (max-width: 940.98px) {
+  .content {
+    padding: 0;
+  }
+  .service {
+    display: none;
+    visibility: hidden;
+  }
+  .title {
+    padding-top: 0;
+  }
+}

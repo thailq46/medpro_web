@@ -103,6 +103,10 @@
   align-items: center;
   font-weight: 700;
 }
+.footerMobileIcon {
+  width: 24px;
+  height: 24px;
+}
 @media (max-width: 1024.98px) {
   .container {
     padding-left: 15px;
@@ -123,8 +127,34 @@
     width: 122px;
     height: 53px;
   }
+  .coppyRight {
+    padding-bottom: 80px;
+  }
   .footerMobile {
     display: flex;
     visibility: visible;
+  }
+}
+
+@media (max-width: 667.98px) {
+  .footerMobile {
+    padding: 10px 30px;
+  }
+}
+@media (max-width: 575.98px) {
+  .coppyRight {
+    flex-direction: column;
+  }
+}
+@media (max-width: 468.98px) {
+  .footerMobile {
+    padding: 10px;
+  }
+  .footerMobileIcon {
+    width: 20px;
+    height: 20px;
+  }
+  .footerMobileBox {
+    font-size: 12px;
   }
 }

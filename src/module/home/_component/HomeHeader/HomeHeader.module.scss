@@ -17,7 +17,6 @@
   padding-top: 95px;
   margin-left: auto;
   margin-right: auto;
-  padding: 0 20px;
 }
 
 .title {
@@ -43,11 +42,22 @@
     }
   }
 }
-
+.desc {
+  font-size: 20px;
+  font-weight: 500;
+}
 .services {
   margin-top: 144px;
 }
-
+.carousel {
+  width: 100%;
+  max-width: 1180px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  top: 50px;
+  padding: 0 16px;
+}
 .carouselItem {
   flex-basis: 16.666667%;
 }
@@ -64,6 +74,7 @@
   margin-left: auto;
   margin-right: auto;
   margin-top: 80px;
+  overflow: hidden;
 }
 
 .homeInfo {
@@ -86,16 +97,25 @@
   font-size: 39px;
   font-weight: 500;
 }
-.homeCardBox {
+.homeCardBox,
+.tablet_homeCardBox {
   overflow: hidden;
-  border-radius: 20px;
-  padding: 20px;
   display: grid;
   grid-template-rows: subgrid;
   grid-row: span 4;
   transition: box-shadow 0.3s ease-in;
   &:hover {
     box-shadow: 2px 6px 20px rgba(192, 202, 214, 0.45);
+  }
+}
+.homeCardBox {
+  padding: 20px;
+  border-radius: 20px;
+}
+.tablet_homeCardBox {
+  gap: 10px;
+  &:hover {
+    box-shadow: none;
   }
 }
 .homeTitle {
@@ -150,12 +170,56 @@
   line-height: normal;
   flex: 1;
 }
-
+.tablet_carouselItem {
+  flex-basis: 70%;
+}
+.tablet_carousel {
+  display: none;
+  visibility: hidden;
+}
+.tablet_servicesContainer {
+  padding-left: 40px;
+  padding-right: 40px;
+  overflow: hidden;
+}
+.tablet_services {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  background-color: white;
+  height: fit-content;
+  display: none;
+  visibility: hidden;
+}
+.tablet_serviceBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 13px;
+  border: 1px solid #e3e7eb;
+  &:nth-child(-n + 3),
+  &:nth-child(-n + 6),
+  &:nth-child(-n + 9) {
+    border-top: none;
+  }
+  &:nth-child(3n + 1),
+  &:nth-child(3n + 2) {
+    border-left: none;
+  }
+  &:nth-child(3n + 3) {
+    border-left: none;
+    border-right: none;
+  }
+}
 @media (max-width: 1024.98px) {
   .main {
     padding-left: 35px;
     padding-right: 35px;
-    overflow: hidden;
+  }
+  .content {
+    padding: 0 20px;
+    position: relative;
+    top: 75px;
   }
   .carouselItem {
     flex-basis: 20%;
@@ -166,5 +230,112 @@
   .homeCardBox {
     padding: 10px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
+}
+@media (max-width: 940.98px) {
+  .main {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .homeInfo {
+    padding: 25px 20px 35.5px;
+  }
+  .homeHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .statistic {
+    padding: 20px;
+  }
+  .carouselItem {
+    flex-basis: 25%;
+  }
+  .title {
+    font-size: 26px;
+    line-height: 42px;
+  }
+  .search {
+    input {
+      padding: 30px 0px 30px 40px;
+      font-size: 18px;
+      font-weight: 500;
+      &::placeholder {
+        color: #858585;
+      }
+    }
+  }
+  .desc {
+    font-size: 17px;
+  }
+}
+@media (max-width: 900.98px) {
+  .homeCard {
+    display: none;
+    visibility: hidden;
+  }
+  .tablet_carousel {
+    display: block;
+    visibility: visible;
+  }
+  .statistic {
+    h3 {
+      margin-bottom: 30px;
+    }
+  }
+  .statisticList {
+    gap: 0;
+    margin-top: 0;
+  }
+  .statisticImages {
+    width: 70px;
+    height: 70px;
+  }
+  .statisticNumber {
+    font-size: 30px;
+  }
+  .statisticTitle {
+    font-size: 16px;
+  }
+}
+@media (max-width: 768.98px) {
+  .carouselItem {
+    flex-basis: 30%;
+  }
+  .search {
+    width: 85.5%;
+  }
+  .card {
+    padding: 10px;
+  }
+  .statisticList {
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 20px;
+  }
+}
+@media (max-width: 575.98px) {
+  .main {
+    margin-top: 50px;
+  }
+  .search {
+    width: 100%;
+  }
+  .carousel {
+    display: none;
+    visibility: hidden;
+  }
+  .tablet_servicesContainer {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .tablet_services {
+    display: grid;
+    visibility: visible;
+  }
+  .tablet_serviceBox {
+    display: flex;
+    visibility: visible;
+  }
+  .tablet_carouselItem {
+    flex-basis: 100%;
   }
 }

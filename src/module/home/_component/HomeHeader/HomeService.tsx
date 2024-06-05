@@ -10,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Image from "next/image";
 
 const services = [
   "Đặt khám nhanh",
@@ -24,10 +25,7 @@ const services = [
 export default function HomeService() {
   return (
     <div className={styles.services}>
-      <Carousel
-        opts={{align: "start"}}
-        className="w-full max-w-[1180px] mx-auto relative top-[50px] px-4"
-      >
+      <Carousel opts={{align: "start"}} className={styles.carousel}>
         <CarouselContent>
           {services.map((v, index) => (
             <CarouselItem key={index} className={styles.carouselItem}>
@@ -50,6 +48,23 @@ export default function HomeService() {
         <CarouselNext />
         <CarouselPrevious />
       </Carousel>
+      {/* TABLET */}
+      <div className={styles.tablet_servicesContainer}>
+        <div className={styles.tablet_services}>
+          {services.map((v, index) => (
+            <div key={index} className={styles.tablet_serviceBox}>
+              <Image
+                src="/img/logo.png "
+                className="h-[40px] object-contain mt-auto"
+                width={100}
+                height={100}
+                alt="logo"
+              />
+              <span className="block flex-1">{v}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

@@ -149,7 +149,9 @@ export default function Footer() {
         </div>
       </div>
       <div className={styles.coppyRight}>
-        <span>© 2020 - Bản quyền thuộc Công Ty Cổ Phần Ứng Dụng PKH</span>
+        <span className="break-word">
+          © 2020 - Bản quyền thuộc Công Ty Cổ Phần Ứng Dụng PKH
+        </span>
         <div className="w-[150px] h-[30px]">
           <Image
             src="/img/dmca-badge.png"
@@ -163,23 +165,23 @@ export default function Footer() {
       {/* FOOTER MOBILE */}
       <div className={styles.footerMobile}>
         <div className={styles.footerMobileBox}>
-          <HomeIcon className="w-6 h-6" />
+          <HomeIcon className={styles.footerMobileIcon} />
           <Link href={"#"}>Trang chủ</Link>
         </div>
         <div className={styles.footerMobileBox}>
-          <FileTextIcon className="w-6 h-6" />
+          <FileTextIcon className={styles.footerMobileIcon} />
           <Link href={"#"}>Hướng dẫn</Link>
         </div>
         <div className={styles.footerMobileBox}>
-          <ClipboardIcon className="w-6 h-6" />
-          <Link href={"#"}>Phiếu phám</Link>
+          <ClipboardIcon className={styles.footerMobileIcon} />
+          <Link href={"#"}>Phiếu khám</Link>
         </div>
         <div className={styles.footerMobileBox}>
-          <BellIcon className="w-6 h-6" />
+          <BellIcon className={styles.footerMobileIcon} />
           <Link href={"#"}>Thông báo</Link>
         </div>
         <div className={styles.footerMobileBox}>
-          <PersonIcon className="w-6 h-6" />
+          <PersonIcon className={styles.footerMobileIcon} />
           <Link href={"#"}>Hồ sơ</Link>
         </div>
       </div>

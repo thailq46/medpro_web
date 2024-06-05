@@ -72,3 +72,13 @@
     }
   }
 }
+@media (max-width: 575.98px) {
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .navTablet {
+    max-width: 200vw !important;
+    width: 100%;
+  }
+}

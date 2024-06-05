@@ -1,6 +1,16 @@
 import React from "react";
 import styles from "./HomeNews.module.scss";
 import Image from "next/image";
+import {Button} from "@/components/ui/button";
+import {DoubleArrowRightIcon} from "@radix-ui/react-icons";
+import {Card, CardContent} from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export default function HomeNews() {
   const newsFeed = [
@@ -73,6 +83,43 @@ export default function HomeNews() {
               </div>
             ))}
           </div>
+          {/* MOBILE */}
+          <Carousel opts={{align: "start"}} className={styles.carousel}>
+            <CarouselContent>
+              {newsFeed.map((v, index) => (
+                <CarouselItem key={index} className={styles.carouselItem}>
+                  <div className="p-1">
+                    <Card className="shadow-none border-none">
+                      <CardContent className={`p-0 ${styles.card}`}>
+                        <div className={styles.cardRight} key={index}>
+                          <div className={styles.cardRightImage}>
+                            <Image
+                              src={v.img}
+                              alt="News"
+                              width={500}
+                              height={500}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="cardRightInfo">
+                            <h4 className={styles.cardRightTitle}>{v.title}</h4>
+                            <div className={styles.cardRightTime}>{v.time}</div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
+        <div className={styles.btn}>
+          <Button>
+            Xem thêm <DoubleArrowRightIcon className="w-5 h-5 ml-1" />
+          </Button>
         </div>
       </div>
     </section>

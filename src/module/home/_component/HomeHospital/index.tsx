@@ -52,16 +52,13 @@ export default function HomeHospital() {
       <span className={styles.desc}>
         Đặt lịch khám với hơn 70 bệnh viện trên khắp cả nước
       </span>
-      <Carousel
-        opts={{align: "start"}}
-        className="w-full mx-auto relative top-[50px]"
-      >
+      <Carousel opts={{align: "start"}} className={styles.carousel}>
         <CarouselContent>
           {hospital.map((v, index) => (
-            <CarouselItem key={index} className="basis-1/4">
+            <CarouselItem key={index} className={styles.carouselItem}>
               <div className="p-1">
                 <Card className="shadow-none border-none">
-                  <CardContent className={`aspect-square p-0 ${styles.card}`}>
+                  <CardContent className={`p-0 ${styles.card}`}>
                     <div className={styles.cardImage}>
                       <img
                         srcSet="https://source.unsplash.com/random 2x"

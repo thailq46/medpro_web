@@ -7,7 +7,7 @@ export default function HomeBooking() {
     <section className={styles.container}>
       <div className={styles.main}>
         <div className={styles.content}>
-          <div className="home-booking_left">
+          <div className={`home-booking_left ${styles.left}`}>
             <h3 className={styles.title}>
               Đặt khám nhanh - Lấy số thứ tự trực tuyến
             </h3>
@@ -18,7 +18,7 @@ export default function HomeBooking() {
             </p>
             <Button className={styles.btn}>Đặt lịch ngay</Button>
           </div>
-          <div className="home-booking_right">
+          <div className={`home-booking_right`}>
             <Image
               src="/img/home_doctor.png"
               alt="Ảnh quảng bá Medpro"

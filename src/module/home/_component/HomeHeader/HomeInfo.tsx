@@ -3,6 +3,14 @@
 import React from "react";
 import styles from "./HomeHeader.module.scss";
 import {Button} from "@/components/ui/button";
+import {Card, CardContent} from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export default function HomeInfo() {
   return (
@@ -40,6 +48,37 @@ export default function HomeInfo() {
           </div>
         ))}
       </div>
+      {/* Tablet */}
+      <Carousel opts={{align: "start"}} className={styles.tablet_carousel}>
+        <CarouselContent>
+          {Array.from({length: 3}).map((_, index) => (
+            <CarouselItem className={styles.tablet_carouselItem} key={index}>
+              <div className="py-1">
+                <Card>
+                  <CardContent className={`px-5 py-4`}>
+                    <div className={styles.tablet_homeCardBox} key={index}>
+                      <div className="h-[260px] w-full">
+                        <img
+                          src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F1af3c257-01f4-4035-a832-6cd3c25aecce-frame_1000001919.webp&w=1920&q=75"
+                          className="w-full h-full object-cover rounded-2xl"
+                        />
+                      </div>
+                      <h4 className={styles.homeTitle}>
+                        Vì thời gian của bạn là vô giá
+                      </h4>
+                      <span className={styles.homeDesc}>
+                        Bệnh nhân chủ động chọn thông tin đặt khám (ngày khám và
+                        giờ khám)
+                      </span>
+                      <Button>Xem thêm</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     </div>
   );
 }

@@ -1,19 +1,20 @@
 import Image from "next/image";
 import React from "react";
+import styles from "./HomeSupport.module.scss";
 
 export default function HomeSupport() {
   return (
     <section className="home-support overflow-hidden px-3">
       <div className="main !max-w-[1180px] w-full mx-auto pb-8">
         <div className="border border-white rounded-xl shadow relative bg-[url('/img/banner_support.png')] bg-center bg-no-repeat bg-cover py-[75px] px-[15px]">
-          <div className="flex items-center justify-end gap-10 ">
-            <div className="w-[62px] h-[62px] bg-white rounded-full p-3">
+          <div className={styles.content}>
+            <div className={styles.image}>
               <Image
                 src="/img/mobile.svg"
                 alt="Hotline"
                 width={100}
                 height={100}
-                className="object-cover"
+                className="object-cover w-full h-full"
               />
             </div>
             <div className="text-center text-white">

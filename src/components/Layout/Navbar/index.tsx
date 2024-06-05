@@ -139,7 +139,7 @@ export default function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent className={styles.navTablet}>
-              <SheetHeader className="py-[15px] px-4 border border-b-slate-300">
+              <SheetHeader className="py-[10px] px-4 border border-b-slate-300">
                 <a href="#" className="block w-[130px]">
                   <img
                     srcSet="/img/logo.png 2x"

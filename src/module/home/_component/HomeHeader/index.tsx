@@ -13,7 +13,7 @@ export default function HomeHeader() {
     <section className={`home-header ${styles.container}`}>
       <div className={styles.banner}>
         <div className={styles.content}>
-          <span className="text-[#11a2f3] text-[25px] mb-2">
+          <span className="text-[#11a2f3] text-[25px] mb-2 font-medium">
             Nền tảng công nghệ
           </span>
           <h3 className={styles.title}>
@@ -22,7 +22,7 @@ export default function HomeHeader() {
           <div className={styles.search}>
             <Input type="text" placeholder="Tìm kiếm cơ sở y tế" />
           </div>
-          <span className="text-xl">
+          <span className={styles.desc}>
             Đặt khám nhanh - Lấy số thứ tự trực tuyến - Tư vấn sức khỏe từ xa
           </span>
         </div>
