@@ -1,0 +1,338 @@
+.breadcrumbContainer,
+.content {
+  max-width: 1180px !important;
+  width: 100%;
+  margin: 0 auto;
+}
+.container {
+  background-color: #e8f2f7;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.breadcrumb {
+  background-color: white;
+}
+.breadcrumbs {
+  padding: 25px 0;
+}
+.breadcrumbLink {
+  color: #003553;
+  font-size: 16px;
+  font-weight: 600;
+}
+.activeLink {
+  color: #00b5f1;
+}
+.hospitalContainer {
+  background-color: white;
+  text-align: center;
+}
+
+.hospitalTitle {
+  color: #00b5f1;
+  font-weight: 700;
+  font-size: 39px;
+  margin-bottom: 8px;
+  line-height: 48px;
+}
+
+.hospitalDesc {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18.75px;
+  color: #003553;
+}
+
+.search {
+  background: url("/img/search_icon.svg") no-repeat 15px 50%;
+  background-size: 20px;
+  margin: 20px auto;
+  border-radius: 12px;
+  width: 660px;
+  box-shadow: 4px 8px 30px 0 rgba(177, 196, 218, 0.35);
+  input {
+    padding: 24px 0px 24px 40px;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 1.2;
+    &:focus-visible {
+      box-shadow: none;
+    }
+  }
+}
+.tag {
+  list-style: none;
+  margin-top: 20px;
+  padding: 24px 0;
+  border-top: 1px solid #e3e3e3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  overflow-x: auto;
+}
+.tagItem {
+  color: #11a2f3;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 23px;
+  padding: 23px 25px;
+  background: #ebf9fd;
+  border-radius: 50px;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  &:hover {
+    border: 1px solid #00b5f1;
+    background-color: inherit;
+  }
+}
+
+.listHospital {
+  display: grid;
+  grid-template-columns: 62.5% 37.5%;
+  gap: 20px;
+}
+.left {
+  display: flex;
+  flex-direction: column;
+}
+.leftBoxContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+.leftBox {
+  gap: 14px;
+  padding: 20px;
+  border-radius: 20px;
+  width: 100%;
+  min-height: 130px;
+  border: 2px solid transparent;
+  transition: all 0.23s ease;
+  display: flex;
+  align-items: flex-start;
+  &:hover {
+    border: 2px solid #00b5f1;
+    cursor: pointer;
+  }
+}
+.leftInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.leftImage {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+.leftTitle {
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 29px;
+}
+.leftDesc {
+  display: flex;
+  gap: 5px;
+  font-size: 17px;
+  line-height: 21px;
+  color: #858585;
+}
+.leftIcon {
+  width: 16px;
+  height: 16px;
+}
+.leftBtnControl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btnMore,
+.btnBooking {
+  padding: 20px 16px;
+  width: 167px;
+  transition: all 0.3s ease;
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: normal;
+  &:hover {
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.24);
+    background-color: inherit;
+  }
+}
+.btnMore {
+  color: #00b5f1;
+  border: 1px solid #00b5f1;
+  background-color: transparent;
+}
+.btnBooking {
+  background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
+  color: #fff;
+}
+.rightHospitalInfo {
+  background-color: white;
+  padding: 30px 26px;
+  border-radius: 20px;
+}
+.rightHeader {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #b1b1b1;
+}
+.rightImage {
+  width: 200px;
+  height: 200px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.rightTitle {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  background: linear-gradient(40deg, #00b5f1, #00e0ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.rightSession {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 16px;
+  line-height: 19px;
+  color: #003553;
+}
+
+.rightDesc {
+  margin-top: 5px;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.rightImages {
+  margin-top: 10px;
+  h4 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #003553;
+  }
+}
+.rightImageList {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+}
+.rightImageItem {
+  width: 110px;
+  height: 110px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+}
+.mobile {
+  display: none;
+  visibility: hidden;
+}
+@media (max-width: 1024.98px) {
+  .breadcrumbs {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .search {
+    margin: 30px auto;
+  }
+  .tag {
+    justify-content: flex-start;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  .container {
+    padding: 30px;
+  }
+  .rightImageItem {
+    width: 30%;
+    height: 80px;
+  }
+}
+
+@media (max-width: 940.98px) {
+  .right {
+    display: none;
+    visibility: hidden;
+  }
+  .listHospital {
+    display: block;
+  }
+}
+@media (max-width: 768.98px) {
+  .header {
+    padding: 0 20px;
+  }
+  .search {
+    width: 100%;
+  }
+  .leftImage {
+    width: 50px;
+    height: 50px;
+  }
+  .leftTitle {
+    font-size: 20px;
+  }
+  .leftInfo {
+    gap: 8px;
+  }
+  .leftDesc {
+    font-size: 14px;
+  }
+  .leftIcon {
+    width: 14px;
+    height: 14px;
+  }
+}
+@media (max-width: 575.98px) {
+  .leftBtnControl {
+    display: none;
+    visibility: hidden;
+  }
+  .mobile {
+    visibility: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff7ff;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    .leftBtnControl {
+      display: flex;
+      visibility: visible;
+      padding: 10px;
+      width: 100%;
+    }
+    .btnMore,
+    .btnBooking {
+      width: 100%;
+      flex: 1;
+    }
+  }
+}
