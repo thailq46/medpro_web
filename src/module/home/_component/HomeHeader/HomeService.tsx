@@ -1,7 +1,5 @@
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
-import React from "react";
-import styles from "./HomeHeader.module.scss";
+"use client";
+import apiMedicalBookingForms from "@/apiRequest/ApiMedicalBookingForms";
 import {Card, CardContent} from "@/components/ui/card";
 import {
   Carousel,
@@ -10,35 +8,39 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import {QUERY_KEY} from "@/hooks/QUERY_KEY";
+import {useQuery} from "@tanstack/react-query";
 import Image from "next/image";
-
-const services = [
-  "Đặt khám nhanh",
-  "Lấy số thứ tự trực tuyến",
-  "Tư vấn sức khỏe từ xa",
-  "Tìm kiếm cơ sở y tế",
-  "Y tế di động",
-  "Y tế điện tử",
-  "Đặt lịch xét nghiệm",
-];
+import styles from "./HomeHeader.module.scss";
 
 export default function HomeService() {
+  const {data: medicalBookingForms} = useQuery({
+    queryKey: [QUERY_KEY.GET_LIST_MEDICAL_BOOKING_FORMS],
+    queryFn: async () =>
+      await apiMedicalBookingForms.getListMedicalBookingForms({
+        limit: 99,
+        page: 1,
+      }),
+  });
   return (
     <div className={styles.services}>
-      <Carousel opts={{align: "start"}} className={styles.carousel}>
+      <Carousel opts={{align: "center"}} className={styles.carousel}>
         <CarouselContent>
-          {services.map((v, index) => (
-            <CarouselItem key={index} className={styles.carouselItem}>
+          {medicalBookingForms?.payload?.data.map((v) => (
+            <CarouselItem key={v._id} className={styles.carouselItem}>
               <div className="p-1">
                 <Card>
                   <CardContent
                     className={`aspect-square px-5 py-4 ${styles.card}`}
                   >
-                    <img
-                      srcSet="/img/logo.png 2x"
+                    <Image
+                      src={v.image ?? "/img/logo.png"}
+                      width={100}
+                      height={100}
+                      alt="logo"
                       className="h-[70px] object-contain"
                     />
-                    <span className="block flex-1">{v}</span>
+                    <span className="block flex-1">{v.name}</span>
                   </CardContent>
                 </Card>
               </div>
@@ -51,16 +53,16 @@ export default function HomeService() {
       {/* TABLET */}
       <div className={styles.tablet_servicesContainer}>
         <div className={styles.tablet_services}>
-          {services.map((v, index) => (
-            <div key={index} className={styles.tablet_serviceBox}>
+          {medicalBookingForms?.payload?.data.map((v) => (
+            <div key={v._id} className={styles.tablet_serviceBox}>
               <Image
-                src="/img/logo.png "
+                src={v.image ?? "/img/logo.png"}
                 className="h-[40px] object-contain mt-auto"
                 width={100}
                 height={100}
                 alt="logo"
               />
-              <span className="block flex-1">{v}</span>
+              <span className="block flex-1">{v.name}</span>
             </div>
           ))}
         </div>
