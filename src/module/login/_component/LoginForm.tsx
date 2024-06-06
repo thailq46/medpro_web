@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, {useState} from "react";
 import {Button} from "@/components/ui/button";
 import {
   Form,
@@ -15,23 +15,62 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import styles from "../login.module.scss";
 import PasswordInput from "@/components/InputPassword";
+import {ReloadIcon} from "@radix-ui/react-icons";
+import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
+import apiAuthRequest from "@/apiRequest/ApiAuth";
+import {useToast} from "@/components/ui/use-toast";
+import {jwtDecode} from "jwt-decode";
+import {useRouter} from "next/navigation";
+import {clientAccessToken} from "@/apiRequest/http";
 
-const formSchema = z.object({
-  email: z.string().email("Email không hợp lệ"),
-  password: z.string(),
-});
+const LoginBody = z
+  .object({
+    email: z.string().email("Email không hợp lệ"),
+    password: z.string(),
+  })
+  .strict();
+type LoginBodyType = z.TypeOf<typeof LoginBody>;
 
 export default function LoginForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const [loading, setLoading] = useState<boolean>(false);
+  const {toast} = useToast();
+  const router = useRouter();
+  const form = useForm<LoginBodyType>({
+    resolver: zodResolver(LoginBody),
     defaultValues: {
       email: "",
       password: "",
     },
   });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: LoginBodyType) {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const result = await apiAuthRequest.login(values);
+      toast({
+        title: "Thành công",
+        description: result.payload.message,
+        duration: 3000,
+      });
+      const {access_token, refresh_token} = result.payload.data;
+      const decoded = jwtDecode(access_token);
+      const expiredAt = decoded.exp;
+      localStorage.setItem("accessToken", access_token);
+      localStorage.setItem("refreshToken", refresh_token);
+      await apiAuthRequest.auth({
+        access_token,
+        refresh_token,
+        expiresAt: expiredAt as number,
+      });
+      clientAccessToken.expiresAt = expiredAt as number;
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      setLoading(false);
+      handleErrorApi({error, setError: form.setError, duration: 3000});
+    } finally {
+      setLoading(false);
+    }
   }
   return (
     <Form {...form}>
@@ -70,7 +109,8 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className={styles.btn_submit}>
+        <Button type="submit" className={styles.btn_submit} disabled={loading}>
+          {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
           Đăng nhập
         </Button>
       </form>

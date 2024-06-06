@@ -21,7 +21,6 @@ export default function HomeHeader() {
         return response.json();
       })
       .then((res) => {
-        console.log(res.data);
         for (var i = 0; i < res.data.length; i++) {
           myOptions.push(res.data[i].employee_name as never);
         }
@@ -29,7 +28,6 @@ export default function HomeHeader() {
       });
   }, []);
 
-  console.log(myOptions);
   return (
     <section className={`home-header ${styles.container}`}>
       <div className={styles.banner}>

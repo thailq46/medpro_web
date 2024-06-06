@@ -1,0 +1,3 @@
+export const QUERY_KEY = {
+  GET_LIST_CATEGORY: "GET_LIST_CATEGORY",
+};

@@ -1,9 +1,10 @@
 import type {Metadata} from "next";
-import {Roboto} from "next/font/google";
+import {Manrope} from "next/font/google";
+import {Toaster} from "@/components/ui/toaster";
 import "../global.scss";
 
-const roboto = Roboto({
-  weight: ["300", "400", "500", "700", "900"],
+const manrope = Manrope({
+  weight: ["300", "400", "500", "700", "800"],
   subsets: ["latin", "vietnamese"],
 });
 
@@ -19,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body className={manrope.className}>
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }
