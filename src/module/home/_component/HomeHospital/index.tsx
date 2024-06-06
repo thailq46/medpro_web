@@ -1,6 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
-import React from "react";
-import styles from "./HomeHospital.module.scss";
+"use client";
+import apiHospital from "@/apiRequest/ApiHospital";
 import {Card, CardContent} from "@/components/ui/card";
 import {
   Carousel,
@@ -9,42 +8,16 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import {QUERY_KEY} from "@/hooks/QUERY_KEY";
+import {useQuery} from "@tanstack/react-query";
+import Image from "next/image";
+import styles from "./HomeHospital.module.scss";
 
 export default function HomeHospital() {
-  const hospital = [
-    {
-      name: "Bệnh viện Bạch Mai",
-      address: "78 Giải Phóng, Đống Đa, Hà Nội",
-    },
-    {
-      name: "Bệnh viện Chợ Rẫy",
-      address: "201B Nguyễn Chí Thanh, Quận 5, TP. Hồ Chí Minh",
-    },
-    {
-      name: "Bệnh viện Việt Đức",
-      address: "40 Tràng Thi, Hoàn Kiếm, Hà Nội",
-    },
-    {
-      name: "Bệnh viện Đại học Y Dược TP. Hồ Chí Minh",
-      address: "215 Hồng Bàng, Quận 5, TP. Hồ Chí Minh",
-    },
-    {
-      name: "Bệnh viện 108",
-      address: "1 Trần Hưng Đạo, Hai Bà Trưng, Hà Nội",
-    },
-    {
-      name: "Bệnh viện Nhi Trung ương",
-      address: "18/879 La Thành, Đống Đa, Hà Nội",
-    },
-    {
-      name: "Bệnh viện Phụ sản Trung ương",
-      address: "43 Tràng Thi, Hoàn Kiếm, Hà Nội",
-    },
-    {
-      name: "Bệnh viện Hữu nghị Việt Tiệp",
-      address: "1 Phố Nhà Thương, Lê Chân, Hải Phòng",
-    },
-  ];
+  const {data: hospitals} = useQuery({
+    queryKey: [QUERY_KEY.GET_LIST_HOSPITALS],
+    queryFn: async () => apiHospital.getListHospital({limit: 99, page: 1}),
+  });
 
   return (
     <section className={styles.container}>
@@ -54,15 +27,18 @@ export default function HomeHospital() {
       </span>
       <Carousel opts={{align: "start"}} className={styles.carousel}>
         <CarouselContent>
-          {hospital.map((v, index) => (
-            <CarouselItem key={index} className={styles.carouselItem}>
+          {hospitals?.payload?.data.map((v) => (
+            <CarouselItem key={v._id} className={styles.carouselItem}>
               <div className="p-1">
                 <Card className="shadow-none border-none">
                   <CardContent className={`p-0 ${styles.card}`}>
                     <div className={styles.cardImage}>
-                      <img
-                        srcSet="https://source.unsplash.com/random 2x"
-                        alt="hospital"
+                      <Image
+                        src={v.avatar || "/img/home_banner.png"}
+                        alt={v.name || "hospital"}
+                        width={500}
+                        height={500}
+                        className="w-full h-full object-cover"
                       />
                     </div>
                     <div className="flex-1">
