@@ -27,3 +27,12 @@ export type CommonParams<T> = Record<
   keyof T,
   string | number | boolean | string[] | number[] | boolean[]
 >;
+export enum HospitalsType {
+  BENHVIENCONG = 0,
+  BENHVIENTU = 1,
+  PHONGKHAM = 2,
+  PHONGMACH = 3,
+  XETNGHIEM = 4,
+  YTETAINHA = 5,
+  TIEMCHUNG = 6,
+}

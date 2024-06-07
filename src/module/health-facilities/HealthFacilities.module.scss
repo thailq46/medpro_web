@@ -87,6 +87,11 @@
   }
 }
 
+.activeTagItem {
+  background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
+  color: #fff;
+}
+
 .listHospital {
   display: grid;
   grid-template-columns: 62.5% 37.5%;
@@ -105,7 +110,7 @@
 .leftBox {
   gap: 14px;
   padding: 20px;
-  border-radius: 20px;
+  border-radius: 1rem;
   width: 100%;
   min-height: 130px;
   border: 2px solid transparent;
@@ -211,9 +216,6 @@
   color: transparent;
 }
 .rightSession {
-  display: flex;
-  align-items: center;
-  gap: 5px;
   font-size: 16px;
   line-height: 19px;
   color: #003553;

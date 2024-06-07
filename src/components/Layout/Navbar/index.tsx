@@ -107,7 +107,13 @@ export default function Navbar() {
             <MenubarMenu key={category.name}>
               <MenubarTrigger>
                 <Link
-                  href={category.slug === "dich-vu-y-te" ? "#" : category.slug}
+                  href={
+                    category.slug === "dich-vu-y-te"
+                      ? "#"
+                      : category.slug === "co-so-y-te"
+                      ? "/co-so-y-te"
+                      : `/${category.slug}`
+                  }
                 >
                   {category.name}
                 </Link>
@@ -120,7 +126,7 @@ export default function Navbar() {
                       key={child.name}
                       className="p-2 cursor-pointer hover:!text-textSecondary hover:!bg-[#e6f2ff] text-[13px] font-medium"
                     >
-                      <Link href={`${category.slug}/${child.slug}`}>
+                      <Link href={`/${category.slug}/${child.slug}`}>
                         {child.name}
                       </Link>
                     </MenubarItem>
@@ -214,7 +220,12 @@ export default function Navbar() {
                               className="w-full h-full object-contain"
                             />
                           </div>
-                          <p className="font-semibold text-base">{cate.name}</p>
+                          <Link
+                            className="font-semibold text-base"
+                            href={`/${cate.slug}`}
+                          >
+                            {cate.name}
+                          </Link>
                         </AccordionTrigger>
                         {!!cate.children.length && (
                           <AccordionContent>
@@ -223,7 +234,9 @@ export default function Navbar() {
                                 key={index}
                                 className="py-2 px-5 font-medium border-b border-slate-300 last:border-none last:pb-0"
                               >
-                                <Link href={child.slug}>{child.name}</Link>
+                                <Link href={`/${cate.slug}/${child.slug}`}>
+                                  {child.name}
+                                </Link>
                               </div>
                             ))}
                           </AccordionContent>

@@ -28,6 +28,7 @@ export interface IParamsHospital {
   limit?: number;
   page?: number;
   search?: string;
+  types?: string;
 }
 
 interface IGetListHospitalRes {

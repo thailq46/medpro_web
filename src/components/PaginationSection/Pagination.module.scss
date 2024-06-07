@@ -1,0 +1,13 @@
+.paginationItem {
+  background-color: white !important;
+  color: #00b5f1;
+  border-radius: 8px;
+  overflow: hidden;
+  &:hover {
+    box-shadow: 0 4px 15px rgba(116, 157, 206, 0.5);
+  }
+}
+.active {
+  background: linear-gradient(98.96deg, #00b5f1 40.75%, #00e0ff 129.57%);
+  color: white;
+}

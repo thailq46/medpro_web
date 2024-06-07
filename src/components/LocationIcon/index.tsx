@@ -1,3 +1,4 @@
+"use client";
 export default function LocationIcon({className = ""}: {className?: string}) {
   return (
     <div className={className}>
