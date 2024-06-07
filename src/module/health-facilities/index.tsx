@@ -132,7 +132,9 @@ export default function HealthFacilities({slug}: {slug?: string}) {
         <div className={styles.header}>
           <h1 className={styles.hospitalTitle}>{getNameCategory}</h1>
           <span className={styles.hospitalDesc}>
-            {generateDescription(slug as string)}
+            {slug
+              ? generateDescription(slug)
+              : "Với những cơ sở Y Tế hàng đầu sẽ giúp trải nghiệm khám, chữa bệnh của bạn tốt hơn"}
           </span>
           <div className={styles.search}>
             <Input
@@ -195,7 +197,9 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                             Xem chi tiết
                           </Button>
                           <Button className={styles.btnBooking}>
-                            Đặt khám ngay
+                            <Link href={`/${v.slug}/hinh-thuc-dat-kham`}>
+                              Đặt khám ngay
+                            </Link>
                           </Button>
                         </div>
                       </div>
@@ -204,7 +208,9 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                       <div className={styles.leftBtnControl}>
                         <Button className={styles.btnMore}>Xem chi tiết</Button>
                         <Button className={styles.btnBooking}>
-                          Đặt khám ngay
+                          <Link href={`/${v.slug}/hinh-thuc-dat-kham`}>
+                            Đặt khám ngay
+                          </Link>
                         </Button>
                       </div>
                     </div>

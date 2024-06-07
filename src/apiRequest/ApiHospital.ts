@@ -36,9 +36,13 @@ interface IGetListHospitalRes {
   data: IHospitalBody[];
   meta: IMetaData;
 }
-
+export interface IGetHospitalRes {
+  message: string;
+  data: IHospitalBody;
+}
 const path = {
   root: "/hospitals",
+  getBySlug: "/hospitals/slug",
 };
 
 const apiHospital = {
@@ -47,6 +51,9 @@ const apiHospital = {
       params: params as CommonParams<IParamsHospital>,
       cache: "no-cache",
     });
+  },
+  getHospitalBySlug: (slug: string) => {
+    return http.get<IGetHospitalRes>(`${path.getBySlug}/${slug}`);
   },
 };
 
