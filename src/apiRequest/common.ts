@@ -36,3 +36,10 @@ export enum HospitalsType {
   YTETAINHA = 5,
   TIEMCHUNG = 6,
 }
+export enum PositionType {
+  NONE = 0, // Người dùng
+  MASTER = 1, // Thạc sĩ
+  DOCTOR = 2, // Tiến sĩ
+  ASSOCIATE_PROFESSOR = 3, // Phó giáo sư
+  PROFESSOR = 4, // Giáo sư
+}

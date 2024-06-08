@@ -2,7 +2,7 @@
 import apiCategoryRequest from "@/apiRequest/ApiCategory";
 import apiHospital, {IHospitalBody} from "@/apiRequest/ApiHospital";
 import {HospitalsType} from "@/apiRequest/common";
-import LocationIcon from "@/components/LocationIcon";
+import {LocationIcon} from "@/components/Icon";
 import PaginationSection from "@/components/PaginationSection";
 import {
   Breadcrumb,
@@ -204,6 +204,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                         </div>
                       </div>
                     </div>
+                    {/* MOBILE */}
                     <div className={styles.mobile}>
                       <div className={styles.leftBtnControl}>
                         <Button className={styles.btnMore}>Xem chi tiết</Button>

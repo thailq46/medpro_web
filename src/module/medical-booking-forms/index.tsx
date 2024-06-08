@@ -21,7 +21,20 @@ export default function MedicalBookingForms({
 }) {
   const router = useRouter();
   if (!hospital) router.push("/500");
-  console.log("MedicalBookingForms ~ hospital", hospital);
+  const generateQueryString = () => {
+    const query = new URLSearchParams();
+    let feature = "";
+    hospital.booking_forms?.forEach((v) => {
+      if (v.name === "Đặt khám theo chuyên khoa") feature = "booking.date";
+      if (v.name === "Đặt khám theo bác sĩ") feature = "booking.doctor";
+      if (v.name === "Tiêm chủng") feature = "booking.vaccine";
+      if (v.name === "Gói khám sức khỏe") feature = "booking.package";
+    });
+    query.append("feature", feature);
+    query.append("hospitalId", hospital._id as string);
+    query.append("stepName", "subject");
+    return "/chon-lich-kham?" + query.toString();
+  };
   return (
     <div className="bg-[#e8f2f7]">
       <div>
@@ -60,7 +73,11 @@ export default function MedicalBookingForms({
           </span>
           <div className={styles.bookingList}>
             {hospital?.booking_forms?.map((v) => (
-              <Link href="#" key={v.id} className={styles.bookingLink}>
+              <Link
+                href={generateQueryString()}
+                key={v.id}
+                className={styles.bookingLink}
+              >
                 <div className={styles.image}>
                   <Image
                     src={v?.image ?? ""}

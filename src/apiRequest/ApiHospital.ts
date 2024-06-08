@@ -55,6 +55,9 @@ const apiHospital = {
   getHospitalBySlug: (slug: string) => {
     return http.get<IGetHospitalRes>(`${path.getBySlug}/${slug}`);
   },
+  getHospitalById: (id: string) => {
+    return http.get<IGetHospitalRes>(`${path.root}/${id}`);
+  },
 };
 
 export default apiHospital;
