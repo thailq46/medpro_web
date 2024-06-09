@@ -11,6 +11,7 @@ export interface IParamsDoctor {
 export interface QueryDoctorsBySpecialty {
   hospital_id: string;
   specialty_id: string;
+  search?: string;
 }
 export interface IDoctorBody extends ICommonAuditable {
   _id?: string;

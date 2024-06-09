@@ -2,7 +2,7 @@
 import apiDoctor from "@/apiRequest/ApiDoctor";
 import apiHospital from "@/apiRequest/ApiHospital";
 import apiService from "@/apiRequest/ApiService";
-import {ISpecialtyBody} from "@/apiRequest/ApiSpecialty";
+import apiSpecialty from "@/apiRequest/ApiSpecialty";
 import {
   HandHoldingMedicalIcon,
   HospitalIcon,
@@ -32,7 +32,8 @@ import styles from "./BookingAppointment.module.scss";
 
 export default function BookingAppointment() {
   const [dateSelected, setDateSelected] = useState<string>("");
-  const [specialtyData, setSpecialtyData] = useState<ISpecialtyBody[]>([]);
+  const [filterSpecialty, setFilterSpecialty] = useState<string>("");
+  const [filterDoctor, setFilterDoctor] = useState<string>("");
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -50,19 +51,37 @@ export default function BookingAppointment() {
     enabled: !!hospitalId,
   });
 
+  const {data: specialty, isLoading: isLoadingSpecialty} = useQuery({
+    queryKey: [
+      QUERY_KEY.GET_SPECIALTY_BY_HOSPITAL_ID,
+      {hospitalId: hospitalId, params: {search: filterSpecialty}},
+    ],
+    queryFn: () =>
+      apiSpecialty.getListSpecialtyByHospitalId({
+        hospitalId: hospitalId ?? "",
+        params: {search: filterSpecialty},
+      }),
+    enabled: !!hospitalId,
+  });
+
   const {data: doctor, isLoading: isLoadingDoctor} = useQuery({
     queryKey: [
       QUERY_KEY.GET_DOCTOR_BY_SPECIALTY_ID,
-      {hospital_id: hospitalId, specialty_id: specialtyId},
+      {
+        hospital_id: hospitalId,
+        specialty_id: specialtyId,
+        search: filterDoctor,
+      },
     ],
     queryFn: () =>
       apiDoctor.getListDoctorBySpecialtyId({
         hospital_id: hospitalId ?? "",
         specialty_id: specialtyId ?? "",
+        search: filterDoctor,
       }),
     enabled: !!hospitalId && !!specialtyId,
   });
-
+  console.log("doctor", doctor);
   const {data: service} = useQuery({
     queryKey: [QUERY_KEY.GET_SERVICE_BY_ID, serviceId],
     queryFn: () => apiService.getServiceById(serviceId ?? ""),
@@ -76,6 +95,7 @@ export default function BookingAppointment() {
     if (stepName === "date" || stepName === "time") return "Chọn ngày tư vấn";
     return "";
   };
+
   return (
     <div className="bg-[#e8f2f7]">
       <div className={styles.breadcrumbContainer}>
@@ -134,8 +154,9 @@ export default function BookingAppointment() {
                         <div className={styles.hospitalInfo}>
                           <span>
                             Chuyên khoa:{" "}
-                            {specialtyData.find((v) => v._id === specialtyId)
-                              ?.name ?? ""}
+                            {specialty?.payload?.data.find(
+                              (v) => v._id === specialtyId
+                            )?.name ?? ""}
                           </span>
                         </div>
                       </li>
@@ -194,20 +215,21 @@ export default function BookingAppointment() {
                   feature={feature ?? ""}
                   hospitalId={hospitalId ?? ""}
                   stepName={stepName}
-                  onChooseSpecialty={(data) => setSpecialtyData(data)}
+                  specialty={specialty?.payload?.data ?? []}
+                  isLoading={isLoadingSpecialty}
+                  onSearchSpecialty={(value) => setFilterSpecialty(value)}
                 />
               )}
-              {stepName === "doctor" &&
-                (isLoadingDoctor ? (
-                  <DisplaySkeleton />
-                ) : (
-                  <ChooseDoctor
-                    feature={feature ?? ""}
-                    hospitalId={hospitalId ?? ""}
-                    specialtyId={specialtyId ?? ""}
-                    doctors={doctor?.payload?.data ?? []}
-                  />
-                ))}
+              {stepName === "doctor" && (
+                <ChooseDoctor
+                  feature={feature ?? ""}
+                  hospitalId={hospitalId ?? ""}
+                  specialtyId={specialtyId ?? ""}
+                  isLoading={isLoadingDoctor}
+                  doctors={doctor?.payload?.data ?? []}
+                  onSearchDoctor={(value) => setFilterDoctor(value)}
+                />
+              )}
               {(stepName === "date" || stepName === "time") && (
                 <ChooseDate
                   onChooseDate={(date) => {

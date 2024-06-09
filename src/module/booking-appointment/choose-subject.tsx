@@ -1,10 +1,8 @@
 "use client";
-import apiSpecialty, {ISpecialtyBody} from "@/apiRequest/ApiSpecialty";
+import {ISpecialtyBody} from "@/apiRequest/ApiSpecialty";
 import {Input} from "@/components/ui/input";
 import {Skeleton} from "@/components/ui/skeleton";
-import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import useDebounce from "@/hooks/useDebounce";
-import {useQuery} from "@tanstack/react-query";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import styles from "./BookingAppointment.module.scss";
@@ -13,36 +11,25 @@ interface IChooseSubjectProps {
   feature: string;
   hospitalId: string;
   stepName: string;
-  onChooseSpecialty: (value: ISpecialtyBody[]) => void;
+  specialty: ISpecialtyBody[];
+  isLoading: boolean;
+  onSearchSpecialty: (search: string) => void;
 }
 
 export default function ChooseSubject({
   feature,
   hospitalId,
-  onChooseSpecialty,
+  specialty,
+  isLoading,
+  onSearchSpecialty,
 }: IChooseSubjectProps) {
   const [searchSpecialty, setSearchSpecialty] = useState<string>("");
   const filterDebounce = useDebounce(searchSpecialty, 500);
 
-  const {data: specialty, isLoading} = useQuery({
-    queryKey: [
-      QUERY_KEY.GET_SPECIALTY_BY_HOSPITAL_ID,
-      {hospitalId: hospitalId, params: {search: filterDebounce}},
-    ],
-    queryFn: () =>
-      apiSpecialty.getListSpecialtyByHospitalId({
-        hospitalId: hospitalId ?? "",
-        params: {search: filterDebounce},
-      }),
-    enabled: !!hospitalId,
-  });
-
   useEffect(() => {
-    if (specialty?.payload?.data) {
-      onChooseSpecialty(specialty.payload.data);
-    }
+    onSearchSpecialty(filterDebounce);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [specialty?.payload.data]);
+  }, [filterDebounce]);
 
   return (
     <div className={styles.rightBody}>
@@ -61,8 +48,8 @@ export default function ChooseSubject({
         </>
       ) : (
         <ul className={styles.listSubject}>
-          {!!specialty?.payload?.data.length ? (
-            specialty?.payload?.data.map((v) => (
+          {!!specialty.length ? (
+            specialty.map((v) => (
               <li key={v._id} className={styles.subjectItem}>
                 <Link
                   href={{
