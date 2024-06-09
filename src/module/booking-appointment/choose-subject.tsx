@@ -2,6 +2,7 @@
 import {ISpecialtyBody} from "@/apiRequest/ApiSpecialty";
 import {Input} from "@/components/ui/input";
 import Link from "next/link";
+import {useState} from "react";
 import styles from "./BookingAppointment.module.scss";
 
 interface IChooseSubjectProps {
@@ -16,10 +17,15 @@ export default function ChooseSubject({
   hospitalId,
   specialty,
 }: IChooseSubjectProps) {
+  const [searchValue, setSearchValue] = useState("");
+  console.log("searchValue", searchValue);
   return (
     <div className={styles.rightBody}>
       <div className={styles.search}>
-        <Input placeholder="Tìm nhanh chuyên khoa" />
+        <Input
+          placeholder="Tìm nhanh chuyên khoa"
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
       </div>
       <ul className={styles.listSubject}>
         {specialty.map((v) => (

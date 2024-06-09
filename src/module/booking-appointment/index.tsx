@@ -17,6 +17,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import {Button} from "@/components/ui/button";
+import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import ChooseDate from "@/module/booking-appointment/choose-date";
 import ChooseDoctor from "@/module/booking-appointment/choose-doctor";
@@ -33,6 +34,7 @@ export default function BookingAppointment() {
   const [dateSelected, setDateSelected] = useState<string>("");
   const searchParams = useSearchParams();
   const router = useRouter();
+
   const feature = searchParams.get("feature");
   const hospitalId = searchParams.get("hospitalId");
   const stepName = searchParams.get("stepName");
@@ -45,12 +47,14 @@ export default function BookingAppointment() {
     queryFn: () => apiHospital.getHospitalById(hospitalId ?? ""),
     enabled: !!hospitalId,
   });
-  const {data: specialty} = useQuery({
+
+  const {data: specialty, isLoading: isLoadingSepcialty} = useQuery({
     queryKey: [QUERY_KEY.GET_SPECIALTY_BY_HOSPITAL_ID, hospitalId],
     queryFn: () => apiSpecialty.getListSpecialtyByHospitalId(hospitalId ?? ""),
     enabled: !!hospitalId,
   });
-  const {data: doctor} = useQuery({
+
+  const {data: doctor, isLoading: isLoadingDoctor} = useQuery({
     queryKey: [
       QUERY_KEY.GET_DOCTOR_BY_SPECIALTY_ID,
       {hospital_id: hospitalId, specialty_id: specialtyId},
@@ -62,11 +66,13 @@ export default function BookingAppointment() {
       }),
     enabled: !!hospitalId && !!specialtyId,
   });
-  const {data: service} = useQuery({
+
+  const {data: service, isLoading: isLoadingService} = useQuery({
     queryKey: [QUERY_KEY.GET_SERVICE_BY_ID, serviceId],
     queryFn: () => apiService.getServiceById(serviceId ?? ""),
     enabled: !!serviceId,
   });
+
   const generateBookingName = () => {
     if (stepName === "subject") return "Chọn chuyên khoa";
     if (stepName === "doctor") return "Chọn bác sĩ";
@@ -110,61 +116,68 @@ export default function BookingAppointment() {
                 <h3>Thông tin cơ sở y tế</h3>
               </div>
               <div className={styles.leftBody}>
-                <ul>
-                  <li>
-                    <HospitalIcon className="w-5 h-5 flex-shrink-0" />
-                    <div className={styles.hospitalInfo}>
-                      <span>{hospital?.payload?.data?.name ?? ""}</span>
-                      <p className={styles.address}>
-                        {hospital?.payload?.data?.address ?? ""}
-                      </p>
-                    </div>
-                  </li>
-                  {specialtyId && (
+                {isLoadingSepcialty ? (
+                  <div className="flex items-start gap-2">
+                    <Skeleton className="w-5 h-5" />
+                    <Skeleton className="w-full h-10" />
+                  </div>
+                ) : (
+                  <ul>
                     <li>
-                      <SuitcaseMedicalIcon className="w-5 h-5 flex-shrink-0" />
+                      <HospitalIcon className="w-5 h-5 flex-shrink-0" />
                       <div className={styles.hospitalInfo}>
-                        <span>
-                          Chuyên khoa:{" "}
-                          {specialty?.payload?.data.find(
-                            (v) => v._id === specialtyId
-                          )?.name ?? ""}
-                        </span>
+                        <span>{hospital?.payload?.data?.name ?? ""}</span>
+                        <p className={styles.address}>
+                          {hospital?.payload?.data?.address ?? ""}
+                        </p>
                       </div>
                     </li>
-                  )}
-                  {doctorId && (
-                    <li>
-                      <StethoscopeIcon className="w-5 h-5 flex-shrink-0" />
-                      <div className={styles.hospitalInfo}>
-                        <span>
-                          Bác sĩ:{" "}
-                          {
-                            doctor?.payload?.data.find(
-                              (v) => v.doctor_id === doctorId
-                            )?.name
-                          }
-                        </span>
-                      </div>
-                    </li>
-                  )}
-                  {serviceId && (
-                    <li>
-                      <HandHoldingMedicalIcon className="w-5 h-5 flex-shrink-0" />
-                      <div className={styles.hospitalInfo}>
-                        <span>Dịch vụ: {service?.payload?.data?.name}</span>
-                      </div>
-                    </li>
-                  )}
-                  {dateSelected && (
-                    <li>
-                      <CalendarIcon className="w-5 h-5 flex-shrink-0" />
-                      <div className={styles.hospitalInfo}>
-                        <span>Ngày khám: {dateSelected}</span>
-                      </div>
-                    </li>
-                  )}
-                </ul>
+                    {specialtyId && (
+                      <li>
+                        <SuitcaseMedicalIcon className="w-5 h-5 flex-shrink-0" />
+                        <div className={styles.hospitalInfo}>
+                          <span>
+                            Chuyên khoa:{" "}
+                            {specialty?.payload?.data.find(
+                              (v) => v._id === specialtyId
+                            )?.name ?? ""}
+                          </span>
+                        </div>
+                      </li>
+                    )}
+                    {doctorId && (
+                      <li>
+                        <StethoscopeIcon className="w-5 h-5 flex-shrink-0" />
+                        <div className={styles.hospitalInfo}>
+                          <span>
+                            Bác sĩ:{" "}
+                            {
+                              doctor?.payload?.data.find(
+                                (v) => v.doctor_id === doctorId
+                              )?.name
+                            }
+                          </span>
+                        </div>
+                      </li>
+                    )}
+                    {serviceId && (
+                      <li>
+                        <HandHoldingMedicalIcon className="w-5 h-5 flex-shrink-0" />
+                        <div className={styles.hospitalInfo}>
+                          <span>Dịch vụ: {service?.payload?.data?.name}</span>
+                        </div>
+                      </li>
+                    )}
+                    {dateSelected && (
+                      <li>
+                        <CalendarIcon className="w-5 h-5 flex-shrink-0" />
+                        <div className={styles.hospitalInfo}>
+                          <span>Ngày khám: {dateSelected}</span>
+                        </div>
+                      </li>
+                    )}
+                  </ul>
+                )}
               </div>
             </div>
           </div>
@@ -181,22 +194,28 @@ export default function BookingAppointment() {
                     : "Vui lòng chọn ngày tư vấn"}
                 </h3>
               </div>
-              {stepName === "subject" && (
-                <ChooseSubject
-                  feature={feature ?? ""}
-                  hospitalId={hospitalId ?? ""}
-                  stepName={stepName}
-                  specialty={specialty?.payload?.data ?? []}
-                />
-              )}
-              {stepName === "doctor" && (
-                <ChooseDoctor
-                  feature={feature ?? ""}
-                  hospitalId={hospitalId ?? ""}
-                  specialtyId={specialtyId ?? ""}
-                  doctors={doctor?.payload?.data ?? []}
-                />
-              )}
+              {stepName === "subject" &&
+                (isLoadingSepcialty ? (
+                  <DisplaySkeleton />
+                ) : (
+                  <ChooseSubject
+                    feature={feature ?? ""}
+                    hospitalId={hospitalId ?? ""}
+                    stepName={stepName}
+                    specialty={specialty?.payload?.data ?? []}
+                  />
+                ))}
+              {stepName === "doctor" &&
+                (isLoadingDoctor ? (
+                  <DisplaySkeleton />
+                ) : (
+                  <ChooseDoctor
+                    feature={feature ?? ""}
+                    hospitalId={hospitalId ?? ""}
+                    specialtyId={specialtyId ?? ""}
+                    doctors={doctor?.payload?.data ?? []}
+                  />
+                ))}
               {(stepName === "date" || stepName === "time") && (
                 <ChooseDate
                   onChooseDate={(date) => {
@@ -246,6 +265,18 @@ export default function BookingAppointment() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+export function DisplaySkeleton() {
+  return (
+    <div className={styles.rightBody}>
+      <Skeleton className="w-full h-10" />
+      <Skeleton className="w-[25%] h-10 mt-10" />
+      <Skeleton className="w-full h-10 mt-1" />
+      <Skeleton className="w-full h-10 mt-1" />
+      <Skeleton className="w-full h-10 mt-1" />
     </div>
   );
 }

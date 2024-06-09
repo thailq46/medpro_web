@@ -17,6 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
+import {DisplaySkeleton} from "@/module/booking-appointment";
 import {useQuery} from "@tanstack/react-query";
 import Link from "next/link";
 import styles from "./BookingAppointment.module.scss";
@@ -115,7 +116,7 @@ export default function ChooseService({
   doctorId,
   hospitalName,
 }: IChooseServiceProps) {
-  const {data: services} = useQuery({
+  const {data: services, isLoading} = useQuery({
     queryKey: [QUERY_KEY.GET_SERVICE_BY_HOSPITAL_ID, hospitalId],
     queryFn: () => apiService.getFullServiceByHospitalId(hospitalId),
     enabled: !!hospitalId,
@@ -126,61 +127,68 @@ export default function ChooseService({
   );
 
   return (
-    <div className={styles.rightBody}>
-      <ul className={styles.listService}>
-        <Table className="text-base text-textPrimary">
-          <TableHeader>
-            <TableRow>
-              <TableHead>#</TableHead>
-              <TableHead className="font-bold">Tên dịch vụ</TableHead>
-              <TableHead className="font-bold">Giá tiền</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {result?.map((service, index) => (
-              <TableRow key={service._id} className="cursor-pointer">
-                <TableCell className="font-medium">{index}</TableCell>
-                <TableCell className="max-w-[300px]">
-                  <p className="font-bold">{service.name}</p>
-                  <p className="font-medium italic">
-                    Lịch khám: {service.session}
-                  </p>
-                  {service.description && service.description !== "null" && (
-                    <p className="font-medium italic">
-                      ({service.description})
-                    </p>
-                  )}
-                </TableCell>
-                <TableCell>
-                  <span className="font-medium">
-                    {service.price?.toLocaleString("vi-VN")}đ
-                  </span>
-                </TableCell>
-                <TableCell className="text-right">
-                  <DialogDetail name={hospitalName ?? ""} />
-                  <Button className="ml-2">
-                    <Link
-                      href={{
-                        pathname: "/chon-lich-kham",
-                        query: {
-                          feature,
-                          hospitalId,
-                          specialtyId,
-                          stepName: "date",
-                          doctorId,
-                          serviceId: service._id,
-                        },
-                      }}
-                    >
-                      Đặt khám ngay
-                    </Link>
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </ul>
-    </div>
+    <>
+      {isLoading ? (
+        <DisplaySkeleton />
+      ) : (
+        <div className={styles.rightBody}>
+          <ul className={styles.listService}>
+            <Table className="text-base text-textPrimary">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>#</TableHead>
+                  <TableHead className="font-bold">Tên dịch vụ</TableHead>
+                  <TableHead className="font-bold">Giá tiền</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {result?.map((service, index) => (
+                  <TableRow key={service._id} className="cursor-pointer">
+                    <TableCell className="font-medium">{index}</TableCell>
+                    <TableCell className="max-w-[300px]">
+                      <p className="font-bold">{service.name}</p>
+                      <p className="font-medium italic">
+                        Lịch khám: {service.session}
+                      </p>
+                      {service.description &&
+                        service.description !== "null" && (
+                          <p className="font-medium italic">
+                            ({service.description})
+                          </p>
+                        )}
+                    </TableCell>
+                    <TableCell>
+                      <span className="font-medium">
+                        {service.price?.toLocaleString("vi-VN")}đ
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <DialogDetail name={hospitalName ?? ""} />
+                      <Button className="ml-2">
+                        <Link
+                          href={{
+                            pathname: "/chon-lich-kham",
+                            query: {
+                              feature,
+                              hospitalId,
+                              specialtyId,
+                              stepName: "date",
+                              doctorId,
+                              serviceId: service._id,
+                            },
+                          }}
+                        >
+                          Đặt khám ngay
+                        </Link>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ul>
+        </div>
+      )}
+    </>
   );
 }
