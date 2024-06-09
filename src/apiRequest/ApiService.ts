@@ -38,11 +38,14 @@ export interface IServiceBody extends ICommonAuditable {
   };
 }
 
-interface IGetServiceRes {
+interface IGetListServiceRes {
   message: string;
   data: IServiceBody[];
 }
-
+interface IGetServiceRes {
+  message: string;
+  data: IServiceBody;
+}
 const path = {
   root: "/services",
   getFullServiceByHospitalId: "/services/hospital",
@@ -50,9 +53,12 @@ const path = {
 
 const apiService = {
   getFullServiceByHospitalId: (hospitalId: string) => {
-    return http.get<IGetServiceRes>(
+    return http.get<IGetListServiceRes>(
       `${path.getFullServiceByHospitalId}/${hospitalId}`
     );
+  },
+  getServiceById: (id: string) => {
+    return http.get<IGetServiceRes>(`${path.root}/${id}`);
   },
 };
 

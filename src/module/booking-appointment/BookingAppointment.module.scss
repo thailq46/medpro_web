@@ -85,7 +85,8 @@
   padding-bottom: 20px;
 }
 .listSubject,
-.listDoctor {
+.listDoctor,
+.listService {
   max-height: 300px;
   height: fit-content;
   overflow-y: scroll;
@@ -169,6 +170,37 @@
 .highlight {
   color: #ffb54a !important;
   font-weight: 700 !important;
+}
+// CHOOSE SERVICE
+.dialogContent {
+  padding: 0;
+  max-width: 500px;
+  overflow: hidden;
+  gap: 0;
+}
+.dialogHeader {
+  padding: 16px;
+  background: linear-gradient(40deg, #00b5f1, #00e0ff) !important;
+  color: white;
+  text-transform: uppercase;
+}
+.dialogBody {
+  overflow-y: auto !important;
+  max-height: 520px;
+  padding: 16px;
+  font-size: 15px;
+  word-wrap: break-word;
+  h3,
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 600;
+  }
+  ul {
+    list-style: circle;
+    padding-inline-start: 30px;
+  }
 }
 @keyframes styles_slide-in-blurred-right {
   0% {

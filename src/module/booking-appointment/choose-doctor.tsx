@@ -93,7 +93,7 @@ export default function ChooseDoctor({
                   specialtyId,
                   stepName,
                   doctorId: v.doctor_id,
-                  serviceId,
+                  serviceId: result?.specialty === null ? serviceId : "",
                 },
               }}
             >

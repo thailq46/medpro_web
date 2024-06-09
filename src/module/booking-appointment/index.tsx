@@ -1,8 +1,10 @@
 "use client";
 import apiDoctor from "@/apiRequest/ApiDoctor";
 import apiHospital from "@/apiRequest/ApiHospital";
+import apiService from "@/apiRequest/ApiService";
 import apiSpecialty from "@/apiRequest/ApiSpecialty";
 import {
+  HandHoldingMedicalIcon,
   HospitalIcon,
   StethoscopeIcon,
   SuitcaseMedicalIcon,
@@ -55,6 +57,11 @@ export default function BookingAppointment() {
         specialty_id: specialtyId ?? "",
       }),
     enabled: !!hospitalId && !!specialtyId,
+  });
+  const {data: service} = useQuery({
+    queryKey: [QUERY_KEY.GET_SERVICE_BY_ID, serviceId],
+    queryFn: () => apiService.getServiceById(serviceId ?? ""),
+    enabled: !!serviceId,
   });
   const generateBookingName = () => {
     if (stepName === "subject") return "Chọn chuyên khoa";
@@ -136,6 +143,14 @@ export default function BookingAppointment() {
                       </div>
                     </li>
                   )}
+                  {serviceId && (
+                    <li>
+                      <HandHoldingMedicalIcon className="w-5 h-5 flex-shrink-0" />
+                      <div className={styles.hospitalInfo}>
+                        <span>Dịch vụ: {service?.payload?.data?.name}</span>
+                      </div>
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>
@@ -168,7 +183,15 @@ export default function BookingAppointment() {
                 />
               )}
               {stepName === "date" && <ChooseDate />}
-              {stepName === "service" && <ChooseService />}
+              {stepName === "service" && (
+                <ChooseService
+                  feature={feature ?? ""}
+                  hospitalId={hospitalId ?? ""}
+                  specialtyId={specialtyId ?? ""}
+                  doctorId={doctorId ?? ""}
+                  hospitalName={hospital?.payload?.data?.name ?? ""}
+                />
+              )}
             </div>
           </div>
         </div>

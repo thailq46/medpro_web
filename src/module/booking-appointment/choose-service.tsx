@@ -1,4 +1,13 @@
 "use client";
+import apiService from "@/apiRequest/ApiService";
+import {Button} from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -7,72 +16,165 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {QUERY_KEY} from "@/hooks/QUERY_KEY";
+import {useQuery} from "@tanstack/react-query";
+import Link from "next/link";
 import styles from "./BookingAppointment.module.scss";
 
-export default function ChooseService() {
-  const invoices = [
-    {
-      invoice: "INV001",
-      paymentStatus: "Paid",
-      totalAmount: "$250.00",
-      paymentMethod: "Credit Card",
-    },
-    {
-      invoice: "INV002",
-      paymentStatus: "Pending",
-      totalAmount: "$150.00",
-      paymentMethod: "PayPal",
-    },
-    {
-      invoice: "INV003",
-      paymentStatus: "Unpaid",
-      totalAmount: "$350.00",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "INV004",
-      paymentStatus: "Paid",
-      totalAmount: "$450.00",
-      paymentMethod: "Credit Card",
-    },
-    {
-      invoice: "INV005",
-      paymentStatus: "Paid",
-      totalAmount: "$550.00",
-      paymentMethod: "PayPal",
-    },
-    {
-      invoice: "INV006",
-      paymentStatus: "Pending",
-      totalAmount: "$200.00",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "INV007",
-      paymentStatus: "Unpaid",
-      totalAmount: "$300.00",
-      paymentMethod: "Credit Card",
-    },
-  ];
+interface IChooseServiceProps {
+  hospitalId: string;
+  specialtyId: string;
+  feature: string;
+  doctorId: string;
+  hospitalName?: string;
+}
+
+function DialogDetail({name = ""}: {name: string}) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">Chi tiết</Button>
+      </DialogTrigger>
+      <DialogContent className={styles.dialogContent}>
+        <DialogHeader className={styles.dialogHeader}>
+          <DialogTitle>Thông tin</DialogTitle>
+        </DialogHeader>
+        <div className={styles.dialogBody}>
+          <div>
+            <h3 className="text-lg">Quy trình khám bệnh tại {name}</h3>
+            <h4>Bước 1: Tư vấn và xác định dịch vụ khám chữa bệnh</h4>
+            <div>
+              <ul>
+                <li>
+                  Lịch hẹn của khách hàng được sắp lịch để kết nối trực tuyến
+                  với chuyên viên bệnh viện {name}
+                </li>
+                <li>
+                  Khách hàng cập nhật hồ sơ bệnh án, các câu hỏi mong muốn trên
+                  phiếu khám điện tử trong vòng 03 ngày
+                </li>
+                <li>
+                  Dựa trên thông tin khách hàng cung cấp, các chuyên viên{" "}
+                  {name + " "}
+                  trao đổi trực tuyến (Video call) trên nền tảng Medpro nhằm tư
+                  vấn các dịch vụ, gói khám phù hợp nhất.
+                </li>
+              </ul>
+            </div>
+            <h4>Bước 2: Đặt lịch khám chính thức tại {name}</h4>
+            <div>
+              <ul>
+                <li>
+                  Dựa trên thông tin tư vấn bước 02, khách hàng nhận được phiếu
+                  khám điện tử từ Medpro bao gồm:
+                </li>
+                <ul>
+                  <li>Các dịch vụ khám chữa bệnh</li>
+                  <li>Tổng chi phí khám chữa bệnh</li>
+                  <li>Thời gian dự kiến</li>
+                </ul>
+                <li>
+                  Khách hàng lựa chọn thêm các dịch vụ hỗ trợ của bên thứ 3:
+                </li>
+                <ul>
+                  <li>Dịch vụ đưa đón tại sân bay</li>
+                  <li>Dịch vụ phiên dịch trong ngày khám</li>
+                  <li>Dịch vụ lưu trú</li>
+                  <li>Các dịch vụ khác (nếu có)</li>
+                </ul>
+                <li>Xác nhận và tạm ứng 1.000.000 đồng.</li>
+              </ul>
+              <div>
+                <strong>🔵Phí khám chữa bệnh:</strong>
+                Theo biểu giá chính thức của bệnh viện - Thanh toán tại bệnh
+                viện
+              </div>
+              <div>
+                <strong>🔵Phí dịch vụ:</strong>
+                Theo biểu giá chính thức nhà cung cấp dịch vụ - Thanh toán tại{" "}
+                {name}
+              </div>
+              <div>
+                <strong>🔵Phí tạm ứng:</strong>
+                Thanh toán trực tuyến tại Việt Nam để xác nhận và giữ lịch hẹn
+                với bệnh viện/nhà cung cấp dịch vụ; phí này được hoàn trả sau
+                khi khách hàng hoàn tất sử dụng dịch vụ
+              </div>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export default function ChooseService({
+  hospitalId,
+  specialtyId,
+  feature,
+  doctorId,
+  hospitalName,
+}: IChooseServiceProps) {
+  const {data: services} = useQuery({
+    queryKey: [QUERY_KEY.GET_SERVICE_BY_HOSPITAL_ID, hospitalId],
+    queryFn: () => apiService.getFullServiceByHospitalId(hospitalId),
+    enabled: !!hospitalId,
+  });
+
+  const result = services?.payload?.data?.filter(
+    (v) => v.specialty?._id === specialtyId
+  );
+
   return (
     <div className={styles.rightBody}>
       <ul className={styles.listService}>
-        <Table>
+        <Table className="text-base text-textPrimary">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">#</TableHead>
-              <TableHead>Tên dịch vụ</TableHead>
-              <TableHead>Giá tiền</TableHead>
+              <TableHead>#</TableHead>
+              <TableHead className="font-bold">Tên dịch vụ</TableHead>
+              <TableHead className="font-bold">Giá tiền</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.invoice}>
-                <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                <TableCell>{invoice.paymentStatus}</TableCell>
-                <TableCell>{invoice.paymentMethod}</TableCell>
+            {result?.map((service, index) => (
+              <TableRow key={service._id} className="cursor-pointer">
+                <TableCell className="font-medium">{index}</TableCell>
+                <TableCell className="max-w-[300px]">
+                  <p className="font-bold">{service.name}</p>
+                  <p className="font-medium italic">
+                    Lịch khám: {service.session}
+                  </p>
+                  {service.description && service.description !== "null" && (
+                    <p className="font-medium italic">
+                      ({service.description})
+                    </p>
+                  )}
+                </TableCell>
+                <TableCell>
+                  <span className="font-medium">
+                    {service.price?.toLocaleString("vi-VN")}đ
+                  </span>
+                </TableCell>
                 <TableCell className="text-right">
-                  {invoice.totalAmount}
+                  <DialogDetail name={hospitalName ?? ""} />
+                  <Button className="ml-2">
+                    <Link
+                      href={{
+                        pathname: "/chon-lich-kham",
+                        query: {
+                          feature,
+                          hospitalId,
+                          specialtyId,
+                          stepName: "date",
+                          doctorId,
+                          serviceId: service._id,
+                        },
+                      }}
+                    >
+                      Đặt khám ngay
+                    </Link>
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
