@@ -16,19 +16,23 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import {Button} from "@/components/ui/button";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import ChooseDate from "@/module/booking-appointment/choose-date";
 import ChooseDoctor from "@/module/booking-appointment/choose-doctor";
 import ChooseService from "@/module/booking-appointment/choose-service";
 import ChooseSubject from "@/module/booking-appointment/choose-subject";
+import {CalendarIcon, ResetIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
-import {useSearchParams} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
+import {useState} from "react";
 import styles from "./BookingAppointment.module.scss";
 
 export default function BookingAppointment() {
+  const [dateSelected, setDateSelected] = useState<string>("");
   const searchParams = useSearchParams();
-
+  const router = useRouter();
   const feature = searchParams.get("feature");
   const hospitalId = searchParams.get("hospitalId");
   const stepName = searchParams.get("stepName");
@@ -67,6 +71,7 @@ export default function BookingAppointment() {
     if (stepName === "subject") return "Chọn chuyên khoa";
     if (stepName === "doctor") return "Chọn bác sĩ";
     if (stepName === "service") return "Chọn dịch vụ";
+    if (stepName === "date" || stepName === "time") return "Chọn ngày tư vấn";
     return "";
   };
   return (
@@ -151,6 +156,14 @@ export default function BookingAppointment() {
                       </div>
                     </li>
                   )}
+                  {dateSelected && (
+                    <li>
+                      <CalendarIcon className="w-5 h-5 flex-shrink-0" />
+                      <div className={styles.hospitalInfo}>
+                        <span>Ngày khám: {dateSelected}</span>
+                      </div>
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>
@@ -163,7 +176,9 @@ export default function BookingAppointment() {
                     ? "Vui lòng chọn chuyên khoa"
                     : stepName === "doctor"
                     ? "Vui lòng chọn bác sĩ"
-                    : "Vui lòng chọn dịch vụ"}
+                    : stepName === "service"
+                    ? "Vui lòng chọn dịch vụ"
+                    : "Vui lòng chọn ngày tư vấn"}
                 </h3>
               </div>
               {stepName === "subject" && (
@@ -182,7 +197,13 @@ export default function BookingAppointment() {
                   doctors={doctor?.payload?.data ?? []}
                 />
               )}
-              {stepName === "date" && <ChooseDate />}
+              {(stepName === "date" || stepName === "time") && (
+                <ChooseDate
+                  onChooseDate={(date) => {
+                    setDateSelected(date);
+                  }}
+                />
+              )}
               {stepName === "service" && (
                 <ChooseService
                   feature={feature ?? ""}
@@ -192,6 +213,35 @@ export default function BookingAppointment() {
                   hospitalName={hospital?.payload?.data?.name ?? ""}
                 />
               )}
+            </div>
+            <div className="mt-3">
+              <Button
+                variant={"ghost"}
+                onClick={() => {
+                  const params = new URLSearchParams();
+                  if (stepName === "time" || stepName === "date") {
+                    params.set("feature", feature ?? "");
+                    params.set("hospitalId", hospitalId ?? "");
+                    params.set("specialtyId", specialtyId ?? "");
+                    params.set("stepName", "service");
+                    params.set("doctorId", doctorId ?? "");
+                    params.set("serviceId", serviceId ?? "");
+                  }
+                  if (stepName === "service" || stepName === "doctor") {
+                    params.set("feature", feature ?? "");
+                    params.set("hospitalId", hospitalId ?? "");
+                    params.set("stepName", "subject");
+                  }
+                  if (stepName === "subject") {
+                    router.push("/co-so-y-te");
+                    return;
+                  }
+                  router.push(`/chon-lich-kham?${params.toString()}`);
+                }}
+              >
+                Quay lại
+                <ResetIcon className="w-4 h-4 ml-2" />
+              </Button>
             </div>
           </div>
         </div>

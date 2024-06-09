@@ -202,6 +202,25 @@
     padding-inline-start: 30px;
   }
 }
+// CHOOSE CALENDAR
+.timeline {
+  padding: 16px;
+  border-top: 2px solid #00b5f1;
+  h3 {
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+.boxTimeline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.boxTimelineItem {
+  background-color: #1da1f2;
+  padding: 10px;
+}
+
 @keyframes styles_slide-in-blurred-right {
   0% {
     transform: translateY(-2px);

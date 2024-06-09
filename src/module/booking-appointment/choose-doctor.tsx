@@ -32,6 +32,10 @@ interface IChooseDoctorProps {
   doctors: IDoctorBody[];
 }
 
+/**
+ Mỗi 1 bệnh viện chỉ có 1 dịch vụ duy nhất là không thuộc chuyên khoa nào => Nếu 1 bệnh viện mà có 2 dịch vụ không thuộc chuyên khoa nào tức specialty === null thì sẽ lỗi
+ */
+
 export default function ChooseDoctor({
   feature,
   hospitalId,
@@ -44,12 +48,18 @@ export default function ChooseDoctor({
     enabled: !!hospitalId,
   });
 
-  const result = services?.payload?.data?.find(
-    (v) => v.specialty?._id === specialtyId
-  );
+  const result = services?.payload?.data?.find((v) => {
+    return v.specialty?._id === specialtyId;
+  });
 
-  const stepName = result?.specialty === null ? "date" : "service";
-  const serviceId = result?._id;
+  const stepName = result
+    ? result?.specialty === null
+      ? "date"
+      : "service"
+    : "date";
+  const serviceId = result
+    ? ""
+    : services?.payload?.data?.find((v) => v.specialty === null)?._id;
 
   const genderPosition = (position: number): string => {
     if (position === PositionType.ASSOCIATE_PROFESSOR) return "Phó giáo sư";
@@ -93,7 +103,7 @@ export default function ChooseDoctor({
                   specialtyId,
                   stepName,
                   doctorId: v.doctor_id,
-                  serviceId: result?.specialty === null ? serviceId : "",
+                  serviceId,
                 },
               }}
             >
