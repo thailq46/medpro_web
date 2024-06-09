@@ -1,4 +1,4 @@
-import {ICommonAuditable} from "@/apiRequest/common";
+import {CommonParams, ICommonAuditable} from "@/apiRequest/common";
 import http from "@/apiRequest/http";
 
 export interface ISpecialtyBody extends ICommonAuditable {
@@ -29,7 +29,9 @@ export interface ISpecialtyBody extends ICommonAuditable {
     created_at?: string;
   };
 }
-
+interface ParamsSpecialtyByHospitalId {
+  search?: string;
+}
 export interface IGetListSpecialtyRes {
   message: string;
   data: ISpecialtyBody[];
@@ -41,9 +43,16 @@ const path = {
 };
 
 const apiSpecialty = {
-  getListSpecialtyByHospitalId: (hospitalId: string) => {
+  getListSpecialtyByHospitalId: ({
+    hospitalId,
+    params,
+  }: {
+    hospitalId: string;
+    params?: ParamsSpecialtyByHospitalId;
+  }) => {
     return http.get<IGetListSpecialtyRes>(
-      `${path.getByHospitalId}/${hospitalId}`
+      `${path.getByHospitalId}/${hospitalId}`,
+      {params: params as CommonParams<ParamsSpecialtyByHospitalId>}
     );
   },
 };

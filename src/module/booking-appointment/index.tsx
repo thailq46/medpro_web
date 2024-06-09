@@ -2,7 +2,7 @@
 import apiDoctor from "@/apiRequest/ApiDoctor";
 import apiHospital from "@/apiRequest/ApiHospital";
 import apiService from "@/apiRequest/ApiService";
-import apiSpecialty from "@/apiRequest/ApiSpecialty";
+import {ISpecialtyBody} from "@/apiRequest/ApiSpecialty";
 import {
   HandHoldingMedicalIcon,
   HospitalIcon,
@@ -32,6 +32,8 @@ import styles from "./BookingAppointment.module.scss";
 
 export default function BookingAppointment() {
   const [dateSelected, setDateSelected] = useState<string>("");
+  const [specialtyData, setSpecialtyData] = useState<ISpecialtyBody[]>([]);
+
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -42,15 +44,9 @@ export default function BookingAppointment() {
   const doctorId = searchParams.get("doctorId");
   const serviceId = searchParams.get("serviceId");
 
-  const {data: hospital} = useQuery({
+  const {data: hospital, isLoading: isLoadingHospital} = useQuery({
     queryKey: [QUERY_KEY.GET_HOSPITAL_BY_ID, hospitalId],
     queryFn: () => apiHospital.getHospitalById(hospitalId ?? ""),
-    enabled: !!hospitalId,
-  });
-
-  const {data: specialty, isLoading: isLoadingSepcialty} = useQuery({
-    queryKey: [QUERY_KEY.GET_SPECIALTY_BY_HOSPITAL_ID, hospitalId],
-    queryFn: () => apiSpecialty.getListSpecialtyByHospitalId(hospitalId ?? ""),
     enabled: !!hospitalId,
   });
 
@@ -67,7 +63,7 @@ export default function BookingAppointment() {
     enabled: !!hospitalId && !!specialtyId,
   });
 
-  const {data: service, isLoading: isLoadingService} = useQuery({
+  const {data: service} = useQuery({
     queryKey: [QUERY_KEY.GET_SERVICE_BY_ID, serviceId],
     queryFn: () => apiService.getServiceById(serviceId ?? ""),
     enabled: !!serviceId,
@@ -116,7 +112,7 @@ export default function BookingAppointment() {
                 <h3>Thông tin cơ sở y tế</h3>
               </div>
               <div className={styles.leftBody}>
-                {isLoadingSepcialty ? (
+                {isLoadingHospital ? (
                   <div className="flex items-start gap-2">
                     <Skeleton className="w-5 h-5" />
                     <Skeleton className="w-full h-10" />
@@ -138,9 +134,8 @@ export default function BookingAppointment() {
                         <div className={styles.hospitalInfo}>
                           <span>
                             Chuyên khoa:{" "}
-                            {specialty?.payload?.data.find(
-                              (v) => v._id === specialtyId
-                            )?.name ?? ""}
+                            {specialtyData.find((v) => v._id === specialtyId)
+                              ?.name ?? ""}
                           </span>
                         </div>
                       </li>
@@ -194,17 +189,14 @@ export default function BookingAppointment() {
                     : "Vui lòng chọn ngày tư vấn"}
                 </h3>
               </div>
-              {stepName === "subject" &&
-                (isLoadingSepcialty ? (
-                  <DisplaySkeleton />
-                ) : (
-                  <ChooseSubject
-                    feature={feature ?? ""}
-                    hospitalId={hospitalId ?? ""}
-                    stepName={stepName}
-                    specialty={specialty?.payload?.data ?? []}
-                  />
-                ))}
+              {stepName === "subject" && (
+                <ChooseSubject
+                  feature={feature ?? ""}
+                  hospitalId={hospitalId ?? ""}
+                  stepName={stepName}
+                  onChooseSpecialty={(data) => setSpecialtyData(data)}
+                />
+              )}
               {stepName === "doctor" &&
                 (isLoadingDoctor ? (
                   <DisplaySkeleton />
