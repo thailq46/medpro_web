@@ -224,7 +224,11 @@
   background-color: #1da1f2;
   padding: 10px;
 }
-
+// MOBILE
+.mobile {
+  display: none;
+  visibility: hidden;
+}
 @keyframes styles_slide-in-blurred-right {
   0% {
     transform: translateY(-2px);
@@ -235,5 +239,43 @@
     transform: translateY(0);
     filter: blur(0);
     opacity: 1;
+  }
+}
+@media (max-width: 940.98px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .serviceTable {
+    display: none;
+    visibility: hidden;
+  }
+  .mobile {
+    display: flex;
+    flex-direction: column;
+    visibility: visible;
+    width: 100%;
+    gap: 20px;
+  }
+  .mobileBox {
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mobileItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px 15px;
+    font-weight: 500;
+  }
+  .mobileItemTitle {
+    min-width: 120px;
+  }
+  .mobileItemContent {
+    font-weight: 600;
   }
 }

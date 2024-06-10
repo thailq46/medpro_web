@@ -132,8 +132,10 @@ export default function ChooseService({
         <DisplaySkeleton />
       ) : (
         <div className={styles.rightBody}>
-          <ul className={styles.listService}>
-            <Table className="text-base text-textPrimary">
+          <div className={styles.listService}>
+            <Table
+              className={`text-base text-textPrimary ${styles.serviceTable}`}
+            >
               <TableHeader>
                 <TableRow>
                   <TableHead>#</TableHead>
@@ -186,7 +188,55 @@ export default function ChooseService({
                 ))}
               </TableBody>
             </Table>
-          </ul>
+            {/* MOBILE/TABLET */}
+            <div className={styles.mobile}>
+              {result?.map((service) => (
+                <div className={styles.mobileBox} key={service._id}>
+                  <div className={styles.mobileItem}>
+                    <p className={styles.mobileItemTitle}>Tên dịch vụ</p>
+                    <p className={styles.mobileItemContent}>{service.name}</p>
+                    {service.description && service.description !== "null" && (
+                      <p className="font-medium italic">
+                        ({service.description})
+                      </p>
+                    )}
+                  </div>
+                  <div className={styles.mobileItem}>
+                    <p className={styles.mobileItemTitle}>Lịch khám</p>
+                    <p className={styles.mobileItemContent}>
+                      {service.session}
+                    </p>
+                  </div>
+                  <div className={styles.mobileItem}>
+                    <p className={styles.mobileItemTitle}>Giá tiền</p>
+                    <p className={styles.mobileItemContent}>
+                      {service.price?.toLocaleString("vi-VN")}đ
+                    </p>
+                  </div>
+                  <div className="w-full flex flex-col gap-2">
+                    <DialogDetail name={hospitalName ?? ""} />
+                    <Button>
+                      <Link
+                        href={{
+                          pathname: "/chon-lich-kham",
+                          query: {
+                            feature,
+                            hospitalId,
+                            specialtyId,
+                            stepName: "date",
+                            doctorId,
+                            serviceId: service._id,
+                          },
+                        }}
+                      >
+                        Đặt khám ngay
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </>
