@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
+import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import {generateDescription} from "@/lib/utils";
 import {ClockIcon} from "@radix-ui/react-icons";
@@ -51,7 +52,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
     ? pathname === `/${CSYT}/${slug}`
     : pathname === `/${CSYT}`;
 
-  const {data: categories} = useQuery({
+  const {data: categories, isLoading: isLoadingCategory} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_CATEGORY],
     queryFn: async () =>
       await apiCategoryRequest.getListCategory({
@@ -60,7 +61,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
       }),
   });
 
-  const {data: hospitals, isFetching} = useQuery({
+  const {data: hospitals, isLoading: isLoadingHospital} = useQuery({
     queryKey: [
       QUERY_KEY.GET_LIST_HOSPITALS,
       {
@@ -130,12 +131,21 @@ export default function HealthFacilities({slug}: {slug?: string}) {
       </div>
       <div className={styles.hospitalContainer}>
         <div className={styles.header}>
-          <h1 className={styles.hospitalTitle}>{getNameCategory}</h1>
-          <span className={styles.hospitalDesc}>
-            {slug
-              ? generateDescription(slug)
-              : "Với những cơ sở Y Tế hàng đầu sẽ giúp trải nghiệm khám, chữa bệnh của bạn tốt hơn"}
-          </span>
+          {isLoadingCategory ? (
+            <>
+              <Skeleton className="w-[35%] h-10 mx-auto" />
+              <Skeleton className="w-[45%] h-10 mx-auto mt-2" />
+            </>
+          ) : (
+            <>
+              <h1 className={styles.hospitalTitle}>{getNameCategory}</h1>
+              <span className={styles.hospitalDesc}>
+                {slug
+                  ? generateDescription(slug)
+                  : "Với những cơ sở Y Tế hàng đầu sẽ giúp trải nghiệm khám, chữa bệnh của bạn tốt hơn"}
+              </span>
+            </>
+          )}
           <div className={styles.search}>
             <Input
               type="text"
@@ -165,33 +175,54 @@ export default function HealthFacilities({slug}: {slug?: string}) {
           <div className={styles.listHospital}>
             <div className={styles.left}>
               <div className={styles.leftBoxContainer}>
-                {hospitals?.payload?.data?.map((v) => (
-                  <div
-                    key={v._id}
-                    className={`bg-white rounded-2xl w-full ${
-                      v._id === isActive ? "border-2 border-[#00b5f1]" : ""
-                    }`}
-                    role="button"
-                    onClick={() => {
-                      setHospitalSelected(v);
-                      setIsActive(v._id as string);
-                    }}
-                  >
-                    <div className={styles.leftBox}>
-                      <div className={styles.leftImage}>
-                        <Image
-                          src={v.avatar || "/img/avatar/avatar.jpg"}
-                          width={500}
-                          height={500}
-                          alt="image"
-                        />
-                      </div>
-                      <div className={styles.leftInfo}>
-                        <h2 className={styles.leftTitle}>{v.name}</h2>
-                        <div className={styles.leftDesc}>
-                          <LocationIcon className={styles.leftIcon} />
-                          {v.address}
+                {isLoadingHospital ? (
+                  <>
+                    {Array.from({length: 3}).map((_, index) => (
+                      <Skeleton className="w-full h-40 mx-auto" key={index} />
+                    ))}
+                  </>
+                ) : (
+                  hospitals?.payload?.data?.map((v) => (
+                    <div
+                      key={v._id}
+                      className={`bg-white rounded-2xl w-full ${
+                        v._id === isActive ? "border-2 border-[#00b5f1]" : ""
+                      }`}
+                      role="button"
+                      onClick={() => {
+                        setHospitalSelected(v);
+                        setIsActive(v._id as string);
+                      }}
+                    >
+                      <div className={styles.leftBox}>
+                        <div className={styles.leftImage}>
+                          <Image
+                            src={v.avatar || "/img/avatar/avatar.jpg"}
+                            width={500}
+                            height={500}
+                            alt="image"
+                          />
                         </div>
+                        <div className={styles.leftInfo}>
+                          <h2 className={styles.leftTitle}>{v.name}</h2>
+                          <div className={styles.leftDesc}>
+                            <LocationIcon className={styles.leftIcon} />
+                            {v.address}
+                          </div>
+                          <div className={styles.leftBtnControl}>
+                            <Button className={styles.btnMore}>
+                              Xem chi tiết
+                            </Button>
+                            <Button className={styles.btnBooking}>
+                              <Link href={`/${v.slug}/hinh-thuc-dat-kham`}>
+                                Đặt khám ngay
+                              </Link>
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                      {/* MOBILE */}
+                      <div className={styles.mobile}>
                         <div className={styles.leftBtnControl}>
                           <Button className={styles.btnMore}>
                             Xem chi tiết
@@ -204,19 +235,8 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                         </div>
                       </div>
                     </div>
-                    {/* MOBILE */}
-                    <div className={styles.mobile}>
-                      <div className={styles.leftBtnControl}>
-                        <Button className={styles.btnMore}>Xem chi tiết</Button>
-                        <Button className={styles.btnBooking}>
-                          <Link href={`/${v.slug}/hinh-thuc-dat-kham`}>
-                            Đặt khám ngay
-                          </Link>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
             <div className={styles.right}>
