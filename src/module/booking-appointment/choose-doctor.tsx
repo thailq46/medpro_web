@@ -14,7 +14,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -28,13 +27,20 @@ import Link from "next/link";
 import {useEffect, useState} from "react";
 import styles from "./BookingAppointment.module.scss";
 
+export type DoctorFilter = {
+  name?: string;
+  gender?: string;
+  position?: string;
+};
 interface IChooseDoctorProps {
   feature: string;
   hospitalId: string;
   specialtyId: string;
   isLoading: boolean;
   doctors: IDoctorBody[];
-  onSearchDoctor: (search: string) => void;
+  onFilterDoctor: (
+    value: DoctorFilter | ((prev: DoctorFilter) => DoctorFilter)
+  ) => void;
 }
 
 /**
@@ -47,13 +53,16 @@ export default function ChooseDoctor({
   specialtyId,
   isLoading,
   doctors,
-  onSearchDoctor,
+  onFilterDoctor,
 }: IChooseDoctorProps) {
   const [searchDoctor, setSearchDoctor] = useState<string>("");
   const filterDebounce = useDebounce(searchDoctor, 500);
 
   useEffect(() => {
-    onSearchDoctor(filterDebounce);
+    onFilterDoctor((prev) => ({
+      ...prev,
+      name: filterDebounce,
+    }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterDebounce]);
 
@@ -92,18 +101,51 @@ export default function ChooseDoctor({
           onChange={(e) => setSearchDoctor(e.target.value)}
         />
         <div className={styles.listFilter}>
-          <Select>
+          <Select
+            onValueChange={(e) =>
+              onFilterDoctor((prev) => ({
+                ...prev,
+                gender: e,
+              }))
+            }
+          >
             <SelectTrigger className={styles.selectTrigger}>
-              <SelectValue placeholder="Chuyên khoa" />
+              <SelectValue placeholder="Giới tính" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Chuyên khoa</SelectLabel>
-                <SelectItem value="apple">Apple</SelectItem>
-                <SelectItem value="banana">Banana</SelectItem>
-                <SelectItem value="blueberry">Blueberry</SelectItem>
-                <SelectItem value="grapes">Grapes</SelectItem>
-                <SelectItem value="pineapple">Pineapple</SelectItem>
+                <SelectItem value="null">Giới tính</SelectItem>
+                <SelectItem value="0">Nam</SelectItem>
+                <SelectItem value="1">Nữ</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Select
+            onValueChange={(e) =>
+              onFilterDoctor((prev) => ({
+                ...prev,
+                position: e,
+              }))
+            }
+          >
+            <SelectTrigger className={styles.selectTrigger}>
+              <SelectValue placeholder="Hàm học / học vị" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="null">Hàm học / học vị</SelectItem>
+                <SelectItem value={PositionType.MASTER.toString()}>
+                  Thạc sĩ
+                </SelectItem>
+                <SelectItem value={PositionType.DOCTOR.toString()}>
+                  Tiến sĩ
+                </SelectItem>
+                <SelectItem value={PositionType.ASSOCIATE_PROFESSOR.toString()}>
+                  Phó giáo sư
+                </SelectItem>
+                <SelectItem value={PositionType.PROFESSOR.toString()}>
+                  Giáo sư
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

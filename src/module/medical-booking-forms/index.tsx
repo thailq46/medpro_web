@@ -21,18 +21,34 @@ export default function MedicalBookingForms({
 }) {
   const router = useRouter();
   if (!hospital) router.push("/500");
-  const generateQueryString = () => {
+  const generateQueryString = (name: string) => {
     const query = new URLSearchParams();
     let feature = "";
-    hospital.booking_forms?.forEach((v) => {
-      if (v.name === "Đặt khám theo chuyên khoa") feature = "booking.date";
-      if (v.name === "Đặt khám theo bác sĩ") feature = "booking.doctor";
-      if (v.name === "Tiêm chủng") feature = "booking.vaccine";
-      if (v.name === "Gói khám sức khỏe") feature = "booking.package";
-    });
+    let stepName = "";
+    switch (name.trim()) {
+      case "Đặt khám theo chuyên khoa":
+        feature = "booking.date";
+        stepName = "subject";
+        break;
+      case "Đặt khám theo bác sĩ":
+        feature = "booking.doctor";
+        stepName = "doctor";
+        break;
+      case "Tiêm chủng":
+        feature = "booking.vaccine";
+        stepName = "subject";
+        break;
+      case "Gói khám sức khỏe":
+        feature = "booking.package";
+        stepName = "service";
+        break;
+      default:
+        feature = "";
+        break;
+    }
     query.append("feature", feature);
     query.append("hospitalId", hospital._id as string);
-    query.append("stepName", "subject");
+    query.append("stepName", stepName);
     return "/chon-lich-kham?" + query.toString();
   };
   return (
@@ -74,7 +90,7 @@ export default function MedicalBookingForms({
           <div className={styles.bookingList}>
             {hospital?.booking_forms?.map((v) => (
               <Link
-                href={generateQueryString()}
+                href={generateQueryString(v.name ?? "")}
                 key={v.id}
                 className={styles.bookingLink}
               >

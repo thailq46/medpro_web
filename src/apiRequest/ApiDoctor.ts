@@ -8,10 +8,15 @@ export interface IParamsDoctor {
   hospital?: string;
   specialty?: string;
 }
+/**
+ * The gender and position are a string, and in the backend controller, it will be converted to a number. If the gender and position string are 'null', it will be converted to null.
+ */
 export interface QueryDoctorsBySpecialty {
   hospital_id: string;
   specialty_id: string;
   search?: string;
+  gender?: string;
+  position?: string;
 }
 export interface IDoctorBody extends ICommonAuditable {
   _id?: string;

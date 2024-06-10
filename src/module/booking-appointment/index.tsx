@@ -20,7 +20,9 @@ import {Button} from "@/components/ui/button";
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import ChooseDate from "@/module/booking-appointment/choose-date";
-import ChooseDoctor from "@/module/booking-appointment/choose-doctor";
+import ChooseDoctor, {
+  DoctorFilter,
+} from "@/module/booking-appointment/choose-doctor";
 import ChooseService from "@/module/booking-appointment/choose-service";
 import ChooseSubject from "@/module/booking-appointment/choose-subject";
 import {CalendarIcon, ResetIcon} from "@radix-ui/react-icons";
@@ -33,7 +35,11 @@ import styles from "./BookingAppointment.module.scss";
 export default function BookingAppointment() {
   const [dateSelected, setDateSelected] = useState<string>("");
   const [filterSpecialty, setFilterSpecialty] = useState<string>("");
-  const [filterDoctor, setFilterDoctor] = useState<string>("");
+  const [filterDoctor, setFilterDoctor] = useState<DoctorFilter>({
+    name: "",
+    gender: "",
+    position: "",
+  });
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -70,18 +76,22 @@ export default function BookingAppointment() {
       {
         hospital_id: hospitalId,
         specialty_id: specialtyId,
-        search: filterDoctor,
+        search: filterDoctor.name,
+        gender: filterDoctor.gender,
+        position: filterDoctor.position,
       },
     ],
     queryFn: () =>
       apiDoctor.getListDoctorBySpecialtyId({
         hospital_id: hospitalId ?? "",
         specialty_id: specialtyId ?? "",
-        search: filterDoctor,
+        search: filterDoctor.name,
+        gender: filterDoctor.gender,
+        position: filterDoctor.position,
       }),
     enabled: !!hospitalId && !!specialtyId,
   });
-  console.log("doctor", doctor);
+
   const {data: service} = useQuery({
     queryKey: [QUERY_KEY.GET_SERVICE_BY_ID, serviceId],
     queryFn: () => apiService.getServiceById(serviceId ?? ""),
@@ -227,7 +237,7 @@ export default function BookingAppointment() {
                   specialtyId={specialtyId ?? ""}
                   isLoading={isLoadingDoctor}
                   doctors={doctor?.payload?.data ?? []}
-                  onSearchDoctor={(value) => setFilterDoctor(value)}
+                  onFilterDoctor={(value) => setFilterDoctor(value)}
                 />
               )}
               {(stepName === "date" || stepName === "time") && (

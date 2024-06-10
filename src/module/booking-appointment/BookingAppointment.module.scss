@@ -132,9 +132,12 @@
 
 .listFilter {
   margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .selectTrigger {
-  width: 189px;
+  width: 150px;
   background: linear-gradient(
     83.63deg,
     #00b5f1 33.34%,

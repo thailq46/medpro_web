@@ -4,6 +4,15 @@ import {twMerge} from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export const numberEnumToArray = (numberEnum: {
+  [key: string]: string | number;
+}) => {
+  return Object.values(numberEnum).filter(
+    (value) => typeof value === "number"
+  ) as number[];
+};
+
 export function generateDescription(slug: string): string {
   let desc = "";
   switch (slug) {
