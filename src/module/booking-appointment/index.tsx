@@ -237,6 +237,7 @@ export default function BookingAppointment() {
                   specialtyId={specialtyId ?? ""}
                   isLoading={isLoadingDoctor}
                   doctors={doctor?.payload?.data ?? []}
+                  specialty={specialty?.payload?.data ?? []}
                   onFilterDoctor={(value) => setFilterDoctor(value)}
                 />
               )}

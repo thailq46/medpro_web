@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import {IDoctorBody} from "@/apiRequest/ApiDoctor";
+import apiDoctor, {IDoctorBody} from "@/apiRequest/ApiDoctor";
 import apiService from "@/apiRequest/ApiService";
+import {ISpecialtyBody} from "@/apiRequest/ApiSpecialty";
 import {PositionType} from "@/apiRequest/common";
 import {
   DoctorIcon,
@@ -23,14 +25,19 @@ import useDebounce from "@/hooks/useDebounce";
 import {CalendarIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
-import Link from "next/link";
-import {useEffect, useState} from "react";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import {useCallback, useEffect, useState} from "react";
 import styles from "./BookingAppointment.module.scss";
+
+/**
+ Mỗi 1 bệnh viện chỉ có 1 dịch vụ duy nhất là không thuộc chuyên khoa nào và có type === "service" => Nếu 1 bệnh viện mà có 2 dịch vụ không thuộc chuyên khoa nào tức specialty === null và type === "service" thì sẽ lỗi
+ */
 
 export type DoctorFilter = {
   name?: string;
   gender?: string;
   position?: string;
+  specialty_id?: string;
 };
 interface IChooseDoctorProps {
   feature: string;
@@ -38,14 +45,46 @@ interface IChooseDoctorProps {
   specialtyId: string;
   isLoading: boolean;
   doctors: IDoctorBody[];
+  specialty: ISpecialtyBody[];
   onFilterDoctor: (
     value: DoctorFilter | ((prev: DoctorFilter) => DoctorFilter)
   ) => void;
 }
 
-/**
- Mỗi 1 bệnh viện chỉ có 1 dịch vụ duy nhất là không thuộc chuyên khoa nào => Nếu 1 bệnh viện mà có 2 dịch vụ không thuộc chuyên khoa nào tức specialty === null thì sẽ lỗi
- */
+const useDoctorData = (
+  hospitalId: string,
+  enabled: boolean,
+  options?: DoctorFilter
+) => {
+  return useQuery({
+    queryKey: [
+      QUERY_KEY.GET_DOCTOR_BY_HOSPITAL_ID,
+      {hospital_id: hospitalId, params: {...options, search: options?.name}},
+    ],
+    queryFn: () =>
+      apiDoctor.getListDoctorByHospitalId({
+        hospital_id: hospitalId,
+        params: {...options, search: options?.name},
+      }),
+    enabled: enabled,
+  });
+};
+
+const useServiceData = (hospitalId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.GET_SERVICE_BY_HOSPITAL_ID, hospitalId],
+    queryFn: () => apiService.getFullServiceByHospitalId(hospitalId),
+    enabled: !!hospitalId,
+  });
+};
+
+const genderPosition = (position: number): string => {
+  if (position === PositionType.ASSOCIATE_PROFESSOR) return "Phó giáo sư";
+  if (position === PositionType.DOCTOR) return "Tiến sĩ";
+  if (position === PositionType.PROFESSOR) return "Giáo sư";
+  if (position === PositionType.MASTER) return "Thạc sĩ";
+  return "";
+};
 
 export default function ChooseDoctor({
   feature,
@@ -53,44 +92,78 @@ export default function ChooseDoctor({
   specialtyId,
   isLoading,
   doctors,
+  specialty,
   onFilterDoctor,
 }: IChooseDoctorProps) {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+
   const [searchDoctor, setSearchDoctor] = useState<string>("");
+  const [filterDoctor, setFilterDoctor] = useState<DoctorFilter>({
+    name: "",
+    gender: "",
+    position: "",
+    specialty_id: "",
+  });
   const filterDebounce = useDebounce(searchDoctor, 500);
 
+  const isDoctorStep =
+    searchParams.get("stepName") === "doctor" && feature === "booking.doctor";
+
+  const {data, isLoading: isLoadingDoctor} = useDoctorData(
+    hospitalId,
+    isDoctorStep,
+    {...filterDoctor}
+  );
+
+  const {data: services} = useServiceData(hospitalId);
+
+  const doctorList = isDoctorStep ? data?.payload.data : doctors;
+  const memoizedOnFilterDoctor = useCallback(onFilterDoctor, []);
+
   useEffect(() => {
-    onFilterDoctor((prev) => ({
-      ...prev,
-      name: filterDebounce,
-    }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterDebounce]);
+    if (!isDoctorStep) {
+      memoizedOnFilterDoctor((prev) => ({
+        ...prev,
+        name: filterDebounce,
+      }));
+    } else {
+      setFilterDoctor((prev) => ({
+        ...prev,
+        name: filterDebounce,
+      }));
+    }
+  }, [filterDebounce, memoizedOnFilterDoctor]);
 
-  const {data: services} = useQuery({
-    queryKey: [QUERY_KEY.GET_SERVICE_BY_HOSPITAL_ID, hospitalId],
-    queryFn: () => apiService.getFullServiceByHospitalId(hospitalId),
-    enabled: !!hospitalId,
-  });
+  const getStepNameAndServiceId = (specialty_id: string) => {
+    const result = services?.payload?.data?.filter(
+      (service) => service.specialty?._id === specialty_id
+    );
+    const stepName = !!result?.length ? "service" : "date";
+    const serviceId = !!result?.length
+      ? ""
+      : services?.payload?.data?.find(
+          (v) => v.specialty === null && v.type === "service"
+        )?._id;
+    return {stepName, serviceId};
+  };
 
-  const result = services?.payload?.data?.find((v) => {
-    return v.specialty?._id === specialtyId;
-  });
-
-  const stepName = result
-    ? result?.specialty === null
-      ? "date"
-      : "service"
-    : "date";
-  const serviceId = result
-    ? ""
-    : services?.payload?.data?.find((v) => v.specialty === null)?._id;
-
-  const genderPosition = (position: number): string => {
-    if (position === PositionType.ASSOCIATE_PROFESSOR) return "Phó giáo sư";
-    if (position === PositionType.DOCTOR) return "Tiến sĩ";
-    if (position === PositionType.PROFESSOR) return "Giáo sư";
-    if (position === PositionType.MASTER) return "Thạc sĩ";
-    return "";
+  const handleDoctorClick = (v: IDoctorBody) => {
+    const params = new URLSearchParams();
+    const specialty_id =
+      feature === "booking.date" ? specialtyId : v.specialty?._id;
+    const {stepName, serviceId} = getStepNameAndServiceId(specialty_id ?? "");
+    params.append("feature", feature);
+    params.append("hospitalId", hospitalId);
+    params.append("specialtyId", specialty_id ?? "");
+    params.append("doctorId", v.doctor_id ?? "");
+    params.append("stepName", stepName);
+    if (!stepName.includes("service")) {
+      params.append("serviceId", serviceId ?? "");
+    }
+    router.push(`${pathname}?${params.toString()}`);
+    router.refresh();
   };
 
   return (
@@ -102,12 +175,19 @@ export default function ChooseDoctor({
         />
         <div className={styles.listFilter}>
           <Select
-            onValueChange={(e) =>
-              onFilterDoctor((prev) => ({
-                ...prev,
-                gender: e,
-              }))
-            }
+            onValueChange={(e) => {
+              if (!isDoctorStep) {
+                onFilterDoctor((prev) => ({
+                  ...prev,
+                  gender: e,
+                }));
+              } else {
+                setFilterDoctor((prev) => ({
+                  ...prev,
+                  gender: e,
+                }));
+              }
+            }}
           >
             <SelectTrigger className={styles.selectTrigger}>
               <SelectValue placeholder="Giới tính" />
@@ -121,12 +201,19 @@ export default function ChooseDoctor({
             </SelectContent>
           </Select>
           <Select
-            onValueChange={(e) =>
-              onFilterDoctor((prev) => ({
-                ...prev,
-                position: e,
-              }))
-            }
+            onValueChange={(e) => {
+              if (!isDoctorStep) {
+                onFilterDoctor((prev) => ({
+                  ...prev,
+                  position: e,
+                }));
+              } else {
+                setFilterDoctor((prev) => ({
+                  ...prev,
+                  position: e,
+                }));
+              }
+            }}
           >
             <SelectTrigger className={styles.selectTrigger}>
               <SelectValue placeholder="Hàm học / học vị" />
@@ -149,9 +236,30 @@ export default function ChooseDoctor({
               </SelectGroup>
             </SelectContent>
           </Select>
+          {isDoctorStep && (
+            <Select
+              onValueChange={(e) =>
+                setFilterDoctor((prev) => ({...prev, specialty_id: e}))
+              }
+            >
+              <SelectTrigger className={styles.selectTrigger}>
+                <SelectValue placeholder="Chuyên khoa" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="null">Chuyên khoa</SelectItem>
+                  {specialty?.map((s) => (
+                    <SelectItem key={s._id} value={s._id ?? ""}>
+                      {s.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
         </div>
       </div>
-      {isLoading ? (
+      {isLoading || isLoadingDoctor ? (
         <>
           <Skeleton className="w-full h-32 mt-1" />
           <Skeleton className="w-full h-32 mt-1" />
@@ -159,22 +267,10 @@ export default function ChooseDoctor({
         </>
       ) : (
         <ul className={styles.listDoctor}>
-          {!!doctors.length ? (
-            doctors.map((v) => (
+          {!!doctorList?.length ? (
+            doctorList.map((v) => (
               <li key={v._id} className={styles.cardDoctor}>
-                <Link
-                  href={{
-                    pathname: "/chon-lich-kham",
-                    query: {
-                      feature,
-                      hospitalId,
-                      specialtyId,
-                      stepName,
-                      doctorId: v.doctor_id,
-                      serviceId,
-                    },
-                  }}
-                >
+                <div role="button" onClick={() => handleDoctorClick(v)}>
                   <div className={clsx(styles.infoLine, styles.highlight)}>
                     <DoctorIcon className="w-4 h-4" />
                     {genderPosition(v?.position as number) + " " + v.name}
@@ -195,7 +291,7 @@ export default function ChooseDoctor({
                     <DollarIcon className="w-4 h-4" />
                     Giá: {v.price?.toLocaleString("vi-VN")}đ
                   </div>
-                </Link>
+                </div>
               </li>
             ))
           ) : (

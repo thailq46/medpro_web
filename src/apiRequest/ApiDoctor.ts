@@ -18,6 +18,11 @@ export interface QueryDoctorsBySpecialty {
   gender?: string;
   position?: string;
 }
+interface QueryDoctorsByHospital {
+  search?: string;
+  gender?: string;
+  position?: string;
+}
 export interface IDoctorBody extends ICommonAuditable {
   _id?: string;
   hospital_id?: string;
@@ -64,7 +69,7 @@ export interface IDoctorBody extends ICommonAuditable {
     };
   };
 }
-export interface IGetListDoctorBySpecialtyIdRes {
+export interface IGetListDoctorRes {
   message: string;
   data: IDoctorBody[];
 }
@@ -72,15 +77,25 @@ export interface IGetListDoctorBySpecialtyIdRes {
 const path = {
   root: "/doctors",
   getListDoctorBySpecialtyId: "/doctors/specialty",
+  getListDoctorByHospitalId: "/doctors/hospital",
 };
 
 const apiDoctor = {
   getListDoctorBySpecialtyId: (params: QueryDoctorsBySpecialty) => {
-    return http.get<IGetListDoctorBySpecialtyIdRes>(
-      path.getListDoctorBySpecialtyId,
-      {
-        params: params as CommonParams<QueryDoctorsBySpecialty>,
-      }
+    return http.get<IGetListDoctorRes>(path.getListDoctorBySpecialtyId, {
+      params: params as CommonParams<QueryDoctorsBySpecialty>,
+    });
+  },
+  getListDoctorByHospitalId: ({
+    hospital_id,
+    params,
+  }: {
+    hospital_id: string;
+    params?: QueryDoctorsByHospital;
+  }) => {
+    return http.get<IGetListDoctorRes>(
+      `${path.getListDoctorByHospitalId}/${hospital_id}`,
+      {params: params as CommonParams<QueryDoctorsByHospital>}
     );
   },
 };

@@ -137,7 +137,8 @@
   gap: 10px;
 }
 .selectTrigger {
-  width: 150px;
+  max-width: 150px;
+  width: 100%;
   background: linear-gradient(
     83.63deg,
     #00b5f1 33.34%,
