@@ -21,7 +21,15 @@ interface ILoginBody {
   email: string;
   password: string;
 }
-
+interface IUpdateMeBody {
+  username?: string;
+  name?: string;
+  avatar?: string;
+  gender?: number;
+  date_of_birth?: string;
+  phone_number?: string;
+  address?: string;
+}
 interface ILoginResponse {
   message: string;
   data: {
@@ -39,7 +47,9 @@ export interface IGetMeResBody {
 const path = {
   login: "/auth/login",
   getMe: "/users/me",
+  updateMe: "/users/me",
 };
+
 const apiAuthRequest = {
   login: (body: ILoginBody) => http.post<ILoginResponse>(path.login, body),
 
@@ -58,6 +68,9 @@ const apiAuthRequest = {
         Authorization: `Bearer ${access_token}`,
       },
     }),
+
+  updateMe: (body: IUpdateMeBody) =>
+    http.patch<IGetMeResBody>(path.updateMe, body),
 };
 
 export default apiAuthRequest;

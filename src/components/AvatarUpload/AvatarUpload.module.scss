@@ -1,0 +1,18 @@
+.container {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.btn {
+  border-radius: 100rem;
+  padding: 2px;
+  background-color: white;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transition: all 0.3s ease-in-out;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  &:hover {
+    opacity: 0.6;
+  }
+}

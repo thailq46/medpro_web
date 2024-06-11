@@ -1,4 +1,6 @@
 export {default as CalendarIcon} from "@/components/Icon/calender-icon";
+export {default as CameraIcon} from "@/components/Icon/camera-icon";
+export {default as CircleUserIcon} from "@/components/Icon/circle-user-icon";
 export {default as DoctorIcon} from "@/components/Icon/doctor-icon";
 export {default as DollarIcon} from "@/components/Icon/dollar-icon";
 export {default as GenderIcon} from "@/components/Icon/gender-icon";

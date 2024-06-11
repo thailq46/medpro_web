@@ -1,7 +1,7 @@
 import displayError from "@/apiRequest/ErrorMessage/errors";
 import {IStatus, ParamsType} from "@/apiRequest/common";
-import {redirect} from "next/navigation";
 import {toast} from "@/components/ui/use-toast";
+import {redirect} from "next/navigation";
 
 type EntityErrorPayload = {
   message: string;
@@ -118,11 +118,11 @@ const request = async <TResponse>(
   const baseHeaders =
     options?.body instanceof FormData
       ? {
-          Authorization: clientAccessToken.value,
+          Authorization: `Bearer ${clientAccessToken.value}`,
         }
       : {
           "Content-Type": "application/json",
-          "Authorization": clientAccessToken.value,
+          "Authorization": `Bearer ${clientAccessToken.value}`,
         };
   const res = await fetch(fullUrl, {
     ...options,

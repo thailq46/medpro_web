@@ -31,6 +31,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
+import AccountManagement from "@/module/account-management";
 import {
   ExitIcon,
   HamburgerMenuIcon,
@@ -40,10 +41,13 @@ import {
 import {useQuery} from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import {useContext} from "react";
+import {useRouter} from "next/navigation";
+import {useContext, useState} from "react";
 import styles from "./Navbar.module.scss";
 
 export default function Navbar() {
+  const router = useRouter();
+  const [isModalAccountOpen, setIsModalAccountOpen] = useState(false);
   const {user} = useContext(AppContext);
   const {data} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_CATEGORY],
@@ -90,6 +94,7 @@ export default function Navbar() {
       }
     }
   });
+
   return (
     <nav className={styles.container}>
       <div className={styles.left}>
@@ -139,42 +144,54 @@ export default function Navbar() {
       </div>
       <div className="right">
         {!Boolean(user) ? (
-          <Button className={styles.btnLogin}>
+          <Button
+            className={styles.btnLogin}
+            onClick={() => router.push("/login")}
+          >
             <PersonIcon className="mr-2 h-4 w-4" />
             Tài khoản
           </Button>
         ) : (
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              asChild
-              className={`cursor-pointer ${styles.avatar}`}
-            >
-              <Avatar>
-                <AvatarImage src={user?.avatar} alt="Avatar" />
-                <AvatarFallback>
-                  <Image
-                    src="/img/avatar/avatar.jpg"
-                    alt="Avatar"
-                    width={500}
-                    height={500}
-                  />
-                </AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-46 z-[99999999]">
-              <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
-                <PersonIcon className="mr-2 h-4 w-4" />
-                Tài khoản
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
-                <ExitIcon className="mr-2 h-4 w-4" />
-                Đăng xuất
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <>
+            <AccountManagement
+              isOpen={isModalAccountOpen}
+              setIsOpen={setIsModalAccountOpen}
+            />
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                asChild
+                className={`cursor-pointer ${styles.avatar}`}
+              >
+                <Avatar>
+                  <AvatarImage src={user?.avatar} alt="Avatar" />
+                  <AvatarFallback>
+                    <Image
+                      src="/img/avatar/avatar.jpg"
+                      alt="Avatar"
+                      width={500}
+                      height={500}
+                    />
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-46 z-[99999999]">
+                <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => setIsModalAccountOpen(true)}
+                >
+                  <PersonIcon className="mr-2 h-4 w-4" />
+                  Quản lý tài khoản
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="cursor-pointer">
+                  <ExitIcon className="mr-2 h-4 w-4" />
+                  Đăng xuất
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
         )}
         {/* NAV for TABLET */}
         <div className={styles.tablet}>

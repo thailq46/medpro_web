@@ -13,6 +13,19 @@ export const numberEnumToArray = (numberEnum: {
   ) as number[];
 };
 
+export function toBase64(file: File) {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+}
+
 export function generateDescription(slug: string): string {
   let desc = "";
   switch (slug) {
