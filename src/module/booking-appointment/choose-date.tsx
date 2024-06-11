@@ -1,5 +1,6 @@
 "use client";
 import apiSchedule from "@/apiRequest/ApiSchedule";
+import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import sortTimes from "@/lib/SortTimesHelper";
 import {useQuery} from "@tanstack/react-query";
@@ -22,7 +23,8 @@ export default function ChooseDate({
   const [selected, setSelected] = useState<Date>();
   const doctorId = searchParams.get("doctorId");
   const date = selected ? dayjs(selected).format("DD/MM/YYYY") : "";
-  const {data: schedule} = useQuery({
+
+  const {data: schedule, isLoading} = useQuery({
     queryKey: [
       QUERY_KEY.GET_SCHEDULE_BY_DOCTOR_ID,
       {doctor_id: doctorId, params: {limit: 99, page: 1, date}},
@@ -96,17 +98,28 @@ export default function ChooseDate({
         )}
         {searchParams.get("stepName") === "time" && selected && (
           <div className={styles.timeline}>
-            <h3>Thời gian làm việc</h3>
-            {!!schedule?.payload.data.length ? (
-              renderTimeType(schedule?.payload.data[0].time_type as string[])
+            {isLoading ? (
+              <>
+                <Skeleton className="w-full h-10"></Skeleton>
+                <Skeleton className="w-full h-20 mt-2"></Skeleton>
+              </>
             ) : (
-              <div className="font-semibold text-red-600">
-                Chưa cập nhập lịch làm việc
-              </div>
+              <>
+                <h3>Thời gian làm việc</h3>
+                {!!schedule?.payload.data.length ? (
+                  renderTimeType(
+                    schedule?.payload.data[0].time_type as string[]
+                  )
+                ) : (
+                  <div className="font-semibold text-red-600">
+                    Chưa cập nhập lịch làm việc
+                  </div>
+                )}
+                <p className="mt-4 font-semibold text-[#d98634]">
+                  Tất cả thời gian theo múi giờ Việt Nam GMT +7
+                </p>
+              </>
             )}
-            <p className="mt-4 font-semibold text-[#d98634]">
-              Tất cả thời gian theo múi giờ Việt Nam GMT +7
-            </p>
           </div>
         )}
       </div>

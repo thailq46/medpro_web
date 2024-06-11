@@ -29,7 +29,7 @@ import {CalendarIcon, ResetIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
 import {useRouter, useSearchParams} from "next/navigation";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import styles from "./BookingAppointment.module.scss";
 
 export default function BookingAppointment() {
@@ -98,13 +98,91 @@ export default function BookingAppointment() {
     enabled: !!serviceId,
   });
 
-  const generateBookingName = () => {
-    if (stepName === "subject") return "Chọn chuyên khoa";
-    if (stepName === "doctor") return "Chọn bác sĩ";
-    if (stepName === "service") return "Chọn dịch vụ";
-    if (stepName === "date" || stepName === "time") return "Chọn ngày tư vấn";
-    return "";
-  };
+  const generateBookingName = useCallback(() => {
+    switch (stepName) {
+      case "subject":
+        return "Chọn chuyên khoa";
+      case "doctor":
+        return "Chọn bác sĩ";
+      case "service":
+        return "Chọn dịch vụ";
+      case "date":
+      case "time":
+        return "Chọn ngày tư vấn";
+      default:
+        return "";
+    }
+  }, [stepName]);
+
+  const generateBookingTitle = useCallback(() => {
+    switch (stepName) {
+      case "subject":
+        return "Vui lòng chọn chuyên khoa";
+      case "doctor":
+        return "Vui lòng chọn bác sĩ";
+      case "service":
+        return "Vui lòng chọn dịch vụ";
+      case "date":
+      case "time":
+        return "Vui lòng chọn ngày tư vấn";
+      default:
+        return "";
+    }
+  }, [stepName]);
+
+  const renderRightContent = useCallback(() => {
+    switch (stepName) {
+      case "subject":
+        return (
+          <ChooseSubject
+            feature={feature ?? ""}
+            hospitalId={hospitalId ?? ""}
+            stepName={stepName}
+            specialty={specialty?.payload?.data ?? []}
+            isLoading={isLoadingSpecialty}
+            onSearchSpecialty={(value) => setFilterSpecialty(value)}
+          />
+        );
+      case "doctor":
+        return (
+          <ChooseDoctor
+            feature={feature ?? ""}
+            hospitalId={hospitalId ?? ""}
+            specialtyId={specialtyId ?? ""}
+            isLoading={isLoadingDoctor}
+            doctors={doctor?.payload?.data ?? []}
+            specialty={specialty?.payload?.data ?? []}
+            onFilterDoctor={(value) => setFilterDoctor(value)}
+          />
+        );
+      case "date":
+      case "time":
+        return <ChooseDate onChooseDate={(date) => setDateSelected(date)} />;
+      case "service":
+        return (
+          <ChooseService
+            feature={feature ?? ""}
+            hospitalId={hospitalId ?? ""}
+            specialtyId={specialtyId ?? ""}
+            doctorId={doctorId ?? ""}
+            hospitalName={hospital?.payload?.data?.name ?? ""}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [
+    stepName,
+    feature,
+    hospitalId,
+    specialty?.payload?.data,
+    isLoadingSpecialty,
+    specialtyId,
+    isLoadingDoctor,
+    doctor?.payload?.data,
+    doctorId,
+    hospital?.payload?.data?.name,
+  ]);
 
   return (
     <div className="bg-[#e8f2f7]">
@@ -210,79 +288,12 @@ export default function BookingAppointment() {
           <div className="booking-appointment_right">
             <div className={styles.rightContent}>
               <div className={styles.rightHeader}>
-                <h3>
-                  {stepName === "subject"
-                    ? "Vui lòng chọn chuyên khoa"
-                    : stepName === "doctor"
-                    ? "Vui lòng chọn bác sĩ"
-                    : stepName === "service"
-                    ? "Vui lòng chọn dịch vụ"
-                    : "Vui lòng chọn ngày tư vấn"}
-                </h3>
+                <h3>{generateBookingTitle()}</h3>
               </div>
-              {stepName === "subject" && (
-                <ChooseSubject
-                  feature={feature ?? ""}
-                  hospitalId={hospitalId ?? ""}
-                  stepName={stepName}
-                  specialty={specialty?.payload?.data ?? []}
-                  isLoading={isLoadingSpecialty}
-                  onSearchSpecialty={(value) => setFilterSpecialty(value)}
-                />
-              )}
-              {stepName === "doctor" && (
-                <ChooseDoctor
-                  feature={feature ?? ""}
-                  hospitalId={hospitalId ?? ""}
-                  specialtyId={specialtyId ?? ""}
-                  isLoading={isLoadingDoctor}
-                  doctors={doctor?.payload?.data ?? []}
-                  specialty={specialty?.payload?.data ?? []}
-                  onFilterDoctor={(value) => setFilterDoctor(value)}
-                />
-              )}
-              {(stepName === "date" || stepName === "time") && (
-                <ChooseDate
-                  onChooseDate={(date) => {
-                    setDateSelected(date);
-                  }}
-                />
-              )}
-              {stepName === "service" && (
-                <ChooseService
-                  feature={feature ?? ""}
-                  hospitalId={hospitalId ?? ""}
-                  specialtyId={specialtyId ?? ""}
-                  doctorId={doctorId ?? ""}
-                  hospitalName={hospital?.payload?.data?.name ?? ""}
-                />
-              )}
+              {renderRightContent()}
             </div>
             <div className="mt-3">
-              <Button
-                variant={"ghost"}
-                onClick={() => {
-                  const params = new URLSearchParams();
-                  if (stepName === "time" || stepName === "date") {
-                    params.set("feature", feature ?? "");
-                    params.set("hospitalId", hospitalId ?? "");
-                    params.set("specialtyId", specialtyId ?? "");
-                    params.set("stepName", "service");
-                    params.set("doctorId", doctorId ?? "");
-                    params.set("serviceId", serviceId ?? "");
-                  }
-                  if (stepName === "service" || stepName === "doctor") {
-                    params.set("feature", feature ?? "");
-                    params.set("hospitalId", hospitalId ?? "");
-                    params.set("stepName", "subject");
-                  }
-                  if (stepName === "subject") {
-                    router.push("/co-so-y-te");
-                    return;
-                  }
-                  router.push(`/chon-lich-kham?${params.toString()}`);
-                }}
-              >
+              <Button variant={"ghost"} onClick={() => router.back()}>
                 Quay lại
                 <ResetIcon className="w-4 h-4 ml-2" />
               </Button>
