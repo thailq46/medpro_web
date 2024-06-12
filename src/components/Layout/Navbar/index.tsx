@@ -44,7 +44,7 @@ import {useQuery} from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
-import {useContext, useState} from "react";
+import {useContext, useMemo, useState} from "react";
 import styles from "./Navbar.module.scss";
 
 export default function Navbar() {
@@ -58,46 +58,50 @@ export default function Navbar() {
     queryFn: async () =>
       await apiCategoryRequest.getListCategory({page: 1, limit: 99}),
   });
-  const categoryMap: {
-    [key: string]: ICategoryBody & {children: ICategoryBody[]; icon: string};
-  } = {};
-  data?.payload?.data.forEach((category) => {
-    if (category.parent_id === null) {
-      let icon = "";
-      switch (category.slug) {
-        case "co-so-y-te":
-          icon = "/tablet/CSYT.svg";
-          break;
-        case "dich-vu-y-te":
-          icon = "/tablet/DVYT.svg";
-          break;
-        case "kham-suc-khoe-doanh-nghiep":
-          icon = "/tablet/DVYT.svg";
-          break;
-        case "tin-tuc":
-          icon = "/tablet/TinTuc.svg";
-          break;
-        case "huong-dan":
-          icon = "/tablet/HuongDan.svg";
-          break;
-        case "lien-he-hop-tac":
-          icon = "/tablet/Contact.svg";
-          break;
-        default:
-          icon = "/tablet/CSYT.svg";
-          break;
+
+  const categoryData = useMemo(() => {
+    const categoryMap: {
+      [key: string]: ICategoryBody & {children: ICategoryBody[]; icon: string};
+    } = {};
+    data?.payload?.data.forEach((category) => {
+      if (category.parent_id === null) {
+        let icon = "";
+        switch (category.slug) {
+          case "co-so-y-te":
+            icon = "/tablet/CSYT.svg";
+            break;
+          case "dich-vu-y-te":
+            icon = "/tablet/DVYT.svg";
+            break;
+          case "kham-suc-khoe-doanh-nghiep":
+            icon = "/tablet/DVYT.svg";
+            break;
+          case "tin-tuc":
+            icon = "/tablet/TinTuc.svg";
+            break;
+          case "huong-dan":
+            icon = "/tablet/HuongDan.svg";
+            break;
+          case "lien-he-hop-tac":
+            icon = "/tablet/Contact.svg";
+            break;
+          default:
+            icon = "/tablet/CSYT.svg";
+            break;
+        }
+        categoryMap[category._id] = {
+          ...category,
+          children: [],
+          icon,
+        };
+      } else {
+        if (category.parent_id in categoryMap) {
+          categoryMap[category.parent_id].children.push(category);
+        }
       }
-      categoryMap[category._id] = {
-        ...category,
-        children: [],
-        icon,
-      };
-    } else {
-      if (category.parent_id in categoryMap) {
-        categoryMap[category.parent_id].children.push(category);
-      }
-    }
-  });
+    });
+    return categoryMap;
+  }, [data]);
 
   const handleLogout = async () => {
     try {
@@ -127,7 +131,7 @@ export default function Navbar() {
           />
         </Link>
         <Menubar className={styles.nav}>
-          {Object.values(categoryMap).map((category) => (
+          {Object.values(categoryData).map((category) => (
             <MenubarMenu key={category.name}>
               <MenubarTrigger>
                 <Link
@@ -254,7 +258,7 @@ export default function Navbar() {
                 </Button>
                 <div className="mt-3">
                   <Accordion type="single" collapsible className="w-full">
-                    {Object.values(categoryMap).map((cate, index) => (
+                    {Object.values(categoryData).map((cate, index) => (
                       <AccordionItem value={`"item-"${index}`} key={index}>
                         <AccordionTrigger className={styles.accordionTrigger}>
                           <div className="w-[24px] h-[18px]">
