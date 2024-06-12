@@ -19,6 +19,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {ArrowRightIcon, ReloadIcon} from "@radix-ui/react-icons";
 import clsx from "clsx";
 import {jwtDecode} from "jwt-decode";
+import Image from "next/image";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
@@ -82,6 +83,19 @@ export default function Login() {
         <div className={clsx(styles.formContainer, styles.signIn)}>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+              <div
+                className="text-center h-[60px]"
+                role="button"
+                onClick={() => router.push("/")}
+              >
+                <Image
+                  src="/img/logo.png"
+                  width={250}
+                  height={60}
+                  alt="logo"
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <h1 className={styles.title}>Đăng nhập</h1>
               <div className="flex items-center gap-3 mt-4">
                 <Button className="p-0">
@@ -146,7 +160,11 @@ export default function Login() {
             </form>
           </Form>
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 pb-2">
-            <Button variant="ghost" className="font-bold">
+            <Button
+              variant="ghost"
+              className="font-bold"
+              onClick={() => router.push("/register")}
+            >
               <span>Create your account</span>
               <ArrowRightIcon className="w-4 h-4 ml-2" />
             </Button>

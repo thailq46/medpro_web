@@ -35,6 +35,14 @@ interface IChangePasswordBody {
   new_password: string;
   confirm_new_password: string;
 }
+interface IRegisterBody {
+  email: string;
+  password: string;
+  confirm_password: string;
+  name: string;
+  date_of_birth: string;
+  gender: number;
+}
 interface ILoginResponse {
   message: string;
   data: {
@@ -43,7 +51,14 @@ interface ILoginResponse {
     role: number;
   };
 }
-
+interface IRegisterResponse {
+  message: string;
+  data: {
+    access_token: string;
+    refresh_token: string;
+    email_verify_token: string;
+  };
+}
 export interface IGetMeResBody {
   message: string;
   data: User;
@@ -51,6 +66,7 @@ export interface IGetMeResBody {
 
 const path = {
   login: "/auth/login",
+  register: "/auth/register",
   changePassword: "/auth/change-password",
   getMe: "/users/me",
   updateMe: "/users/me",
@@ -58,6 +74,9 @@ const path = {
 
 const apiAuthRequest = {
   login: (body: ILoginBody) => http.post<ILoginResponse>(path.login, body),
+
+  register: (body: IRegisterBody) =>
+    http.post<IRegisterResponse>(path.register, body),
 
   auth: (body: {
     access_token: string;
