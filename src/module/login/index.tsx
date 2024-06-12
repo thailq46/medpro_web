@@ -147,7 +147,11 @@ export default function Login() {
                     </FormItem>
                   )}
                 />
-                <Button className="ml-auto p-0" variant={"ghost"}>
+                <Button
+                  className="ml-auto p-0"
+                  variant={"ghost"}
+                  onClick={() => router.push("/forgot-password")}
+                >
                   Quên mật khẩu
                 </Button>
                 <Button type="submit" disabled={loading}>

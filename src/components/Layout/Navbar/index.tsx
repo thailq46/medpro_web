@@ -101,7 +101,7 @@ export default function Navbar() {
       }
     });
     return categoryMap;
-  }, [data]);
+  }, [data?.payload?.data]);
 
   const handleLogout = async () => {
     try {

@@ -183,6 +183,12 @@ const request = async <TResponse>(
       });
       throw data;
     } else {
+      toast({
+        title: `Lỗi ${res.status}`,
+        description: (data.payload as any).message || "Thực hiện thất bại",
+        duration: 3000,
+        variant: "destructive",
+      });
       throw new HttpError(data);
     }
   }

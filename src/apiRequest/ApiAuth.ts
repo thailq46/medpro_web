@@ -35,6 +35,11 @@ interface IChangePasswordBody {
   new_password: string;
   confirm_new_password: string;
 }
+interface IResetPasswordBody {
+  forgot_password_token: string;
+  password: string;
+  confirm_password: string;
+}
 interface IRegisterBody {
   email: string;
   password: string;
@@ -73,6 +78,9 @@ const path = {
   getMe: "/users/me",
   updateMe: "/users/me",
   logout: "/auth/logout",
+  forgotPassword: "/auth/forgot-password",
+  verifyForgotPassword: "/auth/verify-forgot-password",
+  resetPassword: "/auth/reset-password",
 };
 
 const apiAuthRequest = {
@@ -135,6 +143,17 @@ const apiAuthRequest = {
       {headers: {Authorization: `Bearer ${accessToken}`}}
     );
   },
+
+  forgotPassword: (email: string) =>
+    http.post<{message: string}>(path.forgotPassword, {email}),
+
+  verifyForgotPassword: (forgot_password_token: string) =>
+    http.post<{message: string}>(path.verifyForgotPassword, {
+      forgot_password_token,
+    }),
+
+  resetPassword: (body: IResetPasswordBody) =>
+    http.post<{message: string}>(path.resetPassword, body),
 };
 
 export default apiAuthRequest;

@@ -43,7 +43,7 @@ export const AccountBody = z.object({
     }),
 });
 
-const passwordSchema = z
+export const passwordSchema = z
   .string()
   .trim()
   .min(6, {message: "Mật khẩu phải nhiều hơn 6 kí tự"})
