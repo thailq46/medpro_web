@@ -1,40 +1,162 @@
 "use client";
-import React from "react";
-import styles from "./login.module.scss";
+import apiAuthRequest from "@/apiRequest/ApiAuth";
+import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
+import {clientAccessToken} from "@/apiRequest/http";
+import {FacebookIcon, GoogleIcon} from "@/components/Icon";
+import PasswordInput from "@/components/InputPassword";
 import {Button} from "@/components/ui/button";
-import {ArrowLeftIcon} from "@radix-ui/react-icons";
-import Image from "next/image";
-import Link from "next/link";
-import LoginForm from "@/module/login/_component/LoginForm";
-import LoginSocial from "@/module/login/_component/LoginSocial";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
+import {useToast} from "@/components/ui/use-toast";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {ArrowRightIcon, ReloadIcon} from "@radix-ui/react-icons";
+import clsx from "clsx";
+import {jwtDecode} from "jwt-decode";
+import {useRouter} from "next/navigation";
+import {useState} from "react";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
+import styles from "./login.module.scss";
+
+const LoginBody = z
+  .object({
+    email: z.string().email("Email không hợp lệ"),
+    password: z.string(),
+  })
+  .strict();
+type LoginBodyType = z.TypeOf<typeof LoginBody>;
 
 export default function Login() {
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
+  const {toast} = useToast();
+  const form = useForm<LoginBodyType>({
+    resolver: zodResolver(LoginBody),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+  async function onSubmit(values: LoginBodyType) {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const result = await apiAuthRequest.login(values);
+      toast({
+        title: "Thành công",
+        description: result.payload.message,
+        duration: 3000,
+      });
+      const {access_token, refresh_token} = result.payload.data;
+      const decoded = jwtDecode(access_token);
+      const expiredAt = decoded.exp;
+      localStorage.setItem("accessToken", access_token);
+      localStorage.setItem("refreshToken", refresh_token);
+      await apiAuthRequest.auth({
+        access_token,
+        refresh_token,
+        expiresAt: expiredAt as number,
+      });
+      clientAccessToken.expiresAt = expiredAt as number;
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      form.reset();
+      setLoading(false);
+      handleErrorApi({error, setError: form.setError, duration: 3000});
+    } finally {
+      form.reset();
+      setLoading(false);
+    }
+  }
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.left}>
-        <div className={styles.header}>
-          <Button variant="ghost" size="icon" className="hover:bg-transparent">
-            <ArrowLeftIcon className="w-6 h-6" color="#2698d6" />
-          </Button>
-          <div className="text-center h-[60px]">
-            <Link href="#">
-              <Image
-                src="/img/logo.png"
-                width={250}
-                height={60}
-                alt="logo"
-                className="w-full h-full object-contain"
-              />
-            </Link>
+    <div className={styles.body}>
+      <div className={styles.container}>
+        <div className={clsx(styles.formContainer, styles.signIn)}>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+              <h1 className={styles.title}>Đăng nhập</h1>
+              <div className="flex items-center gap-3 mt-4">
+                <Button className="p-0">
+                  <div className={styles.socialIcon}>
+                    <GoogleIcon className="w-5 h-5" />
+                  </div>
+                </Button>
+                <Button className="p-0">
+                  <div className={styles.socialIcon}>
+                    <FacebookIcon className="w-5 h-5" />
+                  </div>
+                </Button>
+              </div>
+              <span className="text-center text-sm mt-2">
+                Hoặc đăng nhập bằng tài khoản
+              </span>
+              <div className="w-full max-w-[500px] flex flex-col gap-3">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Nhập email"
+                          className={styles.input}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <PasswordInput
+                          placeholder="Nhập mật khẩu"
+                          className={styles.input}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button className="ml-auto p-0" variant={"ghost"}>
+                  Quên mật khẩu
+                </Button>
+                <Button type="submit" disabled={loading}>
+                  {loading && (
+                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Đăng nhập
+                </Button>
+              </div>
+            </form>
+          </Form>
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 pb-2">
+            <Button variant="ghost" className="font-bold">
+              <span>Create your account</span>
+              <ArrowRightIcon className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
-        <div>
-          <LoginForm />
-          <LoginSocial />
+        <div className={styles.toggleContainer}>
+          <div className={styles.right}>
+            <div className={styles.shape}></div>
+          </div>
         </div>
-      </div>
-      <div className={styles.right}>
-        <div className={styles.shape}></div>
       </div>
     </div>
   );

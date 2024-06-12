@@ -1,6 +1,8 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
+import {VerifyStatus} from "@/apiRequest/common";
+import {AppContext} from "@/app/(home)/AppProvider";
 import PasswordInput from "@/components/InputPassword";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
@@ -22,13 +24,19 @@ import {
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ReloadIcon} from "@radix-ui/react-icons";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {useForm} from "react-hook-form";
 
 export default function SecurityForm() {
   const [loading, setLoading] = useState<boolean>(false);
+  const {user} = useContext(AppContext);
   const {toast} = useToast();
   const router = useRouter();
+
+  const disabled =
+    user?.verify === VerifyStatus.BANNED ||
+    user?.verify === VerifyStatus.VERIFIED;
+
   const form = useForm<ChangePasswordBodyType>({
     resolver: zodResolver(ChangePasswordBody),
     defaultValues: {
@@ -58,6 +66,8 @@ export default function SecurityForm() {
     }
   }
 
+  async function handleResendVerifyEmail() {}
+
   return (
     <Card className="h-full">
       <CardHeader>
@@ -65,7 +75,7 @@ export default function SecurityForm() {
           Security
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
+      <CardContent className="space-y-8">
         <div className="flex items-center justify-between">
           <Label>Password</Label>
           <Label>••••••••••</Label>
@@ -131,6 +141,45 @@ export default function SecurityForm() {
               </Form>
             </PopoverContent>
           </Popover>
+        </div>
+        <div className="flex items-center justify-between">
+          <Label>Status</Label>
+          <div className="flex items-center justify-center">
+            {user?.verify === VerifyStatus.VERIFIED ? (
+              <>
+                <div className="w-4 h-4 rounded-full bg-green-500"></div>
+                <span className="inline-block text-xs ml-1 font-bold">
+                  Đã xác thực
+                </span>
+              </>
+            ) : user?.verify === VerifyStatus.UNVERIFIED ? (
+              <>
+                <div className="w-4 h-4 rounded-full bg-yellow-500"></div>
+                <span className="inline-block text-xs ml-1 font-bold">
+                  Chưa xác thực
+                </span>
+              </>
+            ) : (
+              <>
+                <div className="w-4 h-4 rounded-full bg-red-500"></div>
+                <span className="inline-block text-xs ml-1 font-bold">
+                  Tài khoản đã bị khoá
+                </span>
+              </>
+            )}
+          </div>
+          <Button
+            type="submit"
+            variant="outline"
+            disabled={
+              (user?.verify === VerifyStatus.UNVERIFIED && loading) || disabled
+            }
+            className="text-xs"
+            onClick={handleResendVerifyEmail}
+          >
+            {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+            Verify email
+          </Button>
         </div>
       </CardContent>
     </Card>

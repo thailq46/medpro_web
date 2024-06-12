@@ -1,6 +1,7 @@
 "use client";
 import apiCategoryRequest, {ICategoryBody} from "@/apiRequest/ApiCategory";
 import {AppContext} from "@/app/(home)/AppProvider";
+import {ModalConfirmCustom} from "@/components/ModalComfirm";
 import {
   Accordion,
   AccordionContent,
@@ -46,8 +47,10 @@ import {useContext, useState} from "react";
 import styles from "./Navbar.module.scss";
 
 export default function Navbar() {
-  const router = useRouter();
   const [isModalAccountOpen, setIsModalAccountOpen] = useState(false);
+  const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
+
+  const router = useRouter();
   const {user} = useContext(AppContext);
   const {data} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_CATEGORY],
@@ -157,6 +160,12 @@ export default function Navbar() {
               isOpen={isModalAccountOpen}
               setIsOpen={setIsModalAccountOpen}
             />
+            <ModalConfirmCustom
+              isOpen={isModalConfirmOpen}
+              setIsOpen={setIsModalConfirmOpen}
+              title={"Đăng xuất"}
+              content={"Bạn có chắc chắn muốn đăng xuất?"}
+            />
             <DropdownMenu>
               <DropdownMenuTrigger
                 asChild
@@ -185,7 +194,10 @@ export default function Navbar() {
                   Quản lý tài khoản
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => setIsModalConfirmOpen(true)}
+                >
                   <ExitIcon className="mr-2 h-4 w-4" />
                   Đăng xuất
                 </DropdownMenuItem>

@@ -1,9 +1,27 @@
-.wrapper {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  min-height: 100vh;
+.container {
+  background-color: #fff;
+  border-radius: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+  position: relative;
   overflow: hidden;
-  background-color: #f1eff2;
+  width: 90vw;
+  max-width: 100%;
+  min-height: 90vh;
+}
+.formContainer {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+  form {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    height: 100%;
+  }
 }
 
 .right {
@@ -11,13 +29,7 @@
   background-image: url("/img/banner.jpg");
   background-size: cover;
   background-position: 50%;
-}
-.left {
-  width: 500px;
-  margin: 0 auto;
-  .header {
-    margin-top: 10px;
-  }
+  height: 100%;
 }
 
 .shape {
@@ -51,4 +63,56 @@
     box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
       0 4px 15px 0 rgba(0, 0, 0, 0.15);
   }
+}
+
+///REGISTER
+.body {
+  background-color: #c9d6ff;
+  background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.signIn {
+  left: 0;
+  width: 50%;
+  z-index: 2;
+}
+.signUp {
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.8;
+}
+.socialIcon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  color: #003553;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.toggleContainer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: all 0.6s ease-in-out;
+  border-radius: 150px 0 0 100px;
+  z-index: 1000;
 }

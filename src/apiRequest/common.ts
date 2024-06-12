@@ -43,3 +43,8 @@ export enum PositionType {
   ASSOCIATE_PROFESSOR = 3, // Phó giáo sư
   PROFESSOR = 4, // Giáo sư
 }
+export enum VerifyStatus {
+  UNVERIFIED = 0, // chưa xác thực email, mặc định = 0
+  VERIFIED = 1, // đã xác thực emails
+  BANNED = 2, // bị khoá
+}
