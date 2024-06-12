@@ -1,17 +1,17 @@
-import DashBoardLayout from "@/components/Layout/DashBoardLayout";
-import type {Metadata} from "next";
-import {Manrope} from "next/font/google";
-import {Toaster} from "@/components/ui/toaster";
-import "../global.scss";
-import AppProvider from "@/app/(home)/AppProvider";
-import {cookies} from "next/headers";
-import {AT_COOKIE_NAME} from "@/apiRequest/common";
 import apiAuthRequest, {IGetMeResBody} from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
+import {AT_COOKIE_NAME} from "@/apiRequest/common";
+import AppProvider from "@/app/(home)/AppProvider";
+import DashBoardLayout from "@/components/Layout/DashBoardLayout";
+import {Toaster} from "@/components/ui/toaster";
+import type {Metadata} from "next";
+import {Manrope} from "next/font/google";
+import {cookies} from "next/headers";
+import "../global.scss";
 
 const manrope = Manrope({
   weight: ["300", "400", "500", "700", "800"],
-  subsets: ["latin", "vietnamese"],
+  subsets: ["vietnamese"],
 });
 
 export const metadata: Metadata = {

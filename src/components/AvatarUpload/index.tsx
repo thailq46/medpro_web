@@ -5,27 +5,31 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {toBase64} from "@/lib/utils";
 import Image from "next/image";
-import {useRef} from "react";
+import {useRef, useState} from "react";
 import styles from "./AvatarUpload.module.scss";
 
 type AvatarUploadProps = {
-  value?: string;
-  onChange?: (value?: string) => void;
+  value?: string | File;
+  onChange?: (value?: File | File[]) => void;
 };
+const IMAGE_FORMATS_ACCEPTED = ["image/jpg", "image/jpeg", "image/png"];
 
 export function AvatarUpload({value, onChange}: AvatarUploadProps) {
+  const isFile = value instanceof File ? "" : (value as string);
+  const [url, setUrl] = useState<string>(isFile);
   const inputRef = useRef<HTMLInputElement>(null);
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       const base64 = (await toBase64(file)) as string;
-      onChange?.(base64);
+      setUrl(base64);
+      onChange?.(file);
     }
   };
   return (
     <div className={styles.container}>
       <Avatar className="w-full h-full">
-        <AvatarImage src={value} className="object-cover" />
+        <AvatarImage src={url ? url : isFile} className="object-cover" />
         <AvatarFallback className="bg-secondary">
           <Image
             src="/img/avatar/avatar.jpg"
@@ -51,7 +55,7 @@ export function AvatarUpload({value, onChange}: AvatarUploadProps) {
         type="file"
         className="hidden"
         onChange={handleChange}
-        accept="image/*"
+        accept={IMAGE_FORMATS_ACCEPTED.join(",")}
       />
     </div>
   );

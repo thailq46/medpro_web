@@ -1,11 +1,11 @@
+import {Toaster} from "@/components/ui/toaster";
 import type {Metadata} from "next";
 import {Manrope} from "next/font/google";
-import {Toaster} from "@/components/ui/toaster";
 import "../global.scss";
 
 const manrope = Manrope({
   weight: ["300", "400", "500", "700", "800"],
-  subsets: ["latin", "vietnamese"],
+  subsets: ["vietnamese"],
 });
 
 export const metadata: Metadata = {

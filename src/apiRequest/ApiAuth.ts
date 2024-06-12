@@ -64,9 +64,8 @@ const apiAuthRequest = {
 
   getMeFromNextServerToServer: (access_token: string) =>
     http.get<IGetMeResBody>(path.getMe, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
+      headers: {Authorization: `Bearer ${access_token}`},
+      cache: "no-cache",
     }),
 
   updateMe: (body: IUpdateMeBody) =>

@@ -24,7 +24,7 @@ export const AccountBody = z.object({
     .regex(REGEX_STRING, {
       message: "Chỉ chấp nhận chữ cái và dấu cách",
     }),
-  avatar: z.string().trim(),
+  avatar: z.union([z.string().trim(), z.instanceof(File)]),
   gender: z.number().int(),
   date_of_birth: z.date({
     required_error: "Ngày sinh không được để trống",
