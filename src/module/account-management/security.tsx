@@ -66,7 +66,23 @@ export default function SecurityForm() {
     }
   }
 
-  async function handleResendVerifyEmail() {}
+  async function handleResendVerifyEmail() {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const result = await apiAuthRequest.resendVerifyEmail();
+      toast({
+        title: "Thành công",
+        description: result.payload.message,
+        duration: 3000,
+      });
+    } catch (error) {
+      handleErrorApi({error, duration: 3000});
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <Card className="h-full">

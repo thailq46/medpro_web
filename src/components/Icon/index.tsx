@@ -12,3 +12,4 @@ export {default as LocationIcon} from "@/components/Icon/location-icon";
 export {default as SecurityIcon} from "@/components/Icon/security-icon";
 export {default as StethoscopeIcon} from "@/components/Icon/stethoscope-icon";
 export {default as SuitcaseMedicalIcon} from "@/components/Icon/suitcase-medical-icon";
+export {default as VerifyIcon} from "@/components/Icon/verify-icon";

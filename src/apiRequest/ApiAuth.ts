@@ -67,6 +67,8 @@ export interface IGetMeResBody {
 const path = {
   login: "/auth/login",
   register: "/auth/register",
+  resendVerifyEmail: "/auth/resend-verify-email",
+  verifyEmail: "/auth/verify-email",
   changePassword: "/auth/change-password",
   getMe: "/users/me",
   updateMe: "/users/me",
@@ -98,6 +100,14 @@ const apiAuthRequest = {
 
   changePassword: (body: IChangePasswordBody) =>
     http.put<{message: string}>(path.changePassword, body),
+
+  resendVerifyEmail: () =>
+    http.post<{message: string}>(path.resendVerifyEmail, {}),
+
+  verifyEmail: (email_verify_token: string) =>
+    http.post<{message: string}>(path.verifyEmail, {
+      email_verify_token,
+    }),
 };
 
 export default apiAuthRequest;
