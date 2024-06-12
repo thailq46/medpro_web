@@ -72,6 +72,7 @@ const path = {
   changePassword: "/auth/change-password",
   getMe: "/users/me",
   updateMe: "/users/me",
+  logout: "/auth/logout",
 };
 
 const apiAuthRequest = {
@@ -108,6 +109,32 @@ const apiAuthRequest = {
     http.post<{message: string}>(path.verifyEmail, {
       email_verify_token,
     }),
+
+  logoutFromNextClientToNextServer: (
+    force?: boolean | undefined,
+    signal?: AbortSignal | undefined
+  ) =>
+    http.post(
+      "api/auth/logout",
+      {force},
+      {
+        baseUrl: "",
+        signal,
+      }
+    ),
+  logoutFromNextServerToNextServer: ({
+    accessToken,
+    refreshToken,
+  }: {
+    accessToken: string;
+    refreshToken: string;
+  }) => {
+    return http.post<{message: string}>(
+      path.logout,
+      {refresh_token: refreshToken},
+      {headers: {Authorization: `Bearer ${accessToken}`}}
+    );
+  },
 };
 
 export default apiAuthRequest;

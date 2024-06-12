@@ -1,4 +1,5 @@
 "use client";
+import apiAuthRequest from "@/apiRequest/ApiAuth";
 import apiCategoryRequest, {ICategoryBody} from "@/apiRequest/ApiCategory";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {ModalConfirmCustom} from "@/components/ModalComfirm";
@@ -98,6 +99,21 @@ export default function Navbar() {
     }
   });
 
+  const handleLogout = async () => {
+    try {
+      await apiAuthRequest.logoutFromNextClientToNextServer();
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      router.push("/");
+    } catch (error) {
+      await apiAuthRequest
+        .logoutFromNextClientToNextServer(true)
+        .then(() => router.push("/"));
+    } finally {
+      router.refresh();
+    }
+  };
+
   return (
     <nav className={styles.container}>
       <div className={styles.left}>
@@ -165,6 +181,7 @@ export default function Navbar() {
               setIsOpen={setIsModalConfirmOpen}
               title={"Đăng xuất"}
               content={"Bạn có chắc chắn muốn đăng xuất?"}
+              handleOke={handleLogout}
             />
             <DropdownMenu>
               <DropdownMenuTrigger
