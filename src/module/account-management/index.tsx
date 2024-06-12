@@ -1,18 +1,8 @@
 "use client";
-import {CircleUserIcon} from "@/components/Icon";
-import {Button} from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import {CircleUserIcon, SecurityIcon} from "@/components/Icon";
 import {Dialog, DialogContent} from "@/components/ui/dialog";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import SecurityForm from "@/module/account-management/security";
 import UpdateMeForm from "@/module/account-management/update-me";
 import styles from "./Account.module.scss";
 
@@ -37,35 +27,16 @@ export default function AccountManagement({
               <CircleUserIcon className="w-5 h-5" />
               Profile
             </TabsTrigger>
-            <TabsTrigger value="password" className={styles.sidebarItem}>
-              Password
+            <TabsTrigger value="security" className={styles.sidebarItem}>
+              <SecurityIcon className="w-5 h-5" />
+              Security
             </TabsTrigger>
           </TabsList>
           <TabsContent value="account" className={styles.tabContent}>
             <UpdateMeForm />
           </TabsContent>
-          <TabsContent value="password">
-            <Card>
-              <CardHeader>
-                <CardTitle>Password</CardTitle>
-                <CardDescription>
-                  Change your password here. After saving,
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  <Label htmlFor="current">Current password</Label>
-                  <Input id="current" type="password" />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="new">New password</Label>
-                  <Input id="new" type="password" />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button>Save password</Button>
-              </CardFooter>
-            </Card>
+          <TabsContent value="security" className={styles.tabContent}>
+            <SecurityForm />
           </TabsContent>
         </Tabs>
       </DialogContent>

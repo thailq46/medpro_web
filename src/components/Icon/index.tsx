@@ -7,5 +7,6 @@ export {default as GenderIcon} from "@/components/Icon/gender-icon";
 export {default as HandHoldingMedicalIcon} from "@/components/Icon/hand-holding-medical-icon";
 export {default as HospitalIcon} from "@/components/Icon/hospital-icon";
 export {default as LocationIcon} from "@/components/Icon/location-icon";
+export {default as SecurityIcon} from "@/components/Icon/security-icon";
 export {default as StethoscopeIcon} from "@/components/Icon/stethoscope-icon";
 export {default as SuitcaseMedicalIcon} from "@/components/Icon/suitcase-medical-icon";

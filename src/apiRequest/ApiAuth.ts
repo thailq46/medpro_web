@@ -30,6 +30,11 @@ interface IUpdateMeBody {
   phone_number?: string;
   address?: string;
 }
+interface IChangePasswordBody {
+  old_password: string;
+  new_password: string;
+  confirm_new_password: string;
+}
 interface ILoginResponse {
   message: string;
   data: {
@@ -46,6 +51,7 @@ export interface IGetMeResBody {
 
 const path = {
   login: "/auth/login",
+  changePassword: "/auth/change-password",
   getMe: "/users/me",
   updateMe: "/users/me",
 };
@@ -70,6 +76,9 @@ const apiAuthRequest = {
 
   updateMe: (body: IUpdateMeBody) =>
     http.patch<IGetMeResBody>(path.updateMe, body),
+
+  changePassword: (body: IChangePasswordBody) =>
+    http.put<{message: string}>(path.changePassword, body),
 };
 
 export default apiAuthRequest;
