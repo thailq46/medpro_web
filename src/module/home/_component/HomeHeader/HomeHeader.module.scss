@@ -53,13 +53,13 @@
   background-color: white;
   border-radius: 20px;
   top: 60px;
-  overflow: hidden scroll;
+  overflow: hidden auto;
   scroll-behavior: smooth;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   z-index: 99;
   scrollbar-color: unset !important;
   &::-webkit-scrollbar {
-    width: 20px !important;
+    width: 17px !important;
   }
   &::-webkit-scrollbar-track {
     background-color: transparent !important;

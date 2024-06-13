@@ -1,32 +1,32 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React from "react";
+import apiSearch from "@/apiRequest/ApiSearch";
 import {Input} from "@/components/ui/input";
-import styles from "./HomeHeader.module.scss";
-import HomeStatistic from "@/module/home/_component/HomeHeader/HomeStatistic";
+import {Skeleton} from "@/components/ui/skeleton";
+import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import HomeInfo from "@/module/home/_component/HomeHeader/HomeInfo";
 import HomeService from "@/module/home/_component/HomeHeader/HomeService";
+import HomeStatistic from "@/module/home/_component/HomeHeader/HomeStatistic";
+import {useQuery} from "@tanstack/react-query";
 import Image from "next/image";
+import Link from "next/link";
+import {ChangeEvent, useState} from "react";
+import styles from "./HomeHeader.module.scss";
 
 export default function HomeHeader() {
-  const [value, setValue] = React.useState("");
-  const [myOptions, setMyOptions] = React.useState([]);
-  const onChange = (e: any) => {
+  const [value, setValue] = useState("");
+  const {data, isLoading} = useQuery({
+    queryKey: [
+      QUERY_KEY.GET_SEARCH,
+      {category: "all", limit: 4, search_key: value},
+    ],
+    queryFn: () =>
+      apiSearch.search({category: "all", limit: 4, search_key: value}),
+  });
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
-  React.useEffect(() => {
-    fetch("http://dummy.restapiexample.com/api/v1/employees")
-      .then((response) => {
-        return response.json();
-      })
-      .then((res) => {
-        for (var i = 0; i < res.data.length; i++) {
-          myOptions.push(res.data[i].employee_name as never);
-        }
-        setMyOptions(myOptions);
-      });
-  }, []);
 
   return (
     <section className={`home-header ${styles.container}`}>
@@ -47,30 +47,91 @@ export default function HomeHeader() {
               onChange={onChange}
             />
             <div className={styles.searchBox}>
-              {myOptions
-                .filter((data: string) => {
-                  const searchTerm = value.toLowerCase();
-                  const name = data.toLowerCase();
-                  return searchTerm && name.startsWith(searchTerm);
-                })
-                .map((name, index) => (
-                  <div className={styles.searchBoxItem} key={index}>
-                    <div className={styles.searchBoxImage}>
-                      <Image
-                        src="https://source.unsplash.com/random"
-                        width={80}
-                        height={80}
-                        alt="search-box"
-                      />
-                    </div>
-                    <div className={styles.searchBoxContent}>
-                      <h4 className={styles.searchBoxTitle}>{name}</h4>
-                      <span className={styles.searchBoxDesc}>
-                        123 Lê Lợi, Quận 1, TP.HCM
-                      </span>
-                    </div>
+              {isLoading ? (
+                <>
+                  <div className="bg-white p-3">
+                    {Array.from({length: 2}).map((_, index) => (
+                      <div className="flex items-start gap-4 mt-4" key={index}>
+                        <Skeleton className="w-10 h-10 rounded-full" />
+                        <div className="w-full">
+                          <Skeleton className="w-full h-5" />
+                          <Skeleton className="w-full h-10 mt-4" />
+                          <Skeleton className="w-full h-10 mt-2" />
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </>
+              ) : (
+                <>
+                  {!!data?.payload?.data?.hospital?.length && value !== "" && (
+                    <>
+                      <div className="flex items-center justify-between p-3 bg-[#e6f2ff]">
+                        <h3 className="font-bold">Cơ sở y tế</h3>
+                        <Link
+                          href="#"
+                          className="text-sm italic text-textSecondary hover:underline"
+                        >
+                          Xem tất cả
+                        </Link>
+                      </div>
+                      {data?.payload?.data?.hospital?.map((value) => (
+                        <div className={styles.searchBoxItem} key={value._id}>
+                          <div className={styles.searchBoxImage}>
+                            <Image
+                              src={value.avatar || "/img/avatar/avatar.jpg"}
+                              width={80}
+                              height={80}
+                              alt="search-box"
+                            />
+                          </div>
+                          <div className={styles.searchBoxContent}>
+                            <h4 className={styles.searchBoxTitle}>
+                              {value.name}
+                            </h4>
+                            <span className={styles.searchBoxDesc}>
+                              {value.address}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                  {!!data?.payload?.data?.doctor?.length && value !== "" && (
+                    <>
+                      <div className="flex items-center justify-between p-3 bg-[#e6f2ff]">
+                        <h3 className="font-bold">Bác sĩ</h3>
+                        <Link
+                          href="#"
+                          className="text-sm italic text-textSecondary hover:underline"
+                        >
+                          Xem tất cả
+                        </Link>
+                      </div>
+                      {data?.payload?.data?.doctor?.map((value) => (
+                        <div className={styles.searchBoxItem} key={value._id}>
+                          <div className={styles.searchBoxImage}>
+                            <Image
+                              src={value.avatar || "/img/avatar/avatar.jpg"}
+                              width={80}
+                              height={80}
+                              alt="search-box"
+                            />
+                          </div>
+                          <div className={styles.searchBoxContent}>
+                            <h4 className={styles.searchBoxTitle}>
+                              {value.name} - {value.specialty?.hospital?.name}
+                            </h4>
+                            <span className={styles.searchBoxDesc}>
+                              {value.specialty?.name}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </>
+              )}
             </div>
           </div>
           <span className={styles.desc}>
