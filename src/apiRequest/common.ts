@@ -48,3 +48,9 @@ export enum VerifyStatus {
   VERIFIED = 1, // đã xác thực emails
   BANNED = 2, // bị khoá
 }
+
+export enum RoleType {
+  Admin = 0,
+  Doctor = 1,
+  User = 2,
+}

@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import apiSearch from "@/apiRequest/ApiSearch";
 import {Input} from "@/components/ui/input";
@@ -47,7 +45,7 @@ export default function HomeHeader() {
               onChange={onChange}
             />
             <div className={styles.searchBox}>
-              {isLoading ? (
+              {!!value && isLoading ? (
                 <>
                   <div className="bg-white p-3">
                     {Array.from({length: 2}).map((_, index) => (

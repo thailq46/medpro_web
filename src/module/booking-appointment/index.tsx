@@ -1,7 +1,7 @@
 "use client";
 import apiDoctor from "@/apiRequest/ApiDoctor";
 import apiHospital from "@/apiRequest/ApiHospital";
-import apiService from "@/apiRequest/ApiService";
+import apiService, {IServiceBody} from "@/apiRequest/ApiService";
 import apiSpecialty from "@/apiRequest/ApiSpecialty";
 import {
   HandHoldingMedicalIcon,
@@ -157,7 +157,13 @@ export default function BookingAppointment() {
         );
       case "date":
       case "time":
-        return <ChooseDate onChooseDate={(date) => setDateSelected(date)} />;
+        return (
+          <ChooseDate
+            onChooseDate={(date) => setDateSelected(date)}
+            doctors={doctor?.payload?.data ?? []}
+            services={(service?.payload?.data as IServiceBody) ?? []}
+          />
+        );
       case "service":
         return (
           <ChooseService
@@ -180,6 +186,7 @@ export default function BookingAppointment() {
     specialtyId,
     isLoadingDoctor,
     doctor?.payload?.data,
+    service?.payload?.data,
     doctorId,
     hospital?.payload?.data?.name,
   ]);

@@ -22,6 +22,7 @@ import {
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import useDebounce from "@/hooks/useDebounce";
+import {genderPosition} from "@/lib/utils";
 import {CalendarIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
@@ -76,14 +77,6 @@ const useServiceData = (hospitalId: string) => {
     queryFn: () => apiService.getFullServiceByHospitalId(hospitalId),
     enabled: !!hospitalId,
   });
-};
-
-const genderPosition = (position: number): string => {
-  if (position === PositionType.ASSOCIATE_PROFESSOR) return "Phó giáo sư";
-  if (position === PositionType.DOCTOR) return "Tiến sĩ";
-  if (position === PositionType.PROFESSOR) return "Giáo sư";
-  if (position === PositionType.MASTER) return "Thạc sĩ";
-  return "";
 };
 
 export default function ChooseDoctor({

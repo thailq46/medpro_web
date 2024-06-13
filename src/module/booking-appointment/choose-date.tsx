@@ -1,28 +1,47 @@
 "use client";
+import {IDoctorBody} from "@/apiRequest/ApiDoctor";
 import apiSchedule from "@/apiRequest/ApiSchedule";
+import {IServiceBody} from "@/apiRequest/ApiService";
+import {RoleType, VerifyStatus} from "@/apiRequest/common";
+import {AppContext} from "@/app/(home)/AppProvider";
+import {ModalConfirmCustom} from "@/components/ModalComfirm";
+import {Button} from "@/components/ui/button";
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import sortTimes from "@/lib/SortTimesHelper";
+import {ModalBookingAppointment} from "@/module/booking-appointment/modal-booking";
 import {useQuery} from "@tanstack/react-query";
 import {vi} from "date-fns/locale";
 import dayjs from "dayjs";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {DayPicker} from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import styles from "./BookingAppointment.module.scss";
 
+interface IChooseDateProps {
+  onChooseDate: (date: string) => void;
+  doctors?: IDoctorBody[];
+  services?: IServiceBody;
+}
+
 export default function ChooseDate({
   onChooseDate,
-}: {
-  onChooseDate: (date: string) => void;
-}) {
+  doctors,
+  services,
+}: IChooseDateProps) {
+  const {user} = useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [selected, setSelected] = useState<Date>();
+  const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
+  const [isModalBookingOpen, setIsModalBookingOpen] = useState(false);
+  const [timeAppointment, setTimeAppointment] = useState<string>("");
   const doctorId = searchParams.get("doctorId");
   const date = selected ? dayjs(selected).format("DD/MM/YYYY") : "";
+
+  const doctorInfo = doctors?.find((doctor) => doctor.doctor_id === doctorId);
 
   const {data: schedule, isLoading} = useQuery({
     queryKey: [
@@ -45,9 +64,44 @@ export default function ChooseDate({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
+  const handleChooseDate = (time: string) => {
+    setTimeAppointment(time);
+    if (!user || (user && user?.verify === VerifyStatus.UNVERIFIED)) {
+      setIsModalConfirmOpen(true);
+    } else {
+      setIsModalBookingOpen(true);
+    }
+  };
 
   return (
     <>
+      <ModalConfirmCustom
+        isOpen={isModalConfirmOpen}
+        setIsOpen={setIsModalConfirmOpen}
+        title={
+          user && user?.verify === VerifyStatus.UNVERIFIED
+            ? "Chưa xác thực tài khoản"
+            : "Chưa đăng nhập"
+        }
+        content={
+          user && user?.verify === VerifyStatus.UNVERIFIED
+            ? "Vui lòng xác thực tài khoản để có thể đặt lịch khám bệnh"
+            : "Vui lòng đăng nhập để có thể đặt lịch khám bệnh"
+        }
+        handleOke={() => {
+          if (!user) {
+            router.push("/login");
+          }
+        }}
+      />
+      <ModalBookingAppointment
+        isOpen={isModalBookingOpen}
+        setIsOpen={setIsModalBookingOpen}
+        doctor={doctorInfo}
+        timeAppointment={timeAppointment}
+        dateAppointment={date}
+        service={services}
+      />
       <div className="calender-container">
         {schedule ? (
           <DayPicker
@@ -107,9 +161,11 @@ export default function ChooseDate({
               <>
                 <h3>Thời gian làm việc</h3>
                 {!!schedule?.payload.data.length ? (
-                  renderTimeType(
-                    schedule?.payload.data[0].time_type as string[]
-                  )
+                  renderTimeType({
+                    timeType: schedule?.payload.data[0].time_type as string[],
+                    onClick: handleChooseDate,
+                    isPatient: user?.role === RoleType.User,
+                  })
                 ) : (
                   <div className="font-semibold text-red-600">
                     Chưa cập nhập lịch làm việc
@@ -127,18 +183,29 @@ export default function ChooseDate({
   );
 }
 
-function renderTimeType(timeType: string[]): JSX.Element {
+function renderTimeType({
+  timeType,
+  onClick,
+  isPatient,
+}: {
+  timeType: string[];
+  onClick: (time: string) => void;
+  isPatient: boolean;
+}): JSX.Element {
   const timeAfterSort = sortTimes(timeType);
   return (
     <div className="flex flex-wrap items-center gap-4 mt-3">
       {timeAfterSort.map((time, index) => {
         return (
-          <div
+          <Button
+            role="button"
+            disabled={!isPatient}
+            onClick={() => onClick(time)}
             key={index}
-            className="text-center border border-[#1da1f2] text-black p-3 font-semibold rounded-lg cursor-pointer hover:bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] transition-all hover:text-white"
+            className="text-center bg-transparent border border-[#1da1f2] text-black p-3 font-semibold rounded-lg cursor-pointer hover:bg-gradient-to-r from-[#00b5f1] to-[#00e0ff] transition-all hover:text-white"
           >
             {time}
-          </div>
+          </Button>
         );
       })}
     </div>

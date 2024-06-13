@@ -1,3 +1,4 @@
+import {PositionType} from "@/apiRequest/common";
 import {clsx, type ClassValue} from "clsx";
 import {twMerge} from "tailwind-merge";
 
@@ -25,6 +26,14 @@ export function toBase64(file: File) {
     };
   });
 }
+
+export const genderPosition = (position: number): string => {
+  if (position === PositionType.ASSOCIATE_PROFESSOR) return "Phó giáo sư";
+  if (position === PositionType.DOCTOR) return "Tiến sĩ";
+  if (position === PositionType.PROFESSOR) return "Giáo sư";
+  if (position === PositionType.MASTER) return "Thạc sĩ";
+  return "";
+};
 
 export function generateDescription(slug: string): string {
   let desc = "";
