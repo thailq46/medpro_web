@@ -1,14 +1,13 @@
 "use client";
+import apiAppointment from "@/apiRequest/ApiAppointment";
 import {IDoctorBody} from "@/apiRequest/ApiDoctor";
 import {IServiceBody} from "@/apiRequest/ApiService";
+import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {CalendarIcon} from "@/components/Icon";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
@@ -33,17 +32,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {Textarea} from "@/components/ui/textarea";
-import {cn, genderPosition} from "@/lib/utils";
+import {useToast} from "@/components/ui/use-toast";
+import {cn, renderPosition} from "@/lib/utils";
 import {
   BookingBody,
   BookingBodyType,
 } from "@/module/booking-appointment/form-config";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {ReloadIcon} from "@radix-ui/react-icons";
 import {format} from "date-fns";
 import {vi} from "date-fns/locale";
 import Image from "next/image";
-import {useSearchParams} from "next/navigation";
-import {useContext} from "react";
+import {useRouter, useSearchParams} from "next/navigation";
+import {useContext, useState} from "react";
 import {useForm} from "react-hook-form";
 
 interface IModalBookingAppointmentProps {
@@ -65,9 +66,13 @@ export function ModalBookingAppointment({
   dateAppointment,
   service,
 }: IModalBookingAppointmentProps) {
+  const [loading, setLoading] = useState<boolean>(false);
   const {user} = useContext(AppContext);
   const searchParams = useSearchParams();
+  const {toast} = useToast();
+  const router = useRouter();
   const feature = searchParams.get("feature");
+
   const form = useForm<BookingBodyType>({
     resolver: zodResolver(BookingBody),
     defaultValues: {
@@ -80,13 +85,46 @@ export function ModalBookingAppointment({
       email: user?.email,
     },
   });
-  function onSubmit(values: BookingBodyType) {
-    console.log(values);
-  }
+
   const price = feature === "booking.date" ? service?.price : doctor?.price;
+
+  async function onSubmit(_values: BookingBodyType) {
+    const dateOfBirth = new Date(_values.date_of_birth).toISOString();
+    const values = {
+      ..._values,
+      date_of_birth: dateOfBirth,
+      time: timeAppointment,
+      date: dateAppointment,
+      price,
+      doctor_id: doctor?.doctor_id,
+      patient_id: user?._id,
+      service_id: service?._id,
+      isPayment: false,
+      status: false,
+    };
+    if (loading) return;
+    setLoading(true);
+    try {
+      const result = await apiAppointment.create(values);
+      toast({
+        title: "Thành công",
+        description: result.payload.message,
+        duration: 5000,
+      });
+      router.refresh();
+      router.push("/");
+    } catch (error) {
+      setLoading(false);
+      form.setValue("reason", "");
+      handleErrorApi({error, setError: form.setError, duration: 3000});
+    } finally {
+      form.setValue("reason", "");
+      setLoading(false);
+    }
+  }
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogContent className="z-[99999999999] !max-w-[800px]">
+      <AlertDialogContent className="z-[9999] !max-w-[800px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <AlertDialogHeader>
@@ -106,7 +144,7 @@ export function ModalBookingAppointment({
               </div>
               <div className="flex flex-col gap-1 font-semibold">
                 <span>
-                  {genderPosition(doctor?.position as number) +
+                  {renderPosition(doctor?.position as number) +
                     " " +
                     doctor?.name}
                 </span>
@@ -270,16 +308,17 @@ export function ModalBookingAppointment({
                 </FormItem>
               )}
             />
-            <AlertDialogFooter>
-              <AlertDialogCancel>Huỷ</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={handleOke}
-                role="button"
-                type="submit"
-              >
-                Xác nhận
-              </AlertDialogAction>
-            </AlertDialogFooter>
+            <div className="text-right flex items-center gap-2 justify-end">
+              <Button onClick={() => setIsOpen(false)} variant="outline">
+                Huỷ
+              </Button>
+              <Button type="submit" onClick={handleOke} disabled={loading}>
+                {loading && (
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                Cập nhập thông tin
+              </Button>
+            </div>
           </form>
         </Form>
       </AlertDialogContent>

@@ -27,7 +27,7 @@ export function toBase64(file: File) {
   });
 }
 
-export const genderPosition = (position: number): string => {
+export const renderPosition = (position: number): string => {
   if (position === PositionType.ASSOCIATE_PROFESSOR) return "Phó giáo sư";
   if (position === PositionType.DOCTOR) return "Tiến sĩ";
   if (position === PositionType.PROFESSOR) return "Giáo sư";

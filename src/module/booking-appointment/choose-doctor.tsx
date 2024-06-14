@@ -22,7 +22,7 @@ import {
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import useDebounce from "@/hooks/useDebounce";
-import {genderPosition} from "@/lib/utils";
+import {renderPosition} from "@/lib/utils";
 import {CalendarIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
@@ -266,7 +266,7 @@ export default function ChooseDoctor({
                 <div role="button" onClick={() => handleDoctorClick(v)}>
                   <div className={clsx(styles.infoLine, styles.highlight)}>
                     <DoctorIcon className="w-4 h-4" />
-                    {genderPosition(v?.position as number) + " " + v.name}
+                    {renderPosition(v?.position as number) + " " + v.name}
                   </div>
                   <div className={styles.infoLine}>
                     <GenderIcon className="w-4 h-4" />
