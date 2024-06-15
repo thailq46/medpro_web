@@ -2,8 +2,10 @@
 import {CircleUserIcon, SecurityIcon} from "@/components/Icon";
 import {Dialog, DialogContent} from "@/components/ui/dialog";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import AppointmentForm from "@/module/account-management/appointments";
 import SecurityForm from "@/module/account-management/security";
 import UpdateMeForm from "@/module/account-management/update-me";
+import {CalendarIcon} from "@radix-ui/react-icons";
 import styles from "./Account.module.scss";
 
 export default function AccountManagement({
@@ -31,12 +33,19 @@ export default function AccountManagement({
               <SecurityIcon className="w-5 h-5" />
               Security
             </TabsTrigger>
+            <TabsTrigger value="appointment" className={styles.sidebarItem}>
+              <CalendarIcon className="w-5 h-5" />
+              Appointments
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="account" className={styles.tabContent}>
             <UpdateMeForm />
           </TabsContent>
           <TabsContent value="security" className={styles.tabContent}>
             <SecurityForm />
+          </TabsContent>
+          <TabsContent value="appointment" className={styles.tabContent}>
+            <AppointmentForm />
           </TabsContent>
         </Tabs>
       </DialogContent>

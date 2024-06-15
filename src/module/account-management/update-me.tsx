@@ -100,7 +100,7 @@ export default function UpdateMeForm() {
     <Card className="h-full">
       <CardHeader>
         <CardTitle className="border-b border-gray-300 pb-4">
-          Profile details
+          Thông tin cá nhân
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2 max-h-[450px] overflow-y-scroll">

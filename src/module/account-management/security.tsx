@@ -87,9 +87,7 @@ export default function SecurityForm() {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="border-b border-gray-300 pb-4">
-          Security
-        </CardTitle>
+        <CardTitle className="border-b border-gray-300 pb-4">Bảo mật</CardTitle>
       </CardHeader>
       <CardContent className="space-y-8">
         <div className="flex items-center justify-between">
