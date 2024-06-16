@@ -1,6 +1,8 @@
 "use client";
 import apiAppointment from "@/apiRequest/ApiAppointment";
 import apiHospital from "@/apiRequest/ApiHospital";
+import apiPayment from "@/apiRequest/ApiPayment";
+import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
@@ -12,17 +14,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {useToast} from "@/components/ui/use-toast";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import {renderPosition} from "@/lib/utils";
-import {CheckCircledIcon, CrossCircledIcon} from "@radix-ui/react-icons";
+import {
+  CheckCircledIcon,
+  CrossCircledIcon,
+  ReloadIcon,
+} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import {useRouter} from "next/navigation";
 import {useContext, useState} from "react";
 
 export default function AppointmentForm() {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<{[key: string]: boolean}>({});
+
   const {user} = useContext(AppContext);
+  const router = useRouter();
+
   const {data: appointment} = useQuery({
     queryKey: [QUERY_KEY.GET_APPOINTMENT_BY_PATIENT_ID, user?._id],
     queryFn: () => apiAppointment.getByPatientId(user?._id ?? ""),
@@ -33,8 +41,24 @@ export default function AppointmentForm() {
     queryFn: () => apiHospital.getListHospital({limit: 99, page: 1}),
   });
 
-  const {toast} = useToast();
-  const router = useRouter();
+  const handlePayment = async (id: string, price: number) => {
+    if (loading[id]) return;
+    setLoading((prev) => ({...prev, [id]: true}));
+    try {
+      const result = await apiPayment.payment(price);
+      if (result.payload.resultCode === 0) {
+        router.push(result.payload.payUrl);
+        await apiAppointment.updateOrderId({
+          id,
+          order_id: result.payload.orderId,
+        });
+      }
+    } catch (error) {
+      handleErrorApi({error});
+    } finally {
+      setLoading((prev) => ({...prev, [id]: false}));
+    }
+  };
   return (
     <Card className="h-full">
       <CardHeader>
@@ -100,9 +124,17 @@ export default function AppointmentForm() {
                     <div className="flex justify-end items-center">
                       <Button
                         size="sm"
-                        onClick={() => console.log("thanh toan di")}
+                        disabled={
+                          loading[value._id!] || value.isPayment === true
+                        }
+                        onClick={() => handlePayment(value?._id!, value.price!)}
                       >
-                        Thanh toán
+                        {value.isPayment === false && loading[value._id!] && (
+                          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                        )}
+                        {value.isPayment === true
+                          ? "Đã thanh toán"
+                          : "Thanh toán"}
                       </Button>
                     </div>
                   </TableCell>

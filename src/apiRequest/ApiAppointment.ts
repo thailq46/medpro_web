@@ -52,6 +52,7 @@ export interface IAppointmentBody extends ICommonAuditable {
   date?: string;
   time?: string;
   address?: string;
+  order_id?: string | null;
 }
 interface ICreateAppointmentBody {
   doctor_id?: string;
@@ -79,6 +80,7 @@ interface IGetAppointmentByPatientIdRes {
 const path = {
   create: "appointments/create",
   getByPatientId: "appointments/patient",
+  update: "appointments/update",
 };
 
 const apiAppointment = {
@@ -88,6 +90,23 @@ const apiAppointment = {
   getByPatientId: (patient_id: string) =>
     http.get<IGetAppointmentByPatientIdRes>(
       `${path.getByPatientId}/${patient_id}`
+    ),
+
+  updateOrderId: ({id, order_id}: {id: string; order_id: string}) =>
+    http.patch<{message: string}>(`${path.update}/${id}/order-id`, {
+      order_id,
+    }),
+  updatePaymentNextServerToServer: ({
+    order_id,
+    access_token,
+  }: {
+    order_id: string;
+    access_token: string;
+  }) =>
+    http.patch<{message: string}>(
+      `${path.update}/${order_id}/payment`,
+      {},
+      {headers: {Authorization: `Bearer ${access_token}`}}
     ),
 };
 
