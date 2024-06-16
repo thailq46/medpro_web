@@ -50,30 +50,36 @@ export default function Login() {
     setLoading(true);
     try {
       const result = await apiAuthRequest.login(values);
-      toast({
-        title: "Thành công",
-        description: result.payload.message,
-        duration: 3000,
-      });
-      const {access_token, refresh_token} = result.payload.data;
-      const decoded = jwtDecode(access_token);
-      const expiredAt = decoded.exp;
-      localStorage.setItem("accessToken", access_token);
-      localStorage.setItem("refreshToken", refresh_token);
-      await apiAuthRequest.auth({
-        access_token,
-        refresh_token,
-        expiresAt: expiredAt as number,
-      });
-      clientAccessToken.expiresAt = expiredAt as number;
-      router.push("/");
-      router.refresh();
+      if (result.status === 200) {
+        toast({
+          title: "Thành công",
+          description: result.payload.message,
+          duration: 5000,
+        });
+        const {access_token, refresh_token} = result.payload.data;
+        const decoded = jwtDecode(access_token);
+        const expiredAt = decoded.exp;
+        localStorage.setItem("accessToken", access_token);
+        localStorage.setItem("refreshToken", refresh_token);
+        await apiAuthRequest.auth({
+          access_token,
+          refresh_token,
+          expiresAt: expiredAt as number,
+        });
+        clientAccessToken.expiresAt = expiredAt as number;
+        router.push("/");
+        router.refresh();
+      } else {
+        toast({
+          title: "Thất bại",
+          description: result.payload.message,
+          duration: 5000,
+        });
+      }
     } catch (error) {
-      form.reset();
       setLoading(false);
-      handleErrorApi({error, setError: form.setError, duration: 3000});
+      handleErrorApi({error, setError: form.setError, duration: 4000});
     } finally {
-      form.reset();
       setLoading(false);
     }
   }

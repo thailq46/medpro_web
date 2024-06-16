@@ -32,6 +32,7 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {useToast} from "@/components/ui/use-toast";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import AccountManagement from "@/module/account-management";
 import {
@@ -52,6 +53,7 @@ export default function Navbar() {
   const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
 
   const router = useRouter();
+  const {toast} = useToast();
   const {user} = useContext(AppContext);
   const {data} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_CATEGORY],
@@ -108,13 +110,18 @@ export default function Navbar() {
       await apiAuthRequest.logoutFromNextClientToNextServer();
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
+      toast({
+        title: "Thành công",
+        description: "Đăng xuất thành công",
+        duration: 3000,
+      });
       router.push("/");
     } catch (error) {
       await apiAuthRequest
         .logoutFromNextClientToNextServer(true)
         .then(() => router.push("/"));
     } finally {
-      router.refresh();
+      window.location.reload();
     }
   };
 
@@ -154,7 +161,10 @@ export default function Navbar() {
                       key={child.name}
                       className="p-2 cursor-pointer hover:!text-textSecondary hover:!bg-[#e6f2ff] text-[13px] font-medium"
                     >
-                      <Link href={`/${category.slug}/${child.slug}`}>
+                      <Link
+                        className="block w-full"
+                        href={`/${category.slug}/${child.slug}`}
+                      >
                         {child.name}
                       </Link>
                     </MenubarItem>

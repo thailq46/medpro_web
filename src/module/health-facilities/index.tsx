@@ -162,6 +162,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                   styles.tagItem,
                   cate.slug === slug && styles.activeTagItem
                 )}
+                asChild
               >
                 <Link href={`/${CSYT}/${cate.slug}`}>{cate.name}</Link>
               </Button>
