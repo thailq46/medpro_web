@@ -43,9 +43,9 @@ export default function HealthFacilities({slug}: {slug?: string}) {
     useState<IHospitalBody | null>(null);
   const [isActive, setIsActive] = useState<string>("");
   const [type, setType] = useState<string>("");
-
-  const [currentPage, setCurrentPage] = useState(PAGE);
-  const [itemsPerPage, _] = useState(LIMIT);
+  const [currentPage, setCurrentPage] = useState<number>(PAGE);
+  const [itemsPerPage, _] = useState<number>(LIMIT);
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const pathname = usePathname();
   const isActivePath = slug
@@ -55,10 +55,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
   const {data: categories, isLoading: isLoadingCategory} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_CATEGORY],
     queryFn: async () =>
-      await apiCategoryRequest.getListCategory({
-        page: 1,
-        limit: 99,
-      }),
+      await apiCategoryRequest.getListCategory({page: 1, limit: 99}),
   });
 
   const {data: hospitals, isLoading: isLoadingHospital} = useQuery({
@@ -68,6 +65,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
         page: currentPage,
         limit: itemsPerPage,
         types: type,
+        search: searchValue,
       },
     ],
     queryFn: async () =>
@@ -75,6 +73,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
         page: currentPage,
         limit: itemsPerPage,
         types: type,
+        search: searchValue,
       }),
   });
 
@@ -151,6 +150,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
               type="text"
               placeholder="Tìm kiếm cơ sở y tế..."
               className="health-facilities_search"
+              onChange={(e) => setSearchValue(e.target.value)}
             />
           </div>
         </div>
