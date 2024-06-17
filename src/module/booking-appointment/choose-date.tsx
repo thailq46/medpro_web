@@ -133,6 +133,9 @@ export default function ChooseDate({
                 fontSize: "15px",
               },
               cell: {border: "1px solid #dfe3eb", padding: "15px"},
+              months: {
+                overflowX: "auto",
+              },
             }}
             modifiersStyles={{
               selected: {

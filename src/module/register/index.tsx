@@ -221,19 +221,19 @@ export default function Register() {
                   Đăng ký
                 </Button>
               </div>
+              <div className="!mt-14 pb-1">
+                <span className="font-bold">Have an account?</span>
+                <Button
+                  variant="outline"
+                  className="font-medium ml-3"
+                  onClick={() => router.push("/login")}
+                >
+                  <span>Login</span>
+                  <ArrowRightIcon className="w-4 h-4 ml-2" />
+                </Button>
+              </div>
             </form>
           </Form>
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 pb-2">
-            <span className="font-bold">Have an account?</span>
-            <Button
-              variant="outline"
-              className="font-medium"
-              onClick={() => router.push("/login")}
-            >
-              <span>Login</span>
-              <ArrowRightIcon className="w-4 h-4 ml-2" />
-            </Button>
-          </div>
         </div>
       </div>
     </div>

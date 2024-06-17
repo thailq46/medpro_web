@@ -47,10 +47,7 @@
     display: none;
     visibility: hidden;
   }
-  .avatar {
-    display: none;
-    visibility: hidden;
-  }
+
   .btnLogin {
     display: none;
     visibility: hidden;
@@ -70,6 +67,11 @@
     svg {
       margin-left: auto;
     }
+  }
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
 }
 @media (max-width: 575.98px) {

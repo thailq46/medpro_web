@@ -22,8 +22,10 @@ import {
   ReloadIcon,
 } from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
+import Image from "next/image";
 import {useRouter} from "next/navigation";
 import {useContext, useState} from "react";
+import index from "./Account.module.scss";
 
 export default function AppointmentForm() {
   const [loading, setLoading] = useState<{[key: string]: boolean}>({});
@@ -68,86 +70,148 @@ export default function AppointmentForm() {
       </CardHeader>
       <CardContent className="space-y-2 max-h-[450px] h-full overflow-y-scroll">
         {appointment && !!appointment.payload.data.length ? (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="max-w-[300px] w-fit">
-                  Thông tin bác sĩ
-                </TableHead>
-                <TableHead className="w-[150px]">Ngày khám</TableHead>
-                <TableHead className="text-center w-[90px]">
-                  Trạng thái
-                </TableHead>
-                <TableHead className="text-center w-[100px]">
-                  Thanh toán
-                </TableHead>
-                <TableHead className="text-right">Hành động</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+          <>
+            <Table className={index.table}>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[250px]">Thông tin bác sĩ</TableHead>
+                  <TableHead className="w-[150px]">Ngày khám</TableHead>
+                  <TableHead className="text-center w-[90px]">
+                    Trạng thái
+                  </TableHead>
+                  <TableHead className="text-center w-[100px]">
+                    Thanh toán
+                  </TableHead>
+                  <TableHead className="text-right">Hành động</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {appointment?.payload?.data.map((value) => {
+                  const hospitalName = hospital?.payload?.data.find(
+                    (h) => h._id === value.doctor?.hospital_id
+                  )?.name;
+                  return (
+                    <TableRow key={value._id}>
+                      <TableCell className="font-medium">
+                        <p>{hospitalName}</p>
+                        <p>
+                          {renderPosition(value.doctor?.position as number) +
+                            " " +
+                            value.doctor?.name}
+                        </p>
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        <p>{value.date}</p>
+                        <p>{value.time}</p>
+                        <p>{value.service?.name}</p>
+                        <p>$ {value.price?.toLocaleString("vi-VN")}đ</p>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center justify-center">
+                          {value.status === true ? (
+                            <CheckCircledIcon className="text-green-600 w-5 h-5" />
+                          ) : (
+                            <CrossCircledIcon className="text-red-600 w-5 h-5" />
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center justify-center">
+                          {value.isPayment === true ? (
+                            <CheckCircledIcon className="text-green-600 w-5 h-5" />
+                          ) : (
+                            <CrossCircledIcon className="text-red-600 w-5 h-5" />
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex justify-end items-center">
+                          <Button
+                            size="sm"
+                            disabled={
+                              loading[value._id!] || value.isPayment === true
+                            }
+                            onClick={() =>
+                              handlePayment(value?._id!, value.price!)
+                            }
+                          >
+                            {value.isPayment === false &&
+                              loading[value._id!] && (
+                                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                              )}
+                            {value.isPayment === true
+                              ? "Đã thanh toán"
+                              : "Thanh toán"}
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+            <div className={index.appointmentTablet}>
               {appointment?.payload?.data.map((value) => {
                 const hospitalName = hospital?.payload?.data.find(
                   (h) => h._id === value.doctor?.hospital_id
                 )?.name;
                 return (
-                  <TableRow key={value._id}>
-                    <TableCell className="font-medium">
-                      <p>{hospitalName}</p>
-                      <p>
-                        {renderPosition(value.doctor?.position as number) +
-                          " " +
-                          value.doctor?.name}
-                      </p>
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      <p>{value.date}</p>
-                      <p>{value.time}</p>
-                      <p>{value.service?.name}</p>
-                      <p>$ {value.price?.toLocaleString("vi-VN")}đ</p>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center justify-center">
-                        {value.status === true ? (
-                          <CheckCircledIcon className="text-green-600 w-5 h-5" />
-                        ) : (
-                          <CrossCircledIcon className="text-red-600 w-5 h-5" />
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center justify-center">
-                        {value.isPayment === true ? (
-                          <CheckCircledIcon className="text-green-600 w-5 h-5" />
-                        ) : (
-                          <CrossCircledIcon className="text-red-600 w-5 h-5" />
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex justify-end items-center">
-                        <Button
-                          size="sm"
-                          disabled={
-                            loading[value._id!] || value.isPayment === true
+                  <div className={index.appointmentBox} key={value._id}>
+                    <div className={index.appointmentBoxItem}>
+                      <div className="w-[80px] h-[80px]">
+                        <Image
+                          src={
+                            value?.doctor?.avatar || "/img/avatar/avatar.jpg"
                           }
-                          onClick={() =>
-                            handlePayment(value?._id!, value.price!)
-                          }
-                        >
-                          {value.isPayment === false && loading[value._id!] && (
-                            <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                          )}
-                          {value.isPayment === true
-                            ? "Đã thanh toán"
-                            : "Thanh toán"}
-                        </Button>
+                          alt="avatar"
+                          width={80}
+                          height={80}
+                          className="rounded-full w-full h-full object-cover"
+                        />
                       </div>
-                    </TableCell>
-                  </TableRow>
+                      <div className="text-sm font-medium">
+                        <p className="font-bold">
+                          {renderPosition(value.doctor?.position as number) +
+                            " " +
+                            value.doctor?.name}{" "}
+                          - {hospitalName}
+                        </p>
+                        <p>
+                          {value.date} - {value.time}
+                        </p>
+                        <p>
+                          $ {value.price?.toLocaleString("vi-VN")}đ -{" "}
+                          {value.service?.name}
+                        </p>
+                        <p>
+                          Trạng thái:{" "}
+                          {value.status === true
+                            ? "Đã duyệt lịch khám"
+                            : "Chưa duyệt lịch khám"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="w-full mt-3">
+                      <Button
+                        className="w-full"
+                        disabled={
+                          loading[value._id!] || value.isPayment === true
+                        }
+                        onClick={() => handlePayment(value?._id!, value.price!)}
+                      >
+                        {value.isPayment === false && loading[value._id!] && (
+                          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                        )}
+                        {value.isPayment === true
+                          ? "Đã thanh toán"
+                          : "Thanh toán"}
+                      </Button>
+                    </div>
+                  </div>
                 );
               })}
-            </TableBody>
-          </Table>
+            </div>
+          </>
         ) : (
           <div>Lịch khám đang trống</div>
         )}

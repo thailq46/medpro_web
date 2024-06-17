@@ -313,6 +313,9 @@
   }
 }
 @media (max-width: 575.98px) {
+  .container {
+    padding: 15px;
+  }
   .leftBtnControl {
     display: none;
     visibility: hidden;

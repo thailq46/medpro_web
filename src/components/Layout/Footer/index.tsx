@@ -1,14 +1,12 @@
-import React from "react";
-import styles from "./Footer.module.scss";
+import {
+  BellIcon,
+  ClipboardIcon,
+  FileTextIcon,
+  HomeIcon,
+} from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  HomeIcon,
-  FileTextIcon,
-  ClipboardIcon,
-  BellIcon,
-  PersonIcon,
-} from "@radix-ui/react-icons";
+import styles from "./Footer.module.scss";
 
 export default function Footer() {
   const footerList = [
@@ -166,7 +164,7 @@ export default function Footer() {
       <div className={styles.footerMobile}>
         <div className={styles.footerMobileBox}>
           <HomeIcon className={styles.footerMobileIcon} />
-          <Link href={"#"}>Trang chủ</Link>
+          <Link href="/">Trang chủ</Link>
         </div>
         <div className={styles.footerMobileBox}>
           <FileTextIcon className={styles.footerMobileIcon} />
@@ -179,10 +177,6 @@ export default function Footer() {
         <div className={styles.footerMobileBox}>
           <BellIcon className={styles.footerMobileIcon} />
           <Link href={"#"}>Thông báo</Link>
-        </div>
-        <div className={styles.footerMobileBox}>
-          <PersonIcon className={styles.footerMobileIcon} />
-          <Link href={"#"}>Hồ sơ</Link>
         </div>
       </div>
     </footer>

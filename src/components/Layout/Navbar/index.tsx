@@ -51,7 +51,7 @@ import styles from "./Navbar.module.scss";
 export default function Navbar() {
   const [isModalAccountOpen, setIsModalAccountOpen] = useState(false);
   const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
-
+  const [isCloseSheet, setIsCloseSheet] = useState(false);
   const router = useRouter();
   const {toast} = useToast();
   const {user} = useContext(AppContext);
@@ -175,7 +175,7 @@ export default function Navbar() {
           ))}
         </Menubar>
       </div>
-      <div className="right">
+      <div className={styles.right}>
         {!Boolean(user) ? (
           <Button
             className={styles.btnLogin}
@@ -238,7 +238,7 @@ export default function Navbar() {
         )}
         {/* NAV for TABLET */}
         <div className={styles.tablet}>
-          <Sheet>
+          <Sheet open={isCloseSheet} onOpenChange={setIsCloseSheet}>
             <SheetTrigger asChild>
               <Button
                 variant="outline"
@@ -260,13 +260,17 @@ export default function Navbar() {
                 </Link>
               </SheetHeader>
               <div className="p-4">
-                <Button className="w-[calc(50%-5px)] mr-1" asChild>
-                  <Link href="/register">Đăng ký</Link>
-                </Button>
-                <Button className="w-[calc(50%-5px)] ml-1" asChild>
-                  <Link href="/login">Đăng nhập</Link>
-                </Button>
-                <div className="mt-3">
+                {!user && (
+                  <>
+                    <Button className="w-[calc(50%-5px)] mr-1" asChild>
+                      <Link href="/register">Đăng ký</Link>
+                    </Button>
+                    <Button className="w-[calc(50%-5px)] ml-1" asChild>
+                      <Link href="/login">Đăng nhập</Link>
+                    </Button>
+                  </>
+                )}
+                <div>
                   <Accordion type="single" collapsible className="w-full">
                     {Object.values(categoryData).map((cate, index) => (
                       <AccordionItem value={`"item-"${index}`} key={index}>
@@ -283,6 +287,7 @@ export default function Navbar() {
                           <Link
                             className="font-semibold text-base"
                             href={`/${cate.slug}`}
+                            onClick={() => setIsCloseSheet(false)}
                           >
                             {cate.name}
                           </Link>
@@ -294,7 +299,10 @@ export default function Navbar() {
                                 key={index}
                                 className="py-2 px-5 font-medium border-b border-slate-300 last:border-none last:pb-0"
                               >
-                                <Link href={`/${cate.slug}/${child.slug}`}>
+                                <Link
+                                  href={`/${cate.slug}/${child.slug}`}
+                                  onClick={() => setIsCloseSheet(false)}
+                                >
                                   {child.name}
                                 </Link>
                               </div>

@@ -103,7 +103,7 @@ export default function UpdateMeForm() {
           Thông tin cá nhân
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2 max-h-[450px] overflow-y-scroll">
+      <CardContent className={`space-y-2 ${styles.cardContent}`}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -120,7 +120,7 @@ export default function UpdateMeForm() {
                 </FormItem>
               )}
             />
-            <div className="grid grid-cols-2 gap-5">
+            <div className={styles.updateMe}>
               <div className="flex flex-col gap-4">
                 <FormField
                   control={form.control}
