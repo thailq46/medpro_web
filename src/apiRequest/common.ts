@@ -54,3 +54,6 @@ export enum RoleType {
   Doctor = 1,
   User = 2,
 }
+
+export const PAGE = 1;
+export const LIMIT = 10;

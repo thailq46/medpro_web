@@ -1,7 +1,7 @@
 "use client";
 import apiCategoryRequest from "@/apiRequest/ApiCategory";
 import apiHospital, {IHospitalBody} from "@/apiRequest/ApiHospital";
-import {HospitalsType} from "@/apiRequest/common";
+import {HospitalsType, LIMIT, PAGE} from "@/apiRequest/common";
 import {LocationIcon} from "@/components/Icon";
 import PaginationSection from "@/components/PaginationSection";
 import {
@@ -25,8 +25,6 @@ import {usePathname} from "next/navigation";
 import {useEffect, useMemo, useState} from "react";
 import styles from "./HealthFacilities.module.scss";
 
-const PAGE = 1;
-const LIMIT = 10;
 const CSYT = "co-so-y-te";
 const typeMapping = {
   "benh-vien-cong": HospitalsType.BENHVIENCONG,
@@ -186,9 +184,9 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                   hospitals?.payload?.data?.map((v) => (
                     <div
                       key={v._id}
-                      className={`bg-white rounded-2xl w-full ${
-                        v._id === isActive ? "border-2 border-[#00b5f1]" : ""
-                      }`}
+                      className={`bg-white rounded-2xl w-full border-2 ${
+                        v._id === isActive ? "border-[#00b5f1]" : ""
+                      } hover:border-[#00b5f1] transition-all`}
                       role="button"
                       onClick={() => {
                         setHospitalSelected(v);
@@ -214,7 +212,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                             <Button className={styles.btnMore}>
                               Xem chi tiết
                             </Button>
-                            <Button className={styles.btnBooking}>
+                            <Button className={styles.btnBooking} asChild>
                               <Link href={`/${v.slug}/hinh-thuc-dat-kham`}>
                                 Đặt khám ngay
                               </Link>
@@ -228,7 +226,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                           <Button className={styles.btnMore}>
                             Xem chi tiết
                           </Button>
-                          <Button className={styles.btnBooking}>
+                          <Button className={styles.btnBooking} asChild>
                             <Link href={`/${v.slug}/hinh-thuc-dat-kham`}>
                               Đặt khám ngay
                             </Link>

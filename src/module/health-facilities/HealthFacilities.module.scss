@@ -110,17 +110,10 @@
 .leftBox {
   gap: 14px;
   padding: 20px;
-  border-radius: 1rem;
   width: 100%;
   min-height: 130px;
-  border: 2px solid transparent;
-  transition: all 0.23s ease;
   display: flex;
   align-items: flex-start;
-  &:hover {
-    border: 2px solid #00b5f1;
-    cursor: pointer;
-  }
 }
 .leftInfo {
   display: flex;
