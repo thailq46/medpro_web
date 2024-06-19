@@ -38,6 +38,7 @@ export default function AppointmentForm() {
     queryFn: () => apiAppointment.getByPatientId(user?._id ?? ""),
     enabled: !!user?._id,
   });
+
   const {data: hospital} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_HOSPITALS],
     queryFn: () => apiHospital.getListHospital({limit: 99, page: 1}),
@@ -87,17 +88,19 @@ export default function AppointmentForm() {
               </TableHeader>
               <TableBody>
                 {appointment?.payload?.data.map((value) => {
-                  const hospitalName = hospital?.payload?.data.find(
-                    (h) => h._id === value.doctor?.hospital_id
-                  )?.name;
+                  const hospitalName = hospital?.payload?.data.find((h) => {
+                    if (value.doctor_id !== null) {
+                      return h._id === value.doctor?.hospital_id;
+                    }
+                    return h._id === value.service?.hospital_id;
+                  })?.name;
                   return (
                     <TableRow key={value._id}>
                       <TableCell className="font-medium">
                         <p>{hospitalName}</p>
                         <p>
-                          {renderPosition(value.doctor?.position as number) +
-                            " " +
-                            value.doctor?.name}
+                          {renderPosition(value.doctor?.position as number)}{" "}
+                          {value.doctor?.name || "Bác sĩ thuộc bệnh viện"}
                         </p>
                       </TableCell>
                       <TableCell className="font-medium">

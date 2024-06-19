@@ -35,7 +35,7 @@ export default function MedicalBookingForms({
         break;
       case "Tiêm chủng":
         feature = "booking.vaccine";
-        stepName = "subject";
+        stepName = "service";
         break;
       case "Gói khám sức khỏe":
         feature = "booking.package";

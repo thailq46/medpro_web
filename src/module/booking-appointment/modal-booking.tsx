@@ -86,7 +86,10 @@ export function ModalBookingAppointment({
     },
   });
 
-  const price = feature === "booking.date" ? service?.price : doctor?.price;
+  const price =
+    feature === "booking.date" || feature === "booking.vaccine"
+      ? service?.price
+      : doctor?.price;
 
   async function onSubmit(_values: BookingBodyType) {
     const dateOfBirth = new Date(_values.date_of_birth).toISOString();
@@ -144,9 +147,8 @@ export function ModalBookingAppointment({
               </div>
               <div className="flex flex-col gap-1 font-semibold">
                 <span>
-                  {renderPosition(doctor?.position as number) +
-                    " " +
-                    doctor?.name}
+                  {renderPosition(doctor?.position as number)}{" "}
+                  {doctor?.name || "Bác sĩ thuộc bệnh viện"}
                 </span>
                 <span>
                   {timeAppointment} - {dateAppointment}
@@ -316,7 +318,7 @@ export function ModalBookingAppointment({
                 {loading && (
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                 )}
-                Cập nhập thông tin
+                Đặt lịch khám bệnh
               </Button>
             </div>
           </form>

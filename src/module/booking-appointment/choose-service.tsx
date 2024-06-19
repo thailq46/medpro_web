@@ -122,9 +122,12 @@ export default function ChooseService({
     enabled: !!hospitalId,
   });
 
-  const result = services?.payload?.data?.filter(
-    (v) => v.specialty?._id === specialtyId
-  );
+  const result = services?.payload?.data?.filter((v) => {
+    if (feature === "booking.vaccine") {
+      return v.type === "vaccine";
+    }
+    return v.specialty?._id === specialtyId;
+  });
 
   return (
     <>

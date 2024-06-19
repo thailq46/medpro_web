@@ -9,6 +9,7 @@ import {Button} from "@/components/ui/button";
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import sortTimes from "@/lib/SortTimesHelper";
+import {addAmPmSuffix} from "@/lib/utils";
 import {ModalBookingAppointment} from "@/module/booking-appointment/modal-booking";
 import {useQuery} from "@tanstack/react-query";
 import {vi} from "date-fns/locale";
@@ -39,6 +40,8 @@ export default function ChooseDate({
   const [isModalBookingOpen, setIsModalBookingOpen] = useState(false);
   const [timeAppointment, setTimeAppointment] = useState<string>("");
   const doctorId = searchParams.get("doctorId");
+  const feature = searchParams.get("feature");
+
   const date = selected ? dayjs(selected).format("DD/MM/YYYY") : "";
 
   const doctorInfo = doctors?.find((doctor) => doctor.doctor_id === doctorId);
@@ -64,6 +67,7 @@ export default function ChooseDate({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
+
   const handleChooseDate = (time: string) => {
     setTimeAppointment(time);
     if (!user || (user && user?.verify === VerifyStatus.UNVERIFIED)) {
@@ -103,19 +107,25 @@ export default function ChooseDate({
         service={services}
       />
       <div className="calender-container">
-        {schedule ? (
+        {schedule || feature === "booking.vaccine" ? (
           <DayPicker
             mode="single"
             locale={vi}
             weekStartsOn={0}
             selected={selected}
-            disabled={{
-              before: new Date(),
-            }}
+            disabled={{before: new Date()}}
             onSelect={(e) => {
               const date = dayjs(e).format("DD/MM/YYYY");
               onChooseDate(date);
               setSelected(e);
+              if (feature === "booking.vaccine") {
+                const timeWork = addAmPmSuffix(
+                  services?.hospital?.start_time +
+                    " - " +
+                    services?.hospital?.end_time
+                );
+                handleChooseDate(timeWork);
+              }
             }}
             styles={{
               head: {backgroundColor: "#f7f7f7"},
@@ -153,34 +163,36 @@ export default function ChooseDate({
         ) : (
           <DisplayNoSchedule />
         )}
-        {searchParams.get("stepName") === "time" && selected && (
-          <div className={styles.timeline}>
-            {isLoading ? (
-              <>
-                <Skeleton className="w-full h-10"></Skeleton>
-                <Skeleton className="w-full h-20 mt-2"></Skeleton>
-              </>
-            ) : (
-              <>
-                <h3>Thời gian làm việc</h3>
-                {!!schedule?.payload.data.length ? (
-                  renderTimeType({
-                    timeType: schedule?.payload.data[0].time_type as string[],
-                    onClick: handleChooseDate,
-                    isPatient: user?.role === RoleType.User,
-                  })
-                ) : (
-                  <div className="font-semibold text-red-600">
-                    Chưa cập nhập lịch làm việc
-                  </div>
-                )}
-                <p className="mt-4 font-semibold text-[#d98634]">
-                  Tất cả thời gian theo múi giờ Việt Nam GMT +7
-                </p>
-              </>
-            )}
-          </div>
-        )}
+        {searchParams.get("stepName") === "time" &&
+          selected &&
+          feature !== "booking.vaccine" && (
+            <div className={styles.timeline}>
+              {isLoading ? (
+                <>
+                  <Skeleton className="w-full h-10"></Skeleton>
+                  <Skeleton className="w-full h-20 mt-2"></Skeleton>
+                </>
+              ) : (
+                <>
+                  <h3>Thời gian làm việc</h3>
+                  {!!schedule?.payload.data.length ? (
+                    renderTimeType({
+                      timeType: schedule?.payload.data[0].time_type as string[],
+                      onClick: handleChooseDate,
+                      isPatient: user?.role === RoleType.User,
+                    })
+                  ) : (
+                    <div className="font-semibold text-red-600">
+                      Chưa cập nhập lịch làm việc
+                    </div>
+                  )}
+                  <p className="mt-4 font-semibold text-[#d98634]">
+                    Tất cả thời gian theo múi giờ Việt Nam GMT +7
+                  </p>
+                </>
+              )}
+            </div>
+          )}
       </div>
     </>
   );
