@@ -3,13 +3,13 @@ import {HomeIcon} from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Custom500() {
+export default function Custom404() {
   return (
     <div className=" bg-[#e8f2f7] min-h-[65vh] text-textPrimary">
       <div className="max-w-[1140px] w-full mx-auto flex items-center justify-center flex-col">
         <div className="w-[500px] h-[500px]">
           <Image
-            src="/img/avatar/500.svg"
+            src="/img/avatar/404.svg"
             alt="500"
             width={500}
             height={500}
@@ -17,7 +17,7 @@ export default function Custom500() {
           />
         </div>
         <h3 className="text-xl font-semibold mb-5">
-          Lỗi hệ thống vui lòng chờ trong ít phút !.
+          Trang bạn tìm kiếm không đúng hoặc không tồn tại !.
         </h3>
         <Button variant={"ghost"} className="mb-5">
           <Link

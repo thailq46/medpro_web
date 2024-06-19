@@ -1,6 +1,7 @@
 import apiAppointment from "@/apiRequest/ApiAppointment";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {AT_COOKIE_NAME} from "@/apiRequest/common";
+import Custom404 from "@/app/(home)/404/page";
 import VerifyLayout from "@/components/Layout/VerifyLayout";
 import ForgotPassword from "@/module/forgot-password";
 import ResetPassword from "@/module/reset-password";
@@ -76,5 +77,5 @@ export default async function Page({
       />
     );
   }
-  return <div>{slug}</div>;
+  return <Custom404 />;
 }
