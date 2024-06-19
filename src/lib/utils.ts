@@ -53,6 +53,17 @@ export const getStepNameAndServiceId = ({
   return {stepName, serviceId};
 };
 
+export function addAmPmSuffix(timeRange: string) {
+  return timeRange
+    .split(" - ")
+    .map((time) => {
+      const [hours, minutes] = time.split(":").map(Number);
+      const suffix = hours >= 12 ? "PM" : "AM";
+      return `${hours}:${minutes.toString().padStart(2, "0")} ${suffix}`;
+    })
+    .join(" - ");
+}
+
 export function generateDescription(slug: string): string {
   let desc = "";
   switch (slug) {
