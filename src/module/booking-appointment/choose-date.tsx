@@ -107,7 +107,9 @@ export default function ChooseDate({
         service={services}
       />
       <div className="calender-container">
-        {schedule || feature === "booking.vaccine" ? (
+        {schedule ||
+        feature === "booking.vaccine" ||
+        feature === "booking.package" ? (
           <DayPicker
             mode="single"
             locale={vi}
@@ -118,7 +120,10 @@ export default function ChooseDate({
               const date = dayjs(e).format("DD/MM/YYYY");
               onChooseDate(date);
               setSelected(e);
-              if (feature === "booking.vaccine") {
+              if (
+                feature === "booking.vaccine" ||
+                feature === "booking.package"
+              ) {
                 const timeWork = addAmPmSuffix(
                   services?.hospital?.start_time +
                     " - " +
@@ -165,7 +170,8 @@ export default function ChooseDate({
         )}
         {searchParams.get("stepName") === "time" &&
           selected &&
-          feature !== "booking.vaccine" && (
+          feature !== "booking.vaccine" &&
+          feature !== "booking.package" && (
             <div className={styles.timeline}>
               {isLoading ? (
                 <>

@@ -21,6 +21,7 @@ export default function MedicalBookingForms({
 }) {
   if (!hospital) return <Custom500 />;
   const generateQueryString = (name: string) => {
+    console.log("name", name);
     const query = new URLSearchParams();
     let feature = "";
     let stepName = "";
@@ -37,7 +38,7 @@ export default function MedicalBookingForms({
         feature = "booking.vaccine";
         stepName = "service";
         break;
-      case "Gói khám sức khỏe":
+      case "Gói khám sức khoẻ":
         feature = "booking.package";
         stepName = "service";
         break;

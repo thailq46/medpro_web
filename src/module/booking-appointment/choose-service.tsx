@@ -126,6 +126,9 @@ export default function ChooseService({
     if (feature === "booking.vaccine") {
       return v.type === "vaccine";
     }
+    if (feature === "booking.package") {
+      return v.type === "package";
+    }
     return v.specialty?._id === specialtyId;
   });
 
@@ -151,16 +154,21 @@ export default function ChooseService({
                   <TableRow key={service._id} className="cursor-pointer">
                     <TableCell className="font-medium">{index}</TableCell>
                     <TableCell className="max-w-[300px]">
-                      <p className="font-bold">{service.name}</p>
+                      <div className="font-bold">
+                        <p>{service.name}</p>
+                        {service.description &&
+                          service.description !== "null" && (
+                            <p className="font-medium text-sm">
+                              ({service.description})
+                            </p>
+                          )}
+                      </div>
                       <p className="font-medium italic">
                         Lịch khám: {service.session}
                       </p>
-                      {service.description &&
-                        service.description !== "null" && (
-                          <p className="font-medium italic">
-                            ({service.description})
-                          </p>
-                        )}
+                      {service.note && (
+                        <p className="font-medium italic">({service.note})</p>
+                      )}
                     </TableCell>
                     <TableCell>
                       <span className="font-medium">

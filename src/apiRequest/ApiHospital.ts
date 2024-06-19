@@ -53,7 +53,9 @@ const apiHospital = {
     });
   },
   getHospitalBySlug: (slug: string) => {
-    return http.get<IGetHospitalRes>(`${path.getBySlug}/${slug}`);
+    return http.get<IGetHospitalRes>(`${path.getBySlug}/${slug}`, {
+      cache: "no-cache",
+    });
   },
   getHospitalById: (id: string) => {
     return http.get<IGetHospitalRes>(`${path.root}/${id}`);

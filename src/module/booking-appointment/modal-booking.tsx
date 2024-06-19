@@ -87,7 +87,9 @@ export function ModalBookingAppointment({
   });
 
   const price =
-    feature === "booking.date" || feature === "booking.vaccine"
+    feature === "booking.date" ||
+    feature === "booking.vaccine" ||
+    feature === "booking.package"
       ? service?.price
       : doctor?.price;
 
