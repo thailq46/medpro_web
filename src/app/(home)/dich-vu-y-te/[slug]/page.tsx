@@ -1,4 +1,4 @@
-import Custom404 from "@/app/(home)/404/page";
+import Custom404 from "@/components/Layout/ErrorLayout/404";
 import DoctorBooking from "@/module/doctor-booking";
 import FacilityBooking from "@/module/facility-booking";
 

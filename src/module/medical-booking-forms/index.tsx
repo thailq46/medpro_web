@@ -1,5 +1,6 @@
 "use client";
 import {IGetHospitalRes} from "@/apiRequest/ApiHospital";
+import Custom500 from "@/components/Layout/ErrorLayout/500";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,15 +13,13 @@ import {ResetIcon} from "@radix-ui/react-icons";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
 import styles from "./Booking.module.scss";
 export default function MedicalBookingForms({
   hospital,
 }: {
   hospital: IGetHospitalRes["data"];
 }) {
-  const router = useRouter();
-  if (!hospital) router.push("/500");
+  if (!hospital) return <Custom500 />;
   const generateQueryString = (name: string) => {
     const query = new URLSearchParams();
     let feature = "";
