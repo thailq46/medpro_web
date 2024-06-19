@@ -1,3 +1,4 @@
+import {IServiceBody} from "@/apiRequest/ApiService";
 import {PositionType} from "@/apiRequest/common";
 import {clsx, type ClassValue} from "clsx";
 import {twMerge} from "tailwind-merge";
@@ -33,6 +34,23 @@ export const renderPosition = (position: number): string => {
   if (position === PositionType.PROFESSOR) return "Giáo sư";
   if (position === PositionType.MASTER) return "Thạc sĩ";
   return "";
+};
+
+export const getStepNameAndServiceId = ({
+  specialty_id,
+  services,
+}: {
+  specialty_id: string;
+  services: IServiceBody[];
+}) => {
+  const result = services.filter(
+    (service) => service.specialty?._id === specialty_id
+  );
+  const stepName = !!result?.length ? "service" : "date";
+  const serviceId = !!result?.length
+    ? ""
+    : services.find((v) => v.specialty === null && v.type === "service")?._id;
+  return {stepName, serviceId};
 };
 
 export function generateDescription(slug: string): string {

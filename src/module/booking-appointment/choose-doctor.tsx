@@ -22,7 +22,7 @@ import {
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import useDebounce from "@/hooks/useDebounce";
-import {renderPosition} from "@/lib/utils";
+import {getStepNameAndServiceId, renderPosition} from "@/lib/utils";
 import {CalendarIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
@@ -129,24 +129,14 @@ export default function ChooseDoctor({
     }
   }, [filterDebounce, memoizedOnFilterDoctor]);
 
-  const getStepNameAndServiceId = (specialty_id: string) => {
-    const result = services?.payload?.data?.filter(
-      (service) => service.specialty?._id === specialty_id
-    );
-    const stepName = !!result?.length ? "service" : "date";
-    const serviceId = !!result?.length
-      ? ""
-      : services?.payload?.data?.find(
-          (v) => v.specialty === null && v.type === "service"
-        )?._id;
-    return {stepName, serviceId};
-  };
-
   const handleDoctorClick = (v: IDoctorBody) => {
     const params = new URLSearchParams();
     const specialty_id =
       feature === "booking.date" ? specialtyId : v.specialty?._id;
-    const {stepName, serviceId} = getStepNameAndServiceId(specialty_id ?? "");
+    const {stepName, serviceId} = getStepNameAndServiceId({
+      specialty_id: specialty_id as string,
+      services: services?.payload?.data || [],
+    });
     params.append("feature", feature);
     params.append("hospitalId", hospitalId);
     params.append("specialtyId", specialty_id ?? "");

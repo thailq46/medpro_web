@@ -10,6 +10,7 @@ export {default as HandHoldingMedicalIcon} from "@/components/Icon/hand-holding-
 export {default as HospitalIcon} from "@/components/Icon/hospital-icon";
 export {default as LocationIcon} from "@/components/Icon/location-icon";
 export {default as SecurityIcon} from "@/components/Icon/security-icon";
+export {default as SpinnerIcon} from "@/components/Icon/spinner-icon";
 export {default as StethoscopeIcon} from "@/components/Icon/stethoscope-icon";
 export {default as SuitcaseMedicalIcon} from "@/components/Icon/suitcase-medical-icon";
 export {default as VerifyIcon} from "@/components/Icon/verify-icon";

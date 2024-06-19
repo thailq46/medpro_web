@@ -1,5 +1,6 @@
 "use client";
 import apiDoctor from "@/apiRequest/ApiDoctor";
+import apiService from "@/apiRequest/ApiService";
 import {LIMIT, LIST_POSITION_DOCTOR, PAGE} from "@/apiRequest/common";
 import {LocationIcon} from "@/components/Icon";
 import PaginationSection from "@/components/PaginationSection";
@@ -14,18 +15,30 @@ import {
 } from "@/components/ui/select";
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
-import {renderPosition} from "@/lib/utils";
+import {getStepNameAndServiceId, renderPosition} from "@/lib/utils";
 import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import Image from "next/image";
+import {useRouter} from "next/navigation";
 import {useState} from "react";
 import styles from "./DoctorBooking.module.scss";
+
+const useServiceData = (hospitalId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.GET_SERVICE_BY_HOSPITAL_ID, hospitalId],
+    queryFn: () => apiService.getFullServiceByHospitalId(hospitalId),
+    enabled: !!hospitalId,
+  });
+};
 
 export default function DoctorBooking() {
   const [currentPage, setCurrentPage] = useState<number>(PAGE);
   const [itemsPerPage, _] = useState<number>(LIMIT);
   const [search, setSearch] = useState<string>("");
   const [position, setPosition] = useState<string | undefined>(undefined);
+  const [hospitalId, setHospitalId] = useState<string>("");
+
+  const router = useRouter();
 
   const {data: doctors, isLoading} = useQuery({
     queryKey: [
@@ -40,6 +53,8 @@ export default function DoctorBooking() {
         position,
       }),
   });
+
+  const {data: services} = useServiceData(hospitalId);
 
   return (
     <>
@@ -149,7 +164,41 @@ export default function DoctorBooking() {
                             </p>
                           </div>
                         </div>
-                        <Button className={styles.btn}>Đặt ngay</Button>
+                        <Button
+                          className={styles.btn}
+                          onClick={() => {
+                            setHospitalId(doctor?.hospital_id as string);
+                            const params = new URLSearchParams();
+                            if (services) {
+                              const {stepName, serviceId} =
+                                getStepNameAndServiceId({
+                                  specialty_id: doctor?.specialty?._id || "",
+                                  services: services?.payload?.data || [],
+                                });
+                              params.append("feature", "booking.doctor");
+                              params.append(
+                                "hospitalId",
+                                doctor?.hospital_id || ""
+                              );
+                              params.append(
+                                "specialtyId",
+                                doctor?.specialty?._id || ""
+                              );
+                              params.append(
+                                "doctorId",
+                                doctor?.doctor_id || ""
+                              );
+                              params.append("stepName", stepName);
+                              params.append("serviceId", serviceId || "");
+                              router.push(
+                                `/chon-lich-kham?${params.toString()}`
+                              );
+                              router.refresh();
+                            }
+                          }}
+                        >
+                          Đặt ngay
+                        </Button>
                       </div>
                     </div>
                   ))
