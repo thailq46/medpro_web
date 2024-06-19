@@ -72,7 +72,7 @@ export default function FacilityBooking() {
     active === "all" ? hospitals?.payload?.data : hospitalDataFilter;
 
   return (
-    <div>
+    <>
       <div className={styles.bannerWrapper}>
         <div className={styles.bannerContainer}>
           <div className={styles.card}>
@@ -185,8 +185,22 @@ export default function FacilityBooking() {
               <SkeletonLoading />
             )}
           </div>
+          {!hospitalData?.length && !isLoadingHospital && (
+            <div className={styles.emptyList}>
+              <p>Không tìm thấy dữ liệu cần tìm</p>
+              <div className="w-[300px] h-[300px]">
+                <Image
+                  src="/img/EmptyList.png"
+                  width={300}
+                  height={300}
+                  alt="empty-list"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            </div>
+          )}
           <div className="mt-5">
-            {active === "all" && (
+            {active === "all" && !!hospitalData?.length && (
               <PaginationSection
                 currentPage={hospitals?.payload?.meta?.current_page as number}
                 totalPages={hospitals?.payload?.meta?.total_page as number}
@@ -196,7 +210,7 @@ export default function FacilityBooking() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

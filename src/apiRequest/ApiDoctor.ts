@@ -1,4 +1,4 @@
-import {CommonParams, ICommonAuditable} from "@/apiRequest/common";
+import {CommonParams, ICommonAuditable, IMetaData} from "@/apiRequest/common";
 import http from "@/apiRequest/http";
 
 export interface IParamsDoctor {
@@ -21,6 +21,14 @@ export interface QueryDoctorsBySpecialty {
 interface QueryDoctorsByHospital {
   search?: string;
   gender?: string;
+  position?: string;
+}
+interface QueryDoctors {
+  limit?: number;
+  page?: number;
+  hospital?: string;
+  specialty?: string;
+  search?: string;
   position?: string;
 }
 export interface IDoctorBody extends ICommonAuditable {
@@ -72,6 +80,7 @@ export interface IDoctorBody extends ICommonAuditable {
 export interface IGetListDoctorRes {
   message: string;
   data: IDoctorBody[];
+  meta: IMetaData;
 }
 
 const path = {
@@ -81,11 +90,20 @@ const path = {
 };
 
 const apiDoctor = {
+  getListDoctor: (params: QueryDoctors) =>
+    http.get<IGetListDoctorRes>(path.root, {
+      params: params as CommonParams<QueryDoctors>,
+    }),
+
   getListDoctorBySpecialtyId: (params: QueryDoctorsBySpecialty) => {
-    return http.get<IGetListDoctorRes>(path.getListDoctorBySpecialtyId, {
-      params: params as CommonParams<QueryDoctorsBySpecialty>,
-    });
+    return http.get<Omit<IGetListDoctorRes, "meta">>(
+      path.getListDoctorBySpecialtyId,
+      {
+        params: params as CommonParams<QueryDoctorsBySpecialty>,
+      }
+    );
   },
+
   getListDoctorByHospitalId: ({
     hospital_id,
     params,
@@ -93,7 +111,7 @@ const apiDoctor = {
     hospital_id: string;
     params?: QueryDoctorsByHospital;
   }) => {
-    return http.get<IGetListDoctorRes>(
+    return http.get<Omit<IGetListDoctorRes, "meta">>(
       `${path.getListDoctorByHospitalId}/${hospital_id}`,
       {params: params as CommonParams<QueryDoctorsByHospital>}
     );

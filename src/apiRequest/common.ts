@@ -57,3 +57,22 @@ export enum RoleType {
 
 export const PAGE = 1;
 export const LIMIT = 10;
+
+export const LIST_POSITION_DOCTOR = [
+  {
+    value: PositionType.MASTER,
+    label: "Thạc sĩ",
+  },
+  {
+    value: PositionType.DOCTOR,
+    label: "Tiến sĩ",
+  },
+  {
+    value: PositionType.ASSOCIATE_PROFESSOR,
+    label: "Phó giáo sư",
+  },
+  {
+    value: PositionType.PROFESSOR,
+    label: "Giáo sư",
+  },
+];
