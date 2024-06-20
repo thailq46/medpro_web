@@ -4,7 +4,7 @@ import ApiUploadImage from "@/apiRequest/ApiUploadImage";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {AvatarUpload} from "@/components/AvatarUpload";
-import {SpinnerIcon} from "@/components/Icon";
+import {ButtonSubmit} from "@/components/ButtonGlobal";
 import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
@@ -277,14 +277,13 @@ export default function UpdateMeForm() {
                 </FormItem>
               )}
             />
-            <Button
-              type="submit"
-              className={styles.btn_submit}
+            <ButtonSubmit
+              title="Cập nhật thông tin"
+              loading={loading}
               disabled={loading}
-            >
-              {loading && <SpinnerIcon className="mr-4 h-5 w-5 animate-spin" />}
-              Cập nhập thông tin
-            </Button>
+              className={styles.btn_submit}
+              classNameLoading="mr-4 h-5 w-5"
+            />
           </form>
         </Form>
       </CardContent>

@@ -5,8 +5,7 @@ import apiPayment from "@/apiRequest/ApiPayment";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
 import {QUERY_PARAMS} from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
-import {SpinnerIcon} from "@/components/Icon";
-import {Button} from "@/components/ui/button";
+import {ButtonSubmit} from "@/components/ButtonGlobal";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {
   Table,
@@ -127,23 +126,23 @@ export default function AppointmentForm() {
                       </TableCell>
                       <TableCell>
                         <div className="flex justify-end items-center">
-                          <Button
-                            size="sm"
+                          <ButtonSubmit
+                            size={"sm"}
                             disabled={
                               loading[value._id!] || value.isPayment === true
                             }
                             onClick={() =>
                               handlePayment(value?._id!, value.price!)
                             }
-                          >
-                            {value.isPayment === false &&
-                              loading[value._id!] && (
-                                <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
-                              )}
-                            {value.isPayment === true
-                              ? "Đã thanh toán"
-                              : "Thanh toán"}
-                          </Button>
+                            title={
+                              value.isPayment === true
+                                ? "Đã thanh toán"
+                                : "Thanh toán"
+                            }
+                            loading={
+                              value.isPayment === false && loading[value._id!]
+                            }
+                          />
                         </div>
                       </TableCell>
                     </TableRow>
@@ -194,20 +193,21 @@ export default function AppointmentForm() {
                       </div>
                     </div>
                     <div className="w-full mt-3">
-                      <Button
-                        className="w-full"
+                      <ButtonSubmit
+                        className="!w-full"
                         disabled={
                           loading[value._id!] || value.isPayment === true
                         }
                         onClick={() => handlePayment(value?._id!, value.price!)}
-                      >
-                        {value.isPayment === false && loading[value._id!] && (
-                          <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
-                        )}
-                        {value.isPayment === true
-                          ? "Đã thanh toán"
-                          : "Thanh toán"}
-                      </Button>
+                        title={
+                          value.isPayment === true
+                            ? "Đã thanh toán"
+                            : "Thanh toán"
+                        }
+                        loading={
+                          value.isPayment === false && loading[value._id!]
+                        }
+                      />
                     </div>
                   </div>
                 );

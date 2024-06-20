@@ -194,7 +194,7 @@ export default function ChooseDate({
                     })
                   ) : (
                     <div className="font-semibold text-red-600">
-                      Chưa cập nhập lịch làm việc
+                      Chưa cập nhật lịch làm việc
                     </div>
                   )}
                   <p className="mt-4 font-semibold text-[#d98634]">

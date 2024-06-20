@@ -3,7 +3,8 @@ import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
 import {AT_COOKIE_NAME, IStatus, RT_COOKIE_NAME} from "@/apiRequest/common";
 import {clientAccessToken} from "@/apiRequest/http";
-import {FacebookIcon, GoogleIcon, SpinnerIcon} from "@/components/Icon";
+import {ButtonSubmit} from "@/components/ButtonGlobal";
+import {FacebookIcon, GoogleIcon} from "@/components/Icon";
 import PasswordInput from "@/components/InputPassword";
 import {Button} from "@/components/ui/button";
 import {
@@ -161,12 +162,11 @@ export default function Login() {
                 >
                   Quên mật khẩu
                 </Button>
-                <Button type="submit" disabled={loading}>
-                  {loading && (
-                    <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  Đăng nhập
-                </Button>
+                <ButtonSubmit
+                  title="Đăng nhập"
+                  loading={loading}
+                  disabled={loading}
+                />
               </div>
             </form>
           </Form>

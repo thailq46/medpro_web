@@ -64,7 +64,7 @@ export default function VerifyLayout({
       ) : (
         <Button className="mt-4" asChild>
           <Link href={{pathname: "/reset-password", query: {token}}}>
-            Cập nhập mật khẩu mới
+            Cập nhật mật khẩu mới
           </Link>
         </Button>
       )}

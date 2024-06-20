@@ -254,7 +254,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                     />
                   </div>
                   <h3 className={styles.rightTitle}>
-                    {hospitalInfomation?.name || "Chưa cập nhập!!"}
+                    {hospitalInfomation?.name || "Chưa cập nhật!!"}
                   </h3>
                   <div className={styles.rightSession}>
                     <ClockIcon className="w-5 h-5 text-[#ffb54a] inline-block" />
@@ -262,7 +262,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                   </div>
                 </div>
                 <p className={styles.rightDesc}>
-                  {hospitalInfomation?.description || "Chưa cập nhập!!"}
+                  {hospitalInfomation?.description || "Chưa cập nhật!!"}
                 </p>
                 <div className={styles.rightImages}>
                   <h4>Ảnh</h4>
@@ -280,7 +280,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                       ))}
                     </div>
                   ) : (
-                    <div>Chưa cập nhập!!</div>
+                    <div>Chưa cập nhật!!</div>
                   )}
                 </div>
               </div>

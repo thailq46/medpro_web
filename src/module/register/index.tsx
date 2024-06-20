@@ -1,7 +1,8 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
-import {CalendarIcon, SpinnerIcon} from "@/components/Icon";
+import {ButtonSubmit} from "@/components/ButtonGlobal";
+import {CalendarIcon} from "@/components/Icon";
 import PasswordInput from "@/components/InputPassword";
 import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
@@ -213,12 +214,11 @@ export default function Register() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" disabled={loading}>
-                  {loading && (
-                    <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  Đăng ký
-                </Button>
+                <ButtonSubmit
+                  title="Đăng ký"
+                  loading={loading}
+                  disabled={loading}
+                />
               </div>
               <div className="!mt-14 pb-1">
                 <span className="font-bold">Have an account?</span>

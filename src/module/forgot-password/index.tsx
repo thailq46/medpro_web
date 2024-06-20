@@ -1,7 +1,7 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
-import {SpinnerIcon} from "@/components/Icon";
+import {ButtonSubmit} from "@/components/ButtonGlobal";
 import {Button} from "@/components/ui/button";
 import {
   Card,
@@ -94,12 +94,11 @@ export default function ForgotPassword() {
               <Button variant="outline" onClick={() => router.push("/login")}>
                 Cancel
               </Button>
-              <Button type="submit" disabled={loading}>
-                {loading && (
-                  <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                Gửi email
-              </Button>
+              <ButtonSubmit
+                title="Gửi email"
+                loading={loading}
+                disabled={loading}
+              />
             </CardFooter>
           </form>
         </Form>

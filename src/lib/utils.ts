@@ -82,7 +82,7 @@ export function generateDescription(slug: string): string {
       desc = "Tiêm chủng an toàn với các cơ sở bệnh viện, phòng khám uy tín";
       break;
     default:
-      desc = "Chưa cập nhập";
+      desc = "Chưa cập nhật";
       break;
   }
   return desc;

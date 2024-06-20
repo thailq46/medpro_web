@@ -1,7 +1,7 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
-import {SpinnerIcon} from "@/components/Icon";
+import {ButtonSubmit} from "@/components/ButtonGlobal";
 import PasswordInput from "@/components/InputPassword";
 import {Button} from "@/components/ui/button";
 import {
@@ -72,7 +72,7 @@ export default function ResetPassword() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <CardHeader>
               <CardTitle className="text-xl font-bold border-b border-gray-300 pb-2">
-                Cập nhập mật khẩu mới
+                Cập nhật mật khẩu mới
               </CardTitle>
             </CardHeader>
             <CardContent className="!mt-0">
@@ -107,12 +107,11 @@ export default function ResetPassword() {
               <Button variant="outline" onClick={() => router.push("/login")}>
                 Cancel
               </Button>
-              <Button type="submit" disabled={loading}>
-                {loading && (
-                  <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                Cập nhập nhập mật khẩu
-              </Button>
+              <ButtonSubmit
+                title="Cập nhật mật khẩu"
+                loading={loading}
+                disabled={loading}
+              />
             </CardFooter>
           </form>
         </Form>

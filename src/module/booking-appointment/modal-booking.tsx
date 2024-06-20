@@ -5,7 +5,8 @@ import {IServiceBody} from "@/apiRequest/ApiService";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
 import {BOOKING, PARAMS} from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
-import {CalendarIcon, SpinnerIcon} from "@/components/Icon";
+import {ButtonSubmit} from "@/components/ButtonGlobal";
+import {CalendarIcon} from "@/components/Icon";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -314,12 +315,12 @@ export function ModalBookingAppointment({
               <Button onClick={() => setIsOpen(false)} variant="outline">
                 Huỷ
               </Button>
-              <Button type="submit" onClick={handleOke} disabled={loading}>
-                {loading && (
-                  <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                Đặt lịch khám bệnh
-              </Button>
+              <ButtonSubmit
+                title="Đặt lịch khám bệnh"
+                loading={loading}
+                disabled={loading}
+                onClick={handleOke}
+              />
             </div>
           </form>
         </Form>

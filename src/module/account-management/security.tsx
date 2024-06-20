@@ -3,7 +3,7 @@ import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
 import {VerifyStatus} from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
-import {SpinnerIcon} from "@/components/Icon";
+import {ButtonSubmit} from "@/components/ButtonGlobal";
 import PasswordInput from "@/components/InputPassword";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
@@ -143,12 +143,12 @@ export default function SecurityForm() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" disabled={loading} className="w-full">
-                    {loading && (
-                      <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    Cập nhập mật khẩu
-                  </Button>
+                  <ButtonSubmit
+                    disabled={loading}
+                    loading={loading}
+                    className="w-full"
+                    title="Cập nhật mật khẩu"
+                  />
                 </form>
               </Form>
             </PopoverContent>
@@ -180,18 +180,16 @@ export default function SecurityForm() {
               </>
             )}
           </div>
-          <Button
-            type="submit"
+          <ButtonSubmit
             variant="outline"
             disabled={
               (user?.verify === VerifyStatus.UNVERIFIED && loading) || disabled
             }
             className="text-xs"
             onClick={handleResendVerifyEmail}
-          >
-            {loading && <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />}
-            Verify email
-          </Button>
+            loading={loading}
+            title=" Verify email"
+          />
         </div>
       </CardContent>
     </Card>
