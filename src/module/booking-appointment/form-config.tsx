@@ -1,7 +1,11 @@
+import {REGEX_NO_SPACE} from "@/lib/regex";
 import {
-  REGEX_NO_SPACE,
-  REGEX_PHONE_VN,
-} from "@/module/account-management/form-config";
+  addressSchema,
+  dateOfBirthSchema,
+  emailSchema,
+  genderSchema,
+  phoneNumberSchema,
+} from "@/lib/schema";
 import {z} from "zod";
 
 export const BookingBody = z.object({
@@ -9,16 +13,8 @@ export const BookingBody = z.object({
     .string()
     .min(1, {message: "Họ và tên không được để trống"})
     .max(100, {message: "Họ và tên không được quá 100 ký tự"}),
-  phone_number: z.string().regex(REGEX_PHONE_VN, {
-    message: "Số điện thoại không hợp lệ",
-  }),
-  address: z
-    .string()
-    .trim()
-    .max(255, {message: "Địa chỉ không được vượt quá 255 kí tự"})
-    .regex(REGEX_NO_SPACE, {
-      message: "Không được chỉ chứa khoảng trắng",
-    }),
+  phone_number: phoneNumberSchema,
+  address: addressSchema,
   reason: z
     .string()
     .min(1, {message: "Lý do không được để trống"})
@@ -26,11 +22,9 @@ export const BookingBody = z.object({
     .regex(REGEX_NO_SPACE, {
       message: "Không được chỉ chứa khoảng trắng",
     }),
-  gender: z.number().int(),
-  date_of_birth: z.date({
-    required_error: "Ngày sinh không được để trống",
-  }),
-  email: z.string().email({message: "Email không hợp lệ"}),
+  gender: genderSchema,
+  date_of_birth: dateOfBirthSchema,
+  email: emailSchema,
 });
 
 export type BookingBodyType = z.TypeOf<typeof BookingBody>;

@@ -33,7 +33,7 @@ export class HttpError extends Error {
 }
 
 export class EntityError extends HttpError {
-  status = 422;
+  status = IStatus.UNPROCESSABLE_ENTITY;
   payload: EntityErrorPayload;
   constructor({
     status,
@@ -51,10 +51,6 @@ export class EntityError extends HttpError {
 type CustomOptions = Omit<IFetcherOptions, "method"> & {
   baseUrl?: string | undefined;
 };
-
-export const ENTITY_ERROR_STATUS = 422;
-const AUTHENTICATION_ERROR_STATUS = 401;
-const BAD_REQUEST_ERROR_STATUS = 400;
 
 interface IFetcherOptions extends RequestInit {
   params?: ParamsType;
@@ -143,7 +139,7 @@ const request = async <TResponse>(
 
   // Interceptor
   if (!res.ok) {
-    if (res.status === ENTITY_ERROR_STATUS) {
+    if (res.status === IStatus.UNPROCESSABLE_ENTITY) {
       const dataError: IDataError = {
         errorCode: "unique.ValidatorInvalid",
         errorMessage: "Lỗi validate",
@@ -155,7 +151,7 @@ const request = async <TResponse>(
           payload: EntityErrorPayload;
         }
       );
-    } else if (res.status === AUTHENTICATION_ERROR_STATUS) {
+    } else if (res.status === IStatus.UNAUTHORIZED) {
       if (typeof window !== undefined) {
         if (!clientLogoutRequest) {
           clientLogoutRequest = fetch("/api/auth/logout", {
@@ -174,7 +170,7 @@ const request = async <TResponse>(
           redirect(`/login`);
         }
       }
-    } else if (res.status === BAD_REQUEST_ERROR_STATUS) {
+    } else if (res.status === IStatus.ERROR) {
       toast({
         title: "Lỗi 400",
         description: (data.payload as any).message || "Xóa thất bại",

@@ -11,29 +11,30 @@ import {DoubleArrowRightIcon} from "@radix-ui/react-icons";
 import Image from "next/image";
 import styles from "./HomeNews.module.scss";
 
+const newsFeed = [
+  {
+    img: "/img/news2.png",
+    title: "Viêm phổi ở trẻ em: nguyên nhân và triệu chứng cần lưu ý",
+    time: "21/05/2024, 10:01 - BS.ĐOÀN TRỊNH NHÃ KHANH",
+  },
+  {
+    img: "/img/news3.png",
+    title: "Khám mạch máu là khám gì? Địa chỉ nào khám mạch máu uy tín?",
+    time: "21/05/2024, 10:01 - BS.ĐOÀN TRỊNH NHÃ KHANH",
+  },
+  {
+    img: "/img/news4.png",
+    title: "Dấu hiệu viêm phổi ở trẻ phụ huynh cần lưu ý",
+    time: "21/05/2024, 10:01 - BS.ĐOÀN TRỊNH NHÃ KHANH",
+  },
+  {
+    img: "/img/news5.png",
+    title: "Viêm phổi ở trẻ sơ sinh: Nguyên nhân, dấu hiệu, phòng ngừa",
+    time: "21/05/2024, 10:01 - BS.ĐOÀN TRỊNH NHÃ KHANH",
+  },
+];
+
 export default function HomeNews() {
-  const newsFeed = [
-    {
-      img: "/img/news2.png",
-      title: "Viêm phổi ở trẻ em: nguyên nhân và triệu chứng cần lưu ý",
-      time: "21/05/2024, 10:01 - BS.ĐOÀN TRỊNH NHÃ KHANH",
-    },
-    {
-      img: "/img/news3.png",
-      title: "Khám mạch máu là khám gì? Địa chỉ nào khám mạch máu uy tín?",
-      time: "21/05/2024, 10:01 - BS.ĐOÀN TRỊNH NHÃ KHANH",
-    },
-    {
-      img: "/img/news4.png",
-      title: "Dấu hiệu viêm phổi ở trẻ phụ huynh cần lưu ý",
-      time: "21/05/2024, 10:01 - BS.ĐOÀN TRỊNH NHÃ KHANH",
-    },
-    {
-      img: "/img/news5.png",
-      title: "Viêm phổi ở trẻ sơ sinh: Nguyên nhân, dấu hiệu, phòng ngừa",
-      time: "21/05/2024, 10:01 - BS.ĐOÀN TRỊNH NHÃ KHANH",
-    },
-  ];
   return (
     <section className={`home-news ${styles.container}`}>
       <div className={styles.main}>

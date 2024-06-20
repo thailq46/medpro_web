@@ -1,7 +1,7 @@
 "use client";
 import apiCategoryRequest from "@/apiRequest/ApiCategory";
 import apiHospital, {IHospitalBody} from "@/apiRequest/ApiHospital";
-import {HospitalsType, LIMIT, PAGE} from "@/apiRequest/common";
+import {HospitalsType, LIMIT, PAGE, QUERY_PARAMS} from "@/apiRequest/common";
 import {LocationIcon} from "@/components/Icon";
 import PaginationSection from "@/components/PaginationSection";
 import {
@@ -52,8 +52,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
 
   const {data: categories, isLoading: isLoadingCategory} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_CATEGORY],
-    queryFn: async () =>
-      await apiCategoryRequest.getListCategory({page: 1, limit: 99}),
+    queryFn: async () => await apiCategoryRequest.getListCategory(QUERY_PARAMS),
   });
 
   const {data: hospitals, isLoading: isLoadingHospital} = useQuery({

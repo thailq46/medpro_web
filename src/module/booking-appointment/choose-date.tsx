@@ -2,7 +2,7 @@
 import {IDoctorBody} from "@/apiRequest/ApiDoctor";
 import apiSchedule from "@/apiRequest/ApiSchedule";
 import {IServiceBody} from "@/apiRequest/ApiService";
-import {RoleType, VerifyStatus} from "@/apiRequest/common";
+import {QUERY_PARAMS, RoleType, VerifyStatus} from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {ModalConfirmCustom} from "@/components/ModalComfirm";
 import {Button} from "@/components/ui/button";
@@ -48,12 +48,12 @@ export default function ChooseDate({
   const {data: schedule, isLoading} = useQuery({
     queryKey: [
       QUERY_KEY.GET_SCHEDULE_BY_DOCTOR_ID,
-      {doctor_id: doctorId, params: {limit: 99, page: 1, date}},
+      {doctor_id: doctorId, params: {...QUERY_PARAMS, date}},
     ],
     queryFn: () =>
       apiSchedule.getListScheduleByDoctorId({
         doctor_id: doctorId ?? "",
-        params: {limit: 99, page: 1, date},
+        params: {...QUERY_PARAMS, date},
       }),
     enabled: !!doctorId,
   });

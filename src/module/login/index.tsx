@@ -1,6 +1,7 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
+import {IStatus} from "@/apiRequest/common";
 import {clientAccessToken} from "@/apiRequest/http";
 import {FacebookIcon, GoogleIcon} from "@/components/Icon";
 import PasswordInput from "@/components/InputPassword";
@@ -51,7 +52,7 @@ export default function Login() {
     setLoading(true);
     try {
       const result = await apiAuthRequest.login(values);
-      if (result.status === 200) {
+      if (result.status === IStatus.SUCCESS) {
         toast({
           title: "Thành công",
           description: result.payload.message,

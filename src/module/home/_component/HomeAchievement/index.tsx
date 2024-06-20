@@ -1,41 +1,42 @@
 import Image from "next/image";
 import styles from "./HomeAchievement.module.scss";
 
+const logos = [
+  {
+    img: "/img/thanh-nien-logo.png",
+    alt: "Báo thanh niên",
+  },
+  {
+    img: "/img/tuoi-tre-logo.png",
+    alt: "Báo tuổi trẻ",
+  },
+  {
+    img: "/img/bao-nhan-dan.png",
+    alt: "Báo nhân dân",
+  },
+  {
+    img: "/img/nguoi-lao-dong-logo.png",
+    alt: "Báo người lao động",
+  },
+  {
+    img: "/img/htv.png",
+    alt: "HTV",
+  },
+  {
+    img: "/img/btv-logo.svg",
+    alt: "BTV",
+  },
+  {
+    img: "/img/vtv1-logo.png",
+    alt: "VTV1",
+  },
+  {
+    img: "/img/thvl-logo.png",
+    alt: "THVL",
+  },
+];
+
 export default function HomeAchievement() {
-  const logos = [
-    {
-      img: "/img/thanh-nien-logo.png",
-      alt: "Báo thanh niên",
-    },
-    {
-      img: "/img/tuoi-tre-logo.png",
-      alt: "Báo tuổi trẻ",
-    },
-    {
-      img: "/img/bao-nhan-dan.png",
-      alt: "Báo nhân dân",
-    },
-    {
-      img: "/img/nguoi-lao-dong-logo.png",
-      alt: "Báo người lao động",
-    },
-    {
-      img: "/img/htv.png",
-      alt: "HTV",
-    },
-    {
-      img: "/img/btv-logo.svg",
-      alt: "BTV",
-    },
-    {
-      img: "/img/vtv1-logo.png",
-      alt: "VTV1",
-    },
-    {
-      img: "/img/thvl-logo.png",
-      alt: "THVL",
-    },
-  ];
   return (
     <section className={`home-achievement ${styles.container}`}>
       <div className={styles.main}>

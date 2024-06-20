@@ -1,5 +1,6 @@
 "use client";
 import apiHospital from "@/apiRequest/ApiHospital";
+import {QUERY_PARAMS} from "@/apiRequest/common";
 import {Card, CardContent} from "@/components/ui/card";
 import {
   Carousel,
@@ -16,7 +17,7 @@ import styles from "./HomeHospital.module.scss";
 export default function HomeHospital() {
   const {data: hospitals} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_HOSPITALS],
-    queryFn: async () => apiHospital.getListHospital({limit: 99, page: 1}),
+    queryFn: async () => apiHospital.getListHospital(QUERY_PARAMS),
   });
 
   return (

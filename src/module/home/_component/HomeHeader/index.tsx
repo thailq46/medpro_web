@@ -12,15 +12,17 @@ import Link from "next/link";
 import {ChangeEvent, useState} from "react";
 import styles from "./HomeHeader.module.scss";
 
+const LIMIT = 4;
+
 export default function HomeHeader() {
   const [value, setValue] = useState("");
   const {data, isLoading} = useQuery({
     queryKey: [
       QUERY_KEY.GET_SEARCH,
-      {category: "all", limit: 4, search_key: value},
+      {category: "all", limit: LIMIT, search_key: value},
     ],
     queryFn: () =>
-      apiSearch.search({category: "all", limit: 4, search_key: value}),
+      apiSearch.search({category: "all", limit: LIMIT, search_key: value}),
   });
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);

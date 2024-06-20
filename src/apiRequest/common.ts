@@ -5,9 +5,13 @@ export type ParamsType = Record<
   string,
   string | number | boolean | string[] | number[] | boolean[]
 >;
+
 export enum IStatus {
   SUCCESS = 200,
   ERROR = 400,
+  UNAUTHORIZED = 401,
+  UNPROCESSABLE_ENTITY = 422,
+  INTERNAL_SERVER_ERROR = 500,
 }
 
 export interface IMetaData {
@@ -27,6 +31,7 @@ export type CommonParams<T> = Record<
   keyof T,
   string | number | boolean | string[] | number[] | boolean[]
 >;
+
 export enum HospitalsType {
   BENHVIENCONG = 0,
   BENHVIENTU = 1,
@@ -36,6 +41,7 @@ export enum HospitalsType {
   YTETAINHA = 5,
   TIEMCHUNG = 6,
 }
+
 export enum PositionType {
   NONE = 0, // Người dùng
   MASTER = 1, // Thạc sĩ
@@ -57,6 +63,10 @@ export enum RoleType {
 
 export const PAGE = 1;
 export const LIMIT = 10;
+export const QUERY_PARAMS = {
+  page: 1,
+  limit: 99,
+} as const;
 
 export const LIST_POSITION_DOCTOR = [
   {

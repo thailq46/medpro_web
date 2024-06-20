@@ -3,6 +3,7 @@ import apiAppointment from "@/apiRequest/ApiAppointment";
 import apiHospital from "@/apiRequest/ApiHospital";
 import apiPayment from "@/apiRequest/ApiPayment";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
+import {QUERY_PARAMS} from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
@@ -41,7 +42,7 @@ export default function AppointmentForm() {
 
   const {data: hospital} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_HOSPITALS],
-    queryFn: () => apiHospital.getListHospital({limit: 99, page: 1}),
+    queryFn: () => apiHospital.getListHospital(QUERY_PARAMS),
   });
 
   const handlePayment = async (id: string, price: number) => {

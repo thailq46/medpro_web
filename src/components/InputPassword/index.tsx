@@ -1,9 +1,9 @@
 "use client";
-import {forwardRef, useState} from "react";
 import {Button} from "@/components/ui/button";
 import {Input, InputProps} from "@/components/ui/input";
 import {cn} from "@/lib/utils";
-import {EyeOpenIcon, EyeClosedIcon} from "@radix-ui/react-icons";
+import {EyeClosedIcon, EyeOpenIcon} from "@radix-ui/react-icons";
+import {forwardRef, useState} from "react";
 
 const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
   ({className, ...props}, ref) => {

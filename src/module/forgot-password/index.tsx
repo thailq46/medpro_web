@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {useToast} from "@/components/ui/use-toast";
+import {emailSchema} from "@/lib/schema";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ReloadIcon} from "@radix-ui/react-icons";
 import {useRouter} from "next/navigation";
@@ -27,9 +28,7 @@ import {useForm} from "react-hook-form";
 import {z} from "zod";
 
 const formSchema = z.object({
-  email: z.string().email({
-    message: "Email không hợp lệ",
-  }),
+  email: emailSchema,
 });
 
 export default function ForgotPassword() {

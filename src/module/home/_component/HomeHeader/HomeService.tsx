@@ -1,5 +1,6 @@
 "use client";
 import apiMedicalBookingForms from "@/apiRequest/ApiMedicalBookingForms";
+import {QUERY_PARAMS} from "@/apiRequest/common";
 import {Card, CardContent} from "@/components/ui/card";
 import {
   Carousel,
@@ -17,10 +18,7 @@ export default function HomeService() {
   const {data: medicalBookingForms} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_MEDICAL_BOOKING_FORMS],
     queryFn: async () =>
-      await apiMedicalBookingForms.getListMedicalBookingForms({
-        limit: 99,
-        page: 1,
-      }),
+      await apiMedicalBookingForms.getListMedicalBookingForms(QUERY_PARAMS),
   });
   return (
     <div className={styles.services}>

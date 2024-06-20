@@ -1,4 +1,9 @@
-import {REGEX_STRING, REGEX_SYMBOL} from "@/lib/regex";
+import {
+  REGEX_NO_SPACE,
+  REGEX_PHONE_VN,
+  REGEX_STRING,
+  REGEX_SYMBOL,
+} from "@/lib/regex";
 import {z} from "zod";
 
 export const passwordSchema = z
@@ -29,3 +34,15 @@ export const dateOfBirthSchema = z.date({
 });
 
 export const emailSchema = z.string().email({message: "Email không hợp lệ"});
+
+export const addressSchema = z
+  .string()
+  .trim()
+  .max(255, {message: "Địa chỉ không được vượt quá 255 kí tự"})
+  .regex(REGEX_NO_SPACE, {
+    message: "Không được chỉ chứa khoảng trắng",
+  });
+
+export const phoneNumberSchema = z.string().regex(REGEX_PHONE_VN, {
+  message: "Số điện thoại không hợp lệ",
+});

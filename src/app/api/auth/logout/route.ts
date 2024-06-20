@@ -1,5 +1,5 @@
 import apiAuthRequest from "@/apiRequest/ApiAuth";
-import {AT_COOKIE_NAME, RT_COOKIE_NAME} from "@/apiRequest/common";
+import {AT_COOKIE_NAME, IStatus, RT_COOKIE_NAME} from "@/apiRequest/common";
 import {HttpError} from "@/apiRequest/http";
 import {cookies} from "next/headers";
 
@@ -11,14 +11,17 @@ export async function POST(request: Request) {
   if (force) {
     cookies().delete(RT_COOKIE_NAME);
     cookies().delete(AT_COOKIE_NAME);
-    return Response.json({message: "Bạn buộc phải đăng xuất"}, {status: 200});
+    return Response.json(
+      {message: "Bạn buộc phải đăng xuất"},
+      {status: IStatus.SUCCESS}
+    );
   }
   const accessToken = cookieStore.get(AT_COOKIE_NAME);
   const refreshToken = cookieStore.get(RT_COOKIE_NAME);
   if (!accessToken || !refreshToken) {
     return Response.json(
       {message: "Không nhận được access_token và refresh_token"},
-      {status: 401}
+      {status: IStatus.UNAUTHORIZED}
     );
   }
   try {
@@ -29,7 +32,7 @@ export async function POST(request: Request) {
     cookies().delete(RT_COOKIE_NAME);
     cookies().delete(AT_COOKIE_NAME);
     return Response.json(res.payload, {
-      status: 200,
+      status: IStatus.SUCCESS,
       // headers: {
       //    "Set-Cookie": `accessToken= ; Path=/; HttpOnly; Max-Age=0`,
       // },
@@ -40,7 +43,10 @@ export async function POST(request: Request) {
         status: error.status,
       });
     } else {
-      return Response.json({message: "Lỗi không xác định"}, {status: 500});
+      return Response.json(
+        {message: "Lỗi không xác định"},
+        {status: IStatus.INTERNAL_SERVER_ERROR}
+      );
     }
   }
 }

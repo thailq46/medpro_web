@@ -1,6 +1,7 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import apiCategoryRequest, {ICategoryBody} from "@/apiRequest/ApiCategory";
+import {QUERY_PARAMS} from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {ModalConfirmCustom} from "@/components/ModalComfirm";
 import {
@@ -57,8 +58,7 @@ export default function Navbar() {
   const {user} = useContext(AppContext);
   const {data} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_CATEGORY],
-    queryFn: async () =>
-      await apiCategoryRequest.getListCategory({page: 1, limit: 99}),
+    queryFn: async () => await apiCategoryRequest.getListCategory(QUERY_PARAMS),
   });
 
   const categoryData = useMemo(() => {

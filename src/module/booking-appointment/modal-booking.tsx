@@ -119,8 +119,6 @@ export function ModalBookingAppointment({
       router.refresh();
       router.push("/");
     } catch (error) {
-      setLoading(false);
-      form.setValue("reason", "");
       handleErrorApi({error, setError: form.setError, duration: 3000});
     } finally {
       form.setValue("reason", "");

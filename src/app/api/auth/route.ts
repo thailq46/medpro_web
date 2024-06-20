@@ -1,4 +1,4 @@
-import {RT_COOKIE_NAME} from "@/apiRequest/common";
+import {IStatus, RT_COOKIE_NAME} from "@/apiRequest/common";
 import {cookies} from "next/headers";
 
 export async function POST(request: Request) {
@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   if (!access_token && !refresh_token) {
     return Response.json(
       {message: "Không nhận được access_token và refresh_token"},
-      {status: 400}
+      {status: IStatus.ERROR}
     );
   }
   cookies().set(RT_COOKIE_NAME, refresh_token, {
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
   });
   const expiredDate = new Date(expiresAt * 1000).toUTCString();
   return Response.json(body, {
-    status: 200,
+    status: IStatus.SUCCESS,
     headers: {
       "Set-Cookie": `accessToken=${access_token}; Path=/; HttpOnly; Expires=${expiredDate}; SameSite=Lax; Secure`,
     },

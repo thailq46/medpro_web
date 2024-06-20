@@ -5,6 +5,7 @@ import Navbar from "@/components/Layout/Navbar";
 import NextTopLoader from "nextjs-toploader";
 import React from "react";
 import styles from "./DashboardLayout.module.scss";
+
 export default function DashBoardLayout({
   children,
 }: {

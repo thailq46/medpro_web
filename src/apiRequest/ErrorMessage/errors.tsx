@@ -1,4 +1,5 @@
-import {ENTITY_ERROR_STATUS, EntityError, IDataError} from "@/apiRequest/http";
+import {IStatus} from "@/apiRequest/common";
+import {EntityError, IDataError} from "@/apiRequest/http";
 import {toast} from "@/components/ui/use-toast";
 import {UseFormSetError} from "react-hook-form";
 
@@ -47,7 +48,7 @@ export const handleErrorApi = ({
       };
     };
     const status = error.status as number;
-    if (status === ENTITY_ERROR_STATUS) {
+    if (status === IStatus.UNPROCESSABLE_ENTITY) {
       Object.keys(errors).forEach((key) => {
         const errorDetail = errors[key];
         setError(key, {

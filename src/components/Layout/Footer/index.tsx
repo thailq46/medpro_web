@@ -8,83 +8,84 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./Footer.module.scss";
 
+const footerList = [
+  {
+    title: "Dịch vụ Y tế",
+    items: [
+      "Đặt khám tại cơ sở",
+      "Đặt khám theo bác sĩ",
+      "Tư vấn khám bệnh qua video",
+      "Đặt lịch xét nghiệm",
+      "Gói khám sức khỏe",
+      "Đặt lịch tiêm chủng",
+      "Y tế tại nhà",
+      "Thanh toán Viện phí",
+    ],
+  },
+  {
+    title: "Cơ sở y tế",
+    items: [
+      "Bệnh viện công",
+      "Bệnh viện tư",
+      "Phòng khám",
+      "Phòng mạch",
+      "Xét nghiệm",
+      "Y tế tại nhà",
+      "Tiêm chủng",
+    ],
+  },
+  {
+    title: "Hướng dẫn",
+    items: [
+      "Cài đặt ứng dụng",
+      "Đặt lịch khám",
+      "Quy trình hoàn phí",
+      "Câu hỏi thường gặp",
+    ],
+  },
+  {
+    title: "Liên hệ hợp tác",
+    items: [
+      "Tham gia Medpro",
+      "Khám sức khỏe doanh nghiệp",
+      "Quảng cáo",
+      "Tuyển Dụng",
+    ],
+  },
+  {
+    title: "Tin tức",
+    items: ["Tin dịch vụ", "Tin Y Tế", "Y Học thường thức"],
+  },
+  {
+    title: "Về Medpro",
+    items: [
+      "Giới thiệu",
+      "Điều khoản dịch vụ",
+      "Chính sách bảo mật",
+      "Quy định sử dụng",
+    ],
+  },
+];
+const orders = [
+  {
+    img: "/img/dadangky.png",
+    alt: "Đã đăng ký",
+  },
+  {
+    img: "/img/bocongthuong.png",
+    alt: "Bộ Công Thương",
+  },
+  {
+    img: "/img/icon_ios.svg",
+    alt: "IOS",
+  },
+  {
+    img: "/img/icon_google_play.svg",
+    alt: "Google Play",
+  },
+];
+
 export default function Footer() {
-  const footerList = [
-    {
-      title: "Dịch vụ Y tế",
-      items: [
-        "Đặt khám tại cơ sở",
-        "Đặt khám theo bác sĩ",
-        "Tư vấn khám bệnh qua video",
-        "Đặt lịch xét nghiệm",
-        "Gói khám sức khỏe",
-        "Đặt lịch tiêm chủng",
-        "Y tế tại nhà",
-        "Thanh toán Viện phí",
-      ],
-    },
-    {
-      title: "Cơ sở y tế",
-      items: [
-        "Bệnh viện công",
-        "Bệnh viện tư",
-        "Phòng khám",
-        "Phòng mạch",
-        "Xét nghiệm",
-        "Y tế tại nhà",
-        "Tiêm chủng",
-      ],
-    },
-    {
-      title: "Hướng dẫn",
-      items: [
-        "Cài đặt ứng dụng",
-        "Đặt lịch khám",
-        "Quy trình hoàn phí",
-        "Câu hỏi thường gặp",
-      ],
-    },
-    {
-      title: "Liên hệ hợp tác",
-      items: [
-        "Tham gia Medpro",
-        "Khám sức khỏe doanh nghiệp",
-        "Quảng cáo",
-        "Tuyển Dụng",
-      ],
-    },
-    {
-      title: "Tin tức",
-      items: ["Tin dịch vụ", "Tin Y Tế", "Y Học thường thức"],
-    },
-    {
-      title: "Về Medpro",
-      items: [
-        "Giới thiệu",
-        "Điều khoản dịch vụ",
-        "Chính sách bảo mật",
-        "Quy định sử dụng",
-      ],
-    },
-  ];
-  const orders = [
-    {
-      img: "/img/dadangky.png",
-      alt: "Đã đăng ký",
-    },
-    {
-      img: "/img/bocongthuong.png",
-      alt: "Bộ Công Thương",
-    },
-    {
-      img: "/img/icon_ios.svg",
-      alt: "IOS",
-    },
-    {
-      img: "/img/icon_google_play.svg",
-      alt: "Google Play",
-    },
-  ];
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
