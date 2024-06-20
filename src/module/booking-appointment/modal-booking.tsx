@@ -5,7 +5,7 @@ import {IServiceBody} from "@/apiRequest/ApiService";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
 import {BOOKING, PARAMS} from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
-import {CalendarIcon} from "@/components/Icon";
+import {CalendarIcon, SpinnerIcon} from "@/components/Icon";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -40,7 +40,6 @@ import {
   BookingBodyType,
 } from "@/module/booking-appointment/form-config";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {ReloadIcon} from "@radix-ui/react-icons";
 import {format} from "date-fns";
 import {vi} from "date-fns/locale";
 import Image from "next/image";
@@ -317,7 +316,7 @@ export function ModalBookingAppointment({
               </Button>
               <Button type="submit" onClick={handleOke} disabled={loading}>
                 {loading && (
-                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
                 )}
                 Đặt lịch khám bệnh
               </Button>

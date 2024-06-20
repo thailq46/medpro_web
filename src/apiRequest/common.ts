@@ -98,6 +98,17 @@ export const TYPE_SERVICE = {
   VACCINE: "vaccine",
 } as const;
 
+export const CATE = {
+  CSYT: "co-so-y-te",
+  DVYT: "dich-vu-y-te",
+  KSKDN: "kham-suc-khoe-doanh-nghiep",
+  TINTUC: "tin-tuc",
+  HUONGDAN: "huong-dan",
+  LHHT: "lien-he-hop-tac",
+} as const;
+
+export const HINH_THUC_DAT_KHAM = "hinh-thuc-dat-kham";
+
 export const LIST_POSITION_DOCTOR = [
   {
     value: PositionType.MASTER,

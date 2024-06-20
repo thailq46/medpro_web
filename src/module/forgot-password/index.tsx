@@ -1,6 +1,7 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
+import {SpinnerIcon} from "@/components/Icon";
 import {Button} from "@/components/ui/button";
 import {
   Card,
@@ -21,7 +22,6 @@ import {Input} from "@/components/ui/input";
 import {useToast} from "@/components/ui/use-toast";
 import {emailSchema} from "@/lib/schema";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {ReloadIcon} from "@radix-ui/react-icons";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
@@ -96,7 +96,7 @@ export default function ForgotPassword() {
               </Button>
               <Button type="submit" disabled={loading}>
                 {loading && (
-                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
                 )}
                 Gửi email
               </Button>

@@ -5,6 +5,7 @@ import apiPayment from "@/apiRequest/ApiPayment";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
 import {QUERY_PARAMS} from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
+import {SpinnerIcon} from "@/components/Icon";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {
@@ -17,11 +18,7 @@ import {
 } from "@/components/ui/table";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import {renderPosition} from "@/lib/utils";
-import {
-  CheckCircledIcon,
-  CrossCircledIcon,
-  ReloadIcon,
-} from "@radix-ui/react-icons";
+import {CheckCircledIcon, CrossCircledIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
@@ -141,7 +138,7 @@ export default function AppointmentForm() {
                           >
                             {value.isPayment === false &&
                               loading[value._id!] && (
-                                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                                <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
                               )}
                             {value.isPayment === true
                               ? "Đã thanh toán"
@@ -154,6 +151,7 @@ export default function AppointmentForm() {
                 })}
               </TableBody>
             </Table>
+            {/* TABLET */}
             <div className={index.appointmentTablet}>
               {appointment?.payload?.data.map((value) => {
                 const hospitalName = hospital?.payload?.data.find(
@@ -204,7 +202,7 @@ export default function AppointmentForm() {
                         onClick={() => handlePayment(value?._id!, value.price!)}
                       >
                         {value.isPayment === false && loading[value._id!] && (
-                          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                          <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
                         )}
                         {value.isPayment === true
                           ? "Đã thanh toán"

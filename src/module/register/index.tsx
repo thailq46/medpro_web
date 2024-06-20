@@ -1,7 +1,7 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
-import {CalendarIcon} from "@/components/Icon";
+import {CalendarIcon, SpinnerIcon} from "@/components/Icon";
 import PasswordInput from "@/components/InputPassword";
 import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
@@ -27,7 +27,7 @@ import {useToast} from "@/components/ui/use-toast";
 import {cn} from "@/lib/utils";
 import {RegisterBody, RegisterBodyType} from "@/module/register/form-config";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {ArrowRightIcon, ReloadIcon} from "@radix-ui/react-icons";
+import {ArrowRightIcon} from "@radix-ui/react-icons";
 import clsx from "clsx";
 import {format} from "date-fns";
 import {vi} from "date-fns/locale";
@@ -215,7 +215,7 @@ export default function Register() {
                 />
                 <Button type="submit" disabled={loading}>
                   {loading && (
-                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                    <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
                   )}
                   Đăng ký
                 </Button>

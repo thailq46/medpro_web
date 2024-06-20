@@ -4,6 +4,7 @@ import ApiUploadImage from "@/apiRequest/ApiUploadImage";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {AvatarUpload} from "@/components/AvatarUpload";
+import {SpinnerIcon} from "@/components/Icon";
 import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
@@ -33,7 +34,7 @@ import {
   AccountBodyType,
 } from "@/module/account-management/form-config";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {CalendarIcon, ReloadIcon} from "@radix-ui/react-icons";
+import {CalendarIcon} from "@radix-ui/react-icons";
 import {format} from "date-fns";
 import {vi} from "date-fns/locale";
 import {useRouter} from "next/navigation";
@@ -281,7 +282,7 @@ export default function UpdateMeForm() {
               className={styles.btn_submit}
               disabled={loading}
             >
-              {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+              {loading && <SpinnerIcon className="mr-4 h-5 w-5 animate-spin" />}
               Cập nhập thông tin
             </Button>
           </form>

@@ -3,6 +3,7 @@ import apiAuthRequest from "@/apiRequest/ApiAuth";
 import apiCategoryRequest, {ICategoryBody} from "@/apiRequest/ApiCategory";
 import {
   AT_COOKIE_NAME,
+  CATE,
   QUERY_PARAMS,
   RT_COOKIE_NAME,
 } from "@/apiRequest/common";
@@ -73,22 +74,22 @@ export default function Navbar() {
       if (category.parent_id === null) {
         let icon = "";
         switch (category.slug) {
-          case "co-so-y-te":
+          case CATE.CSYT:
             icon = "/tablet/CSYT.svg";
             break;
-          case "dich-vu-y-te":
+          case CATE.DVYT:
             icon = "/tablet/DVYT.svg";
             break;
-          case "kham-suc-khoe-doanh-nghiep":
+          case CATE.KSKDN:
             icon = "/tablet/DVYT.svg";
             break;
-          case "tin-tuc":
+          case CATE.TINTUC:
             icon = "/tablet/TinTuc.svg";
             break;
-          case "huong-dan":
+          case CATE.HUONGDAN:
             icon = "/tablet/HuongDan.svg";
             break;
-          case "lien-he-hop-tac":
+          case CATE.LHHT:
             icon = "/tablet/Contact.svg";
             break;
           default:
@@ -147,10 +148,10 @@ export default function Navbar() {
               <MenubarTrigger>
                 <Link
                   href={
-                    category.slug === "dich-vu-y-te"
+                    category.slug === CATE.DVYT
                       ? "#"
-                      : category.slug === "co-so-y-te"
-                      ? "/co-so-y-te"
+                      : category.slug === CATE.CSYT
+                      ? `/${CATE.CSYT}`
                       : `/${category.slug}`
                   }
                 >

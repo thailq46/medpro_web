@@ -3,6 +3,7 @@ import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
 import {VerifyStatus} from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
+import {SpinnerIcon} from "@/components/Icon";
 import PasswordInput from "@/components/InputPassword";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
@@ -22,7 +23,6 @@ import {
   ChangePasswordBodyType,
 } from "@/module/account-management/form-config";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {ReloadIcon} from "@radix-ui/react-icons";
 import {useRouter} from "next/navigation";
 import {useContext, useState} from "react";
 import {useForm} from "react-hook-form";
@@ -145,7 +145,7 @@ export default function SecurityForm() {
                   />
                   <Button type="submit" disabled={loading} className="w-full">
                     {loading && (
-                      <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                      <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
                     )}
                     Cập nhập mật khẩu
                   </Button>
@@ -189,7 +189,7 @@ export default function SecurityForm() {
             className="text-xs"
             onClick={handleResendVerifyEmail}
           >
-            {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+            {loading && <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />}
             Verify email
           </Button>
         </div>

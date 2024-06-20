@@ -1,6 +1,7 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
+import {SpinnerIcon} from "@/components/Icon";
 import PasswordInput from "@/components/InputPassword";
 import {Button} from "@/components/ui/button";
 import {
@@ -24,7 +25,6 @@ import {
   ResetPasswordBodyType,
 } from "@/module/reset-password/form-config";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {ReloadIcon} from "@radix-ui/react-icons";
 import {useRouter, useSearchParams} from "next/navigation";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
@@ -109,7 +109,7 @@ export default function ResetPassword() {
               </Button>
               <Button type="submit" disabled={loading}>
                 {loading && (
-                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
                 )}
                 Cập nhập nhập mật khẩu
               </Button>

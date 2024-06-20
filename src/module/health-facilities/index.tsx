@@ -1,7 +1,14 @@
 "use client";
 import apiCategoryRequest from "@/apiRequest/ApiCategory";
 import apiHospital, {IHospitalBody} from "@/apiRequest/ApiHospital";
-import {HospitalsType, LIMIT, PAGE, QUERY_PARAMS} from "@/apiRequest/common";
+import {
+  CATE,
+  HINH_THUC_DAT_KHAM,
+  HospitalsType,
+  LIMIT,
+  PAGE,
+  QUERY_PARAMS,
+} from "@/apiRequest/common";
 import {LocationIcon} from "@/components/Icon";
 import PaginationSection from "@/components/PaginationSection";
 import {
@@ -25,7 +32,6 @@ import {usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
 import styles from "./HealthFacilities.module.scss";
 
-const CSYT = "co-so-y-te";
 const typeMapping = {
   "benh-vien-cong": HospitalsType.BENHVIENCONG,
   "benh-vien-tu": HospitalsType.BENHVIENTU,
@@ -47,8 +53,8 @@ export default function HealthFacilities({slug}: {slug?: string}) {
 
   const pathname = usePathname();
   const isActivePath = slug
-    ? pathname === `/${CSYT}/${slug}`
-    : pathname === `/${CSYT}`;
+    ? pathname === `/${CATE.CSYT}/${slug}`
+    : pathname === `/${CATE.CSYT}`;
 
   const {data: categories, isLoading: isLoadingCategory} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_CATEGORY],
@@ -88,11 +94,12 @@ export default function HealthFacilities({slug}: {slug?: string}) {
     if (slug) {
       return categories?.payload?.data.find((cate) => cate.slug === slug)?.name;
     }
-    return categories?.payload?.data.find((cate) => cate.slug === CSYT)?.name;
+    return categories?.payload?.data.find((cate) => cate.slug === CATE.CSYT)
+      ?.name;
   };
 
   const parentCategory = categories?.payload?.data.find(
-    (cate) => cate.slug === CSYT
+    (cate) => cate.slug === CATE.CSYT
   );
 
   const typeOfHospitals = categories?.payload?.data.filter(
@@ -161,7 +168,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                 )}
                 asChild
               >
-                <Link href={`/${CSYT}/${cate.slug}`}>{cate.name}</Link>
+                <Link href={`/${CATE.CSYT}/${cate.slug}`}>{cate.name}</Link>
               </Button>
             </li>
           ))}
@@ -212,7 +219,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                               Xem chi tiết
                             </Button>
                             <Button className={styles.btnBooking} asChild>
-                              <Link href={`/${v.slug}/hinh-thuc-dat-kham`}>
+                              <Link href={`/${v.slug}/${HINH_THUC_DAT_KHAM}`}>
                                 Đặt khám ngay
                               </Link>
                             </Button>
@@ -226,7 +233,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                             Xem chi tiết
                           </Button>
                           <Button className={styles.btnBooking} asChild>
-                            <Link href={`/${v.slug}/hinh-thuc-dat-kham`}>
+                            <Link href={`/${v.slug}/${HINH_THUC_DAT_KHAM}`}>
                               Đặt khám ngay
                             </Link>
                           </Button>

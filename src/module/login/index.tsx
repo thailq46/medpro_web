@@ -3,7 +3,7 @@ import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
 import {AT_COOKIE_NAME, IStatus, RT_COOKIE_NAME} from "@/apiRequest/common";
 import {clientAccessToken} from "@/apiRequest/http";
-import {FacebookIcon, GoogleIcon} from "@/components/Icon";
+import {FacebookIcon, GoogleIcon, SpinnerIcon} from "@/components/Icon";
 import PasswordInput from "@/components/InputPassword";
 import {Button} from "@/components/ui/button";
 import {
@@ -18,7 +18,7 @@ import {Input} from "@/components/ui/input";
 import {useToast} from "@/components/ui/use-toast";
 import {emailSchema, passwordSchema} from "@/lib/schema";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {ArrowRightIcon, ReloadIcon} from "@radix-ui/react-icons";
+import {ArrowRightIcon} from "@radix-ui/react-icons";
 import clsx from "clsx";
 import {jwtDecode} from "jwt-decode";
 import Image from "next/image";
@@ -163,7 +163,7 @@ export default function Login() {
                 </Button>
                 <Button type="submit" disabled={loading}>
                   {loading && (
-                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                    <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />
                   )}
                   Đăng nhập
                 </Button>

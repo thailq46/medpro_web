@@ -1,6 +1,6 @@
 "use client";
 import {IGetHospitalRes} from "@/apiRequest/ApiHospital";
-import {BOOKING, PARAMS, STEP_NAME} from "@/apiRequest/common";
+import {BOOKING, CATE, PARAMS, STEP_NAME} from "@/apiRequest/common";
 import Custom500 from "@/components/Layout/ErrorLayout/500";
 import {
   Breadcrumb,
@@ -110,7 +110,7 @@ export default function MedicalBookingForms({
           <div className="text-left p-3">
             <Button variant={"ghost"}>
               <ResetIcon className="mr-2 w-4 h-4" />
-              <Link href="/co-so-y-te">Quay lại</Link>
+              <Link href={`/${CATE.CSYT}`}>Quay lại</Link>
             </Button>
           </div>
         </div>
