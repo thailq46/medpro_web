@@ -9,6 +9,7 @@ import {
   PAGE,
   QUERY_PARAMS,
 } from "@/apiRequest/common";
+import {ButtonGlobal, ButtonViewDetail} from "@/components/ButtonGlobal";
 import {LocationIcon} from "@/components/Icon";
 import PaginationSection from "@/components/PaginationSection";
 import {
@@ -18,7 +19,6 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
@@ -27,7 +27,6 @@ import {ClockIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
 import Image from "next/image";
-import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
 import styles from "./HealthFacilities.module.scss";
@@ -161,15 +160,14 @@ export default function HealthFacilities({slug}: {slug?: string}) {
         <ul className={styles.tag}>
           {typeOfHospitals?.map((cate) => (
             <li key={cate._id}>
-              <Button
+              <ButtonGlobal
+                title={cate.name}
+                href={`/${CATE.CSYT}/${cate.slug}`}
                 className={clsx(
                   styles.tagItem,
                   cate.slug === slug && styles.activeTagItem
                 )}
-                asChild
-              >
-                <Link href={`/${CATE.CSYT}/${cate.slug}`}>{cate.name}</Link>
-              </Button>
+              />
             </li>
           ))}
         </ul>
@@ -215,28 +213,26 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                             {v.address}
                           </div>
                           <div className={styles.leftBtnControl}>
-                            <Button className={styles.btnMore}>
-                              Xem chi tiết
-                            </Button>
-                            <Button className={styles.btnBooking} asChild>
-                              <Link href={`/${v.slug}/${HINH_THUC_DAT_KHAM}`}>
-                                Đặt khám ngay
-                              </Link>
-                            </Button>
+                            <ButtonViewDetail title="Xem chi tiết" />
+                            <ButtonGlobal
+                              title="Đặt khám ngay"
+                              href={`/${v.slug}/${HINH_THUC_DAT_KHAM}`}
+                            />
                           </div>
                         </div>
                       </div>
                       {/* MOBILE */}
                       <div className={styles.mobile}>
                         <div className={styles.leftBtnControl}>
-                          <Button className={styles.btnMore}>
-                            Xem chi tiết
-                          </Button>
-                          <Button className={styles.btnBooking} asChild>
-                            <Link href={`/${v.slug}/${HINH_THUC_DAT_KHAM}`}>
-                              Đặt khám ngay
-                            </Link>
-                          </Button>
+                          <ButtonViewDetail
+                            title="Xem chi tiết"
+                            className={styles.btnViewDetail}
+                          />
+                          <ButtonGlobal
+                            title="Đặt khám ngay"
+                            href={`/${v.slug}/${HINH_THUC_DAT_KHAM}`}
+                            className={styles.btnBooking}
+                          />
                         </div>
                       </div>
                     </div>

@@ -1,10 +1,15 @@
 "use client";
 import apiHospital from "@/apiRequest/ApiHospital";
-import {HospitalsType, LIMIT, PAGE} from "@/apiRequest/common";
+import {
+  HINH_THUC_DAT_KHAM,
+  HospitalsType,
+  LIMIT,
+  PAGE,
+} from "@/apiRequest/common";
+import {ButtonGlobal, ButtonViewDetail} from "@/components/ButtonGlobal";
 import {LocationIcon} from "@/components/Icon";
 import EmptyList from "@/components/Layout/EmptyList";
 import PaginationSection from "@/components/PaginationSection";
-import {Button} from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -19,7 +24,6 @@ import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
 import Image from "next/image";
-import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import styles from "./FacilityBooking.module.scss";
@@ -123,15 +127,14 @@ export default function FacilityBooking() {
           <ul className={styles.tag}>
             {typeOfHospitals?.map((cate) => (
               <li key={cate.name}>
-                <Button
+                <ButtonGlobal
+                  title={cate.name}
+                  onClick={() => setActive(cate.value)}
                   className={clsx(
                     styles.tagItem,
                     active === cate.value && styles.active
                   )}
-                  onClick={() => setActive(cate.value)}
-                >
-                  {cate.name}
-                </Button>
+                />
               </li>
             ))}
           </ul>
@@ -142,7 +145,9 @@ export default function FacilityBooking() {
                   key={v._id}
                   className={`bg-white rounded-2xl w-full h-full border-2 hover:border-[#00b5f1] transition-all`}
                   role="button"
-                  onClick={() => router.push(`/${v.slug}/hinh-thuc-dat-kham`)}
+                  onClick={() =>
+                    router.push(`/${v.slug}/${HINH_THUC_DAT_KHAM}`)
+                  }
                 >
                   <div className={styles.box}>
                     <div className={styles.hospitalBox}>
@@ -161,14 +166,11 @@ export default function FacilityBooking() {
                           {v.address}
                         </div>
                         <div className={styles.btnControl}>
-                          <Button className={styles.btnMore}>
-                            Xem chi tiết
-                          </Button>
-                          <Button className={styles.btnBooking} asChild>
-                            <Link href={`/${v.slug}/hinh-thuc-dat-kham`}>
-                              Đặt khám ngay
-                            </Link>
-                          </Button>
+                          <ButtonViewDetail title="Xem chi tiết" />
+                          <ButtonGlobal
+                            title="Đặt khám ngay"
+                            href={`/${v.slug}/${HINH_THUC_DAT_KHAM}`}
+                          />
                         </div>
                       </div>
                     </div>
@@ -176,12 +178,11 @@ export default function FacilityBooking() {
                   {/* MOBILE */}
                   <div className={styles.mobile}>
                     <div className={styles.btnControl}>
-                      <Button className={styles.btnMore}>Xem chi tiết</Button>
-                      <Button className={styles.btnBooking} asChild>
-                        <Link href={`/${v.slug}/hinh-thuc-dat-kham`}>
-                          Đặt khám ngay
-                        </Link>
-                      </Button>
+                      <ButtonViewDetail title="Xem chi tiết" />
+                      <ButtonGlobal
+                        title="Đặt khám ngay"
+                        href={`/${v.slug}/${HINH_THUC_DAT_KHAM}`}
+                      />
                     </div>
                   </div>
                 </div>

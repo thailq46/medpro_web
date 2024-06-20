@@ -143,25 +143,6 @@
   word-wrap: break-word !important;
 }
 
-.btn {
-  padding: 20px 16px;
-  transition: all 0.3s ease;
-  border-radius: 30px;
-  width: 150px !important;
-  font-weight: 500;
-  font-size: 16px;
-  background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  &:hover {
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.24);
-    background-color: inherit;
-  }
-}
-
 @media (max-width: 940.98px) {
   .right {
     display: none;

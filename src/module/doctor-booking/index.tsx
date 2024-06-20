@@ -8,10 +8,10 @@ import {
   PAGE,
   PARAMS,
 } from "@/apiRequest/common";
+import {ButtonGlobal} from "@/components/ButtonGlobal";
 import {LocationIcon} from "@/components/Icon";
 import EmptyList from "@/components/Layout/EmptyList";
 import PaginationSection from "@/components/PaginationSection";
-import {Button} from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -189,12 +189,11 @@ export default function DoctorBooking() {
                           </p>
                         </div>
                       </div>
-                      <Button
-                        className={styles.btn}
+                      <ButtonGlobal
+                        title="Đặt ngay"
                         onClick={() => handleBooking(doctor)}
-                      >
-                        Đặt ngay
-                      </Button>
+                        className="!w-[150px]"
+                      />
                     </div>
                   </div>
                 ))

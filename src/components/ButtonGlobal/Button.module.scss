@@ -1,0 +1,23 @@
+.btnViewDetail,
+.btnGlobal {
+  padding: 20px 16px;
+  width: 100%;
+  transition: all 0.3s ease;
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: normal;
+  &:hover {
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.24);
+    background-color: inherit;
+  }
+}
+.btnViewDetail {
+  color: #00b5f1;
+  border: 1px solid #00b5f1;
+  background-color: transparent;
+}
+.btnGlobal {
+  background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
+  color: #fff;
+}
