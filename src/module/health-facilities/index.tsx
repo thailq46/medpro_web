@@ -22,7 +22,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useState} from "react";
 import styles from "./HealthFacilities.module.scss";
 
 const CSYT = "co-so-y-te";
@@ -85,16 +85,16 @@ export default function HealthFacilities({slug}: {slug?: string}) {
     ? hospitalSelected
     : hospitals?.payload.data[0];
 
-  const getNameCategory = useMemo(() => {
+  const getNameCategory = () => {
     if (slug) {
       return categories?.payload?.data.find((cate) => cate.slug === slug)?.name;
     }
     return categories?.payload?.data.find((cate) => cate.slug === CSYT)?.name;
-  }, [categories?.payload?.data, slug]);
+  };
 
-  const parentCategory = useMemo(() => {
-    return categories?.payload?.data.find((cate) => cate.slug === CSYT);
-  }, [categories?.payload?.data]);
+  const parentCategory = categories?.payload?.data.find(
+    (cate) => cate.slug === CSYT
+  );
 
   const typeOfHospitals = categories?.payload?.data.filter(
     (v) => v.parent_id === parentCategory?._id
@@ -119,7 +119,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                     isActivePath && styles.activeLink
                   )}
                 >
-                  {getNameCategory}
+                  {getNameCategory()}
                 </BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
@@ -135,7 +135,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
             </>
           ) : (
             <>
-              <h1 className={styles.hospitalTitle}>{getNameCategory}</h1>
+              <h1 className={styles.hospitalTitle}>{getNameCategory()}</h1>
               <span className={styles.hospitalDesc}>
                 {slug
                   ? generateDescription(slug)
@@ -244,15 +244,15 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                   <div className={styles.rightImage}>
                     <Image
                       src={
-                        hospitalInfomation?.avatar ?? "/img/avatar/avatar.jpg"
+                        hospitalInfomation?.avatar || "/img/avatar/avatar.jpg"
                       }
                       width={500}
                       height={500}
-                      alt={hospitalInfomation?.name ?? "image"}
+                      alt={hospitalInfomation?.name || "image"}
                     />
                   </div>
                   <h3 className={styles.rightTitle}>
-                    {hospitalInfomation?.name ?? "Chưa cập nhập!!"}
+                    {hospitalInfomation?.name || "Chưa cập nhập!!"}
                   </h3>
                   <div className={styles.rightSession}>
                     <ClockIcon className="w-5 h-5 text-[#ffb54a] inline-block" />
@@ -260,7 +260,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                   </div>
                 </div>
                 <p className={styles.rightDesc}>
-                  {hospitalInfomation?.description ?? "Chưa cập nhập!!"}
+                  {hospitalInfomation?.description || "Chưa cập nhập!!"}
                 </p>
                 <div className={styles.rightImages}>
                   <h4>Ảnh</h4>

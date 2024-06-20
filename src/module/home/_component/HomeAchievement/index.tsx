@@ -1,6 +1,5 @@
-import React from "react";
-import styles from "./HomeAchievement.module.scss";
 import Image from "next/image";
+import styles from "./HomeAchievement.module.scss";
 
 export default function HomeAchievement() {
   const logos = [

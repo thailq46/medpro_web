@@ -3,7 +3,6 @@ import {z} from "zod";
 export const REGEX_STRING =
   /^[a-zA-ZàáảạãÀÁẢẠÃâầấẩậẫÂẦẤẨẬẪăằắẳặẵĂẰẮẲẶẴđĐèéẻẹẽÈÉẺẸẼêềếểệễÊỀẾỂỆỄìíỉịĩÌÍỈỊĨòóỏọõÒÓỎỌÕôồốổộỗÔỒỐỔỘỖơờớởợỡƠỜỚỞỢỠùúủụũÙÚỦỤŨưừứửựữƯỪỨỬỰỮỳýỷỵỹỲÝỶỴỸ ]+$/;
 
-const REGEX_DATE_IOS8601 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 export const REGEX_PHONE_VN = /^(-84|\+84|0)[3,5,7,8,9]\d{8,8}$/;
 export const REGEX_NO_SPACE = /\S/;
 export const REGEX_SYMBOL = /[!@#$%^&*(),.?":{}|<>]/;

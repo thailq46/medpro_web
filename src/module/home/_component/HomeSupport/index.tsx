@@ -1,5 +1,4 @@
 import Image from "next/image";
-import React from "react";
 import styles from "./HomeSupport.module.scss";
 
 export default function HomeSupport() {

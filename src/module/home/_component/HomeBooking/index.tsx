@@ -1,6 +1,6 @@
 import {Button} from "@/components/ui/button";
-import styles from "./HomeBooking.module.scss";
 import Image from "next/image";
+import styles from "./HomeBooking.module.scss";
 
 export default function HomeBooking() {
   return (

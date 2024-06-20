@@ -21,7 +21,6 @@ export default function MedicalBookingForms({
 }) {
   if (!hospital) return <Custom500 />;
   const generateQueryString = (name: string) => {
-    console.log("name", name);
     const query = new URLSearchParams();
     let feature = "";
     let stepName = "";

@@ -1,8 +1,4 @@
-import React from "react";
-import styles from "./HomeNews.module.scss";
-import Image from "next/image";
 import {Button} from "@/components/ui/button";
-import {DoubleArrowRightIcon} from "@radix-ui/react-icons";
 import {Card, CardContent} from "@/components/ui/card";
 import {
   Carousel,
@@ -11,6 +7,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import {DoubleArrowRightIcon} from "@radix-ui/react-icons";
+import Image from "next/image";
+import styles from "./HomeNews.module.scss";
 
 export default function HomeNews() {
   const newsFeed = [

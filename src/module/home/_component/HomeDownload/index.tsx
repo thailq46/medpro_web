@@ -1,7 +1,6 @@
-import React from "react";
-import styles from "./HomeDownload.module.scss";
 import Image from "next/image";
 import Link from "next/link";
+import styles from "./HomeDownload.module.scss";
 
 export default function HomeDownload() {
   return (

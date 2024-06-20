@@ -1,25 +1,23 @@
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
-import React from "react";
-import styles from "./HomeHeader.module.scss";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
+import Image from "next/image";
+import styles from "./HomeHeader.module.scss";
 
 export default function HomeInfo() {
   return (
     <div className={styles.homeInfo}>
       <div className={styles.homeHeader}>
         <div className="basis-[100%]">
-          <img
-            srcSet="/img/logo.png 2x"
+          <Image
+            src="/img/logo.png"
             alt="Logo"
+            width={170}
+            height={170}
             className="w-[170px] h-[50px] object-contain"
           />
           <span className={styles.homeHeaderTitle}>Đặt khám nhanh</span>
@@ -35,8 +33,11 @@ export default function HomeInfo() {
         {Array.from({length: 3}).map((_, index) => (
           <div className={styles.homeCardBox} key={index}>
             <div className="h-[260px] w-full">
-              <img
-                src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F1af3c257-01f4-4035-a832-6cd3c25aecce-frame_1000001919.webp&w=1920&q=75"
+              <Image
+                src="/img/home_info.png"
+                alt="home_info"
+                width={500}
+                height={500}
                 className="w-full h-full object-cover rounded-2xl"
               />
             </div>
@@ -58,8 +59,11 @@ export default function HomeInfo() {
                   <CardContent className={`px-5 py-4`}>
                     <div className={styles.tablet_homeCardBox} key={index}>
                       <div className="h-[260px] w-full">
-                        <img
-                          src="https://medpro.vn/_next/image?url=https%3A%2F%2Fcdn.medpro.vn%2Fprod-partner%2F1af3c257-01f4-4035-a832-6cd3c25aecce-frame_1000001919.webp&w=1920&q=75"
+                        <Image
+                          src="/img/home_info.png"
+                          alt="home_info"
+                          width={500}
+                          height={500}
                           className="w-full h-full object-cover rounded-2xl"
                         />
                       </div>

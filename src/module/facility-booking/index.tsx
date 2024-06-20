@@ -2,6 +2,7 @@
 import apiHospital from "@/apiRequest/ApiHospital";
 import {HospitalsType, LIMIT, PAGE} from "@/apiRequest/common";
 import {LocationIcon} from "@/components/Icon";
+import EmptyList from "@/components/Layout/EmptyList";
 import PaginationSection from "@/components/PaginationSection";
 import {Button} from "@/components/ui/button";
 import {
@@ -185,20 +186,7 @@ export default function FacilityBooking() {
               <SkeletonLoading />
             )}
           </div>
-          {!hospitalData?.length && !isLoadingHospital && (
-            <div className={styles.emptyList}>
-              <p>Không tìm thấy dữ liệu cần tìm</p>
-              <div className="w-[300px] h-[300px]">
-                <Image
-                  src="/img/EmptyList.png"
-                  width={300}
-                  height={300}
-                  alt="empty-list"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            </div>
-          )}
+          {!hospitalData?.length && !isLoadingHospital && <EmptyList />}
           <div className="mt-5">
             {active === "all" && !!hospitalData?.length && (
               <PaginationSection

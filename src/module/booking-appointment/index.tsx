@@ -98,7 +98,7 @@ export default function BookingAppointment() {
     enabled: !!serviceId,
   });
 
-  const generateBookingName = useCallback(() => {
+  const generateBookingName = () => {
     switch (stepName) {
       case "subject":
         return "Chọn chuyên khoa";
@@ -112,9 +112,8 @@ export default function BookingAppointment() {
       default:
         return "";
     }
-  }, [stepName]);
-
-  const generateBookingTitle = useCallback(() => {
+  };
+  const generateBookingTitle = () => {
     switch (stepName) {
       case "subject":
         return "Vui lòng chọn chuyên khoa";
@@ -128,7 +127,7 @@ export default function BookingAppointment() {
       default:
         return "";
     }
-  }, [stepName]);
+  };
 
   const renderRightContent = useCallback(() => {
     switch (stepName) {

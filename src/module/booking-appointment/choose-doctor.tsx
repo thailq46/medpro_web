@@ -129,10 +129,10 @@ export default function ChooseDoctor({
     }
   }, [filterDebounce, memoizedOnFilterDoctor]);
 
-  const handleDoctorClick = (v: IDoctorBody) => {
+  const handleDoctorClick = (doctor: IDoctorBody) => {
     const params = new URLSearchParams();
     const specialty_id =
-      feature === "booking.date" ? specialtyId : v.specialty?._id;
+      feature === "booking.date" ? specialtyId : doctor.specialty?._id;
     const {stepName, serviceId} = getStepNameAndServiceId({
       specialty_id: specialty_id as string,
       services: services?.payload?.data || [],
@@ -140,7 +140,7 @@ export default function ChooseDoctor({
     params.append("feature", feature);
     params.append("hospitalId", hospitalId);
     params.append("specialtyId", specialty_id ?? "");
-    params.append("doctorId", v.doctor_id ?? "");
+    params.append("doctorId", doctor.doctor_id ?? "");
     params.append("stepName", stepName);
     if (!stepName.includes("service")) {
       params.append("serviceId", serviceId ?? "");
