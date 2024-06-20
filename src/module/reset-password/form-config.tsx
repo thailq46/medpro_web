@@ -1,4 +1,4 @@
-import {passwordSchema} from "@/module/account-management/form-config";
+import {passwordSchema} from "@/lib/schema";
 import {z} from "zod";
 
 export const ResetPasswordBody = z

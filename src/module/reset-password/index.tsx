@@ -60,7 +60,6 @@ export default function ResetPassword() {
       router.refresh();
       router.push("/login");
     } catch (error) {
-      setLoading(false);
       handleErrorApi({error, setError: form.setError, duration: 3000});
     } finally {
       setLoading(false);

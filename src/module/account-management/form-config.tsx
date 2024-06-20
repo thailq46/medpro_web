@@ -1,11 +1,11 @@
+import {REGEX_NO_SPACE, REGEX_PHONE_VN, REGEX_USERNAME} from "@/lib/regex";
+import {
+  dateOfBirthSchema,
+  genderSchema,
+  nameSchema,
+  passwordSchema,
+} from "@/lib/schema";
 import {z} from "zod";
-
-export const REGEX_STRING =
-  /^[a-zA-ZàáảạãÀÁẢẠÃâầấẩậẫÂẦẤẨẬẪăằắẳặẵĂẰẮẲẶẴđĐèéẻẹẽÈÉẺẸẼêềếểệễÊỀẾỂỆỄìíỉịĩÌÍỈỊĨòóỏọõÒÓỎỌÕôồốổộỗÔỒỐỔỘỖơờớởợỡƠỜỚỞỢỠùúủụũÙÚỦỤŨưừứửựữƯỪỨỬỰỮỳýỷỵỹỲÝỶỴỸ ]+$/;
-
-export const REGEX_PHONE_VN = /^(-84|\+84|0)[3,5,7,8,9]\d{8,8}$/;
-export const REGEX_NO_SPACE = /\S/;
-export const REGEX_SYMBOL = /[!@#$%^&*(),.?":{}|<>]/;
 
 export const AccountBody = z.object({
   username: z
@@ -13,22 +13,13 @@ export const AccountBody = z.object({
     .trim()
     .min(1, {message: "Username là bắt buộc"})
     .max(255, {message: "Username không được vượt quá 255 kí tự"})
-    .regex(/^[A-Za-z0-9_]+$/, {
+    .regex(REGEX_USERNAME, {
       message: "Username không hợp lệ",
     }),
-  name: z
-    .string()
-    .trim()
-    .min(1, {message: "Tên là bắt buộc"})
-    .max(255, {message: "Username không được vượt quá 255 kí tự"})
-    .regex(REGEX_STRING, {
-      message: "Chỉ chấp nhận chữ cái và dấu cách",
-    }),
+  name: nameSchema,
   avatar: z.union([z.string().trim(), z.instanceof(File)]),
-  gender: z.number().int(),
-  date_of_birth: z.date({
-    required_error: "Ngày sinh không được để trống",
-  }),
+  gender: genderSchema,
+  date_of_birth: dateOfBirthSchema,
   phone_number: z.string().regex(REGEX_PHONE_VN, {
     message: "Số điện thoại không hợp lệ",
   }),
@@ -41,18 +32,6 @@ export const AccountBody = z.object({
       message: "Không được chỉ chứa khoảng trắng",
     }),
 });
-
-export const passwordSchema = z
-  .string()
-  .trim()
-  .min(6, {message: "Mật khẩu phải nhiều hơn 6 kí tự"})
-  .max(50, {message: "Mật khẩu không được vượt quá 50 kí tự"})
-  .regex(/[a-z]/, {message: "Mật khẩu phải chứa ít nhất 1 chữ thường"})
-  .regex(/[A-Z]/, {message: "Mật khẩu phải chứa ít nhất 1 chữ hoa"})
-  .regex(/[0-9]/, {message: "Mật khẩu phải chứa ít nhất 1 số"})
-  .regex(REGEX_SYMBOL, {
-    message: "Mật khẩu phải chứa ít nhất 1 kí tự đặc biệt",
-  });
 
 export type AccountBodyType = z.TypeOf<typeof AccountBody>;
 

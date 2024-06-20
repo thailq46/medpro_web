@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {useToast} from "@/components/ui/use-toast";
+import {emailSchema, passwordSchema} from "@/lib/schema";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ArrowRightIcon, ReloadIcon} from "@radix-ui/react-icons";
 import clsx from "clsx";
@@ -28,8 +29,8 @@ import styles from "./login.module.scss";
 
 const LoginBody = z
   .object({
-    email: z.string().email("Email không hợp lệ"),
-    password: z.string(),
+    email: emailSchema,
+    password: passwordSchema,
   })
   .strict();
 type LoginBodyType = z.TypeOf<typeof LoginBody>;
@@ -77,7 +78,6 @@ export default function Login() {
         });
       }
     } catch (error) {
-      setLoading(false);
       handleErrorApi({error, setError: form.setError, duration: 4000});
     } finally {
       setLoading(false);

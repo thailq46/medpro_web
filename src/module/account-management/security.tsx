@@ -59,7 +59,6 @@ export default function SecurityForm() {
       form.reset();
       router.refresh();
     } catch (error) {
-      setLoading(false);
       handleErrorApi({error, setError: form.setError, duration: 3000});
     } finally {
       setLoading(false);
