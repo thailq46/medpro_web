@@ -21,26 +21,30 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
-import {useMemo, useState} from "react";
+import {useState} from "react";
 import styles from "./FacilityBooking.module.scss";
 
+const TYPE = {
+  ALL: "all",
+  HOSPITAL: "hospital",
+  OTHERS: "others",
+} as const;
+
+const typeOfHospitals = [
+  {name: "Tất cả", value: TYPE.ALL},
+  {name: "Bệnh viện", value: TYPE.HOSPITAL},
+  {name: "Phòng khám/ Phòng mạch/ Xét nghiệm/ Khác", value: TYPE.OTHERS},
+];
+
 export default function FacilityBooking() {
-  const [active, setActive] = useState<string>("all");
+  const [active, setActive] = useState<string>(TYPE.ALL);
   const [currentPage, setCurrentPage] = useState<number>(PAGE);
   const [itemsPerPage, _] = useState<number>(LIMIT);
   const [search, setSearch] = useState<string>("");
   const router = useRouter();
 
-  const typeOfHospitals = useMemo(() => {
-    return [
-      {name: "Tất cả", value: "all"},
-      {name: "Bệnh viện", value: "hospital"},
-      {name: "Phòng khám/ Phòng mạch/ Xét nghiệm/ Khác", value: "others"},
-    ];
-  }, []);
-
-  const page = active === "all" ? currentPage : PAGE;
-  const limit = active === "all" ? itemsPerPage : 99;
+  const page = active === TYPE.ALL ? currentPage : PAGE;
+  const limit = active === TYPE.ALL ? itemsPerPage : 99;
 
   const {data: hospitals, isLoading: isLoadingHospital} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_HOSPITALS, {page, limit, search}],
@@ -49,13 +53,13 @@ export default function FacilityBooking() {
 
   const hospitalDataFilter = hospitals?.payload?.data?.filter((v) => {
     switch (active) {
-      case "hospital":
+      case TYPE.HOSPITAL:
         return v.types?.some(
           (type) =>
             type === HospitalsType.BENHVIENCONG ||
             type === HospitalsType.BENHVIENTU
         );
-      case "others":
+      case TYPE.OTHERS:
         return v.types?.some(
           (type) =>
             type === HospitalsType.PHONGKHAM ||
@@ -70,7 +74,7 @@ export default function FacilityBooking() {
   });
 
   const hospitalData =
-    active === "all" ? hospitals?.payload?.data : hospitalDataFilter;
+    active === TYPE.ALL ? hospitals?.payload?.data : hospitalDataFilter;
 
   return (
     <>
@@ -188,7 +192,7 @@ export default function FacilityBooking() {
           </div>
           {!hospitalData?.length && !isLoadingHospital && <EmptyList />}
           <div className="mt-5">
-            {active === "all" && !!hospitalData?.length && (
+            {active === TYPE.ALL && !!hospitalData?.length && (
               <PaginationSection
                 currentPage={hospitals?.payload?.meta?.current_page as number}
                 totalPages={hospitals?.payload?.meta?.total_page as number}

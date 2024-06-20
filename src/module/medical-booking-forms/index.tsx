@@ -1,5 +1,6 @@
 "use client";
 import {IGetHospitalRes} from "@/apiRequest/ApiHospital";
+import {BOOKING, PARAMS, STEP_NAME} from "@/apiRequest/common";
 import Custom500 from "@/components/Layout/ErrorLayout/500";
 import {
   Breadcrumb,
@@ -14,6 +15,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./Booking.module.scss";
+
 export default function MedicalBookingForms({
   hospital,
 }: {
@@ -26,28 +28,28 @@ export default function MedicalBookingForms({
     let stepName = "";
     switch (name.trim()) {
       case "Đặt khám theo chuyên khoa":
-        feature = "booking.date";
-        stepName = "subject";
+        feature = BOOKING.DATE;
+        stepName = STEP_NAME.SUBJECT;
         break;
       case "Đặt khám theo bác sĩ":
-        feature = "booking.doctor";
-        stepName = "doctor";
+        feature = BOOKING.DOCTOR;
+        stepName = STEP_NAME.DOCTOR;
         break;
       case "Tiêm chủng":
-        feature = "booking.vaccine";
-        stepName = "service";
+        feature = BOOKING.VACCINE;
+        stepName = STEP_NAME.SERVICE;
         break;
       case "Gói khám sức khoẻ":
-        feature = "booking.package";
-        stepName = "service";
+        feature = BOOKING.PACKAGE;
+        stepName = STEP_NAME.SERVICE;
         break;
       default:
         feature = "";
         break;
     }
-    query.append("feature", feature);
-    query.append("hospitalId", hospital._id as string);
-    query.append("stepName", stepName);
+    query.append(PARAMS.FEATURE, feature);
+    query.append(PARAMS.HOSPITAL_ID, hospital._id as string);
+    query.append(PARAMS.STEP_NAME, stepName);
     return "/chon-lich-kham?" + query.toString();
   };
   return (

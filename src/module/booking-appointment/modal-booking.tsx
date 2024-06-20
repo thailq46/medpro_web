@@ -3,6 +3,7 @@ import apiAppointment from "@/apiRequest/ApiAppointment";
 import {IDoctorBody} from "@/apiRequest/ApiDoctor";
 import {IServiceBody} from "@/apiRequest/ApiService";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
+import {BOOKING, PARAMS} from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {CalendarIcon} from "@/components/Icon";
 import {
@@ -71,7 +72,7 @@ export function ModalBookingAppointment({
   const searchParams = useSearchParams();
   const {toast} = useToast();
   const router = useRouter();
-  const feature = searchParams.get("feature");
+  const feature = searchParams.get(PARAMS.FEATURE);
 
   const form = useForm<BookingBodyType>({
     resolver: zodResolver(BookingBody),
@@ -87,9 +88,9 @@ export function ModalBookingAppointment({
   });
 
   const price =
-    feature === "booking.date" ||
-    feature === "booking.vaccine" ||
-    feature === "booking.package"
+    feature === BOOKING.DATE ||
+    feature === BOOKING.VACCINE ||
+    feature === BOOKING.PACKAGE
       ? service?.price
       : doctor?.price;
 

@@ -102,14 +102,13 @@ export default function Footer() {
             </div>
             <ul className={styles.leftInfo}>
               <li>
-                <span>Địa chỉ:</span> 236/29/18 Điện Biên Phủ - Phường 17 - Quận
-                Bình Thạnh - TPHCM.
+                <span>Địa chỉ:</span> Hoàng Mai, Hà Nội
               </li>
               <li>
                 <span>Website:</span> https://medpro.vn
               </li>
               <li>
-                <span>Email:</span> cskh@medpro.vn
+                <span>Email:</span> thai.lq011002@gmail.com
               </li>
               <li>
                 <span>Điện thoại:</span> (028) 710 78098
@@ -149,7 +148,7 @@ export default function Footer() {
       </div>
       <div className={styles.coppyRight}>
         <span className="break-word">
-          © 2020 - Bản quyền thuộc Công Ty Cổ Phần Ứng Dụng PKH
+          © 2024 - Bản quyền thuộc Lê Quang Thái
         </span>
         <div className="w-[150px] h-[30px]">
           <Image

@@ -3,7 +3,7 @@
 import apiDoctor, {IDoctorBody} from "@/apiRequest/ApiDoctor";
 import apiService from "@/apiRequest/ApiService";
 import {ISpecialtyBody} from "@/apiRequest/ApiSpecialty";
-import {PositionType} from "@/apiRequest/common";
+import {BOOKING, PARAMS, PositionType, STEP_NAME} from "@/apiRequest/common";
 import {
   DoctorIcon,
   DollarIcon,
@@ -102,7 +102,8 @@ export default function ChooseDoctor({
   const filterDebounce = useDebounce(searchDoctor, 500);
 
   const isDoctorStep =
-    searchParams.get("stepName") === "doctor" && feature === "booking.doctor";
+    searchParams.get(PARAMS.STEP_NAME) === STEP_NAME.DOCTOR &&
+    feature === BOOKING.DOCTOR;
 
   const {data, isLoading: isLoadingDoctor} = useDoctorData(
     hospitalId,
@@ -132,18 +133,18 @@ export default function ChooseDoctor({
   const handleDoctorClick = (doctor: IDoctorBody) => {
     const params = new URLSearchParams();
     const specialty_id =
-      feature === "booking.date" ? specialtyId : doctor.specialty?._id;
+      feature === BOOKING.DATE ? specialtyId : doctor.specialty?._id;
     const {stepName, serviceId} = getStepNameAndServiceId({
       specialty_id: specialty_id as string,
       services: services?.payload?.data || [],
     });
-    params.append("feature", feature);
-    params.append("hospitalId", hospitalId);
-    params.append("specialtyId", specialty_id ?? "");
-    params.append("doctorId", doctor.doctor_id ?? "");
-    params.append("stepName", stepName);
-    if (!stepName.includes("service")) {
-      params.append("serviceId", serviceId ?? "");
+    params.append(PARAMS.FEATURE, feature);
+    params.append(PARAMS.HOSPITAL_ID, hospitalId);
+    params.append(PARAMS.SPECIALTY_ID, specialty_id ?? "");
+    params.append(PARAMS.DOCTOR_ID, doctor.doctor_id ?? "");
+    params.append(PARAMS.STEP_NAME, stepName);
+    if (!stepName.includes(STEP_NAME.SERVICE)) {
+      params.append(PARAMS.SERVICE_ID, serviceId ?? "");
     }
     router.push(`${pathname}?${params.toString()}`);
     router.refresh();

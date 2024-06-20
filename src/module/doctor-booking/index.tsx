@@ -1,7 +1,13 @@
 "use client";
 import apiDoctor, {IDoctorBody} from "@/apiRequest/ApiDoctor";
 import apiService from "@/apiRequest/ApiService";
-import {LIMIT, LIST_POSITION_DOCTOR, PAGE} from "@/apiRequest/common";
+import {
+  BOOKING,
+  LIMIT,
+  LIST_POSITION_DOCTOR,
+  PAGE,
+  PARAMS,
+} from "@/apiRequest/common";
 import {LocationIcon} from "@/components/Icon";
 import EmptyList from "@/components/Layout/EmptyList";
 import PaginationSection from "@/components/PaginationSection";
@@ -65,12 +71,12 @@ export default function DoctorBooking() {
         specialty_id: doctor?.specialty?._id || "",
         services: services?.payload?.data || [],
       });
-      params.append("feature", "booking.doctor");
-      params.append("hospitalId", doctor?.hospital_id || "");
-      params.append("specialtyId", doctor?.specialty?._id || "");
-      params.append("doctorId", doctor?.doctor_id || "");
-      params.append("stepName", stepName);
-      params.append("serviceId", serviceId || "");
+      params.append(PARAMS.FEATURE, BOOKING.DOCTOR);
+      params.append(PARAMS.HOSPITAL_ID, doctor?.hospital_id || "");
+      params.append(PARAMS.SPECIALTY_ID, doctor?.specialty?._id || "");
+      params.append(PARAMS.DOCTOR_ID, doctor?.doctor_id || "");
+      params.append(PARAMS.STEP_NAME, stepName);
+      params.append(PARAMS.SERVICE_ID, serviceId || "");
       router.push(`/chon-lich-kham?${params.toString()}`);
       router.refresh();
     }

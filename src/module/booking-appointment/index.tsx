@@ -3,6 +3,7 @@ import apiDoctor from "@/apiRequest/ApiDoctor";
 import apiHospital from "@/apiRequest/ApiHospital";
 import apiService, {IServiceBody} from "@/apiRequest/ApiService";
 import apiSpecialty from "@/apiRequest/ApiSpecialty";
+import {PARAMS, STEP_NAME} from "@/apiRequest/common";
 import {
   HandHoldingMedicalIcon,
   HospitalIcon,
@@ -44,12 +45,12 @@ export default function BookingAppointment() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const feature = searchParams.get("feature");
-  const hospitalId = searchParams.get("hospitalId");
-  const stepName = searchParams.get("stepName");
-  const specialtyId = searchParams.get("specialtyId");
-  const doctorId = searchParams.get("doctorId");
-  const serviceId = searchParams.get("serviceId");
+  const feature = searchParams.get(PARAMS.FEATURE);
+  const hospitalId = searchParams.get(PARAMS.HOSPITAL_ID);
+  const stepName = searchParams.get(PARAMS.STEP_NAME);
+  const specialtyId = searchParams.get(PARAMS.SPECIALTY_ID);
+  const doctorId = searchParams.get(PARAMS.DOCTOR_ID);
+  const serviceId = searchParams.get(PARAMS.SERVICE_ID);
 
   const {data: hospital, isLoading: isLoadingHospital} = useQuery({
     queryKey: [QUERY_KEY.GET_HOSPITAL_BY_ID, hospitalId],
@@ -100,14 +101,14 @@ export default function BookingAppointment() {
 
   const generateBookingName = () => {
     switch (stepName) {
-      case "subject":
+      case STEP_NAME.SUBJECT:
         return "Chọn chuyên khoa";
-      case "doctor":
+      case STEP_NAME.DOCTOR:
         return "Chọn bác sĩ";
-      case "service":
+      case STEP_NAME.SERVICE:
         return "Chọn dịch vụ";
-      case "date":
-      case "time":
+      case STEP_NAME.DATE:
+      case STEP_NAME.TIME:
         return "Chọn ngày tư vấn";
       default:
         return "";
@@ -115,14 +116,14 @@ export default function BookingAppointment() {
   };
   const generateBookingTitle = () => {
     switch (stepName) {
-      case "subject":
+      case STEP_NAME.SUBJECT:
         return "Vui lòng chọn chuyên khoa";
-      case "doctor":
+      case STEP_NAME.DOCTOR:
         return "Vui lòng chọn bác sĩ";
-      case "service":
+      case STEP_NAME.SERVICE:
         return "Vui lòng chọn dịch vụ";
-      case "date":
-      case "time":
+      case STEP_NAME.DATE:
+      case STEP_NAME.TIME:
         return "Vui lòng chọn ngày tư vấn";
       default:
         return "";
@@ -131,7 +132,7 @@ export default function BookingAppointment() {
 
   const renderRightContent = useCallback(() => {
     switch (stepName) {
-      case "subject":
+      case STEP_NAME.SUBJECT:
         return (
           <ChooseSubject
             feature={feature ?? ""}
@@ -142,7 +143,7 @@ export default function BookingAppointment() {
             onSearchSpecialty={(value) => setFilterSpecialty(value)}
           />
         );
-      case "doctor":
+      case STEP_NAME.DOCTOR:
         return (
           <ChooseDoctor
             feature={feature ?? ""}
@@ -154,8 +155,8 @@ export default function BookingAppointment() {
             onFilterDoctor={(value) => setFilterDoctor(value)}
           />
         );
-      case "date":
-      case "time":
+      case STEP_NAME.DATE:
+      case STEP_NAME.TIME:
         return (
           <ChooseDate
             onChooseDate={(date) => setDateSelected(date)}
@@ -163,7 +164,7 @@ export default function BookingAppointment() {
             services={(service?.payload?.data as IServiceBody) ?? []}
           />
         );
-      case "service":
+      case STEP_NAME.SERVICE:
         return (
           <ChooseService
             feature={feature ?? ""}

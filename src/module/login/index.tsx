@@ -1,7 +1,7 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
-import {IStatus} from "@/apiRequest/common";
+import {AT_COOKIE_NAME, IStatus, RT_COOKIE_NAME} from "@/apiRequest/common";
 import {clientAccessToken} from "@/apiRequest/http";
 import {FacebookIcon, GoogleIcon} from "@/components/Icon";
 import PasswordInput from "@/components/InputPassword";
@@ -61,8 +61,8 @@ export default function Login() {
         const {access_token, refresh_token} = result.payload.data;
         const decoded = jwtDecode(access_token);
         const expiredAt = decoded.exp;
-        localStorage.setItem("accessToken", access_token);
-        localStorage.setItem("refreshToken", refresh_token);
+        localStorage.setItem(AT_COOKIE_NAME, access_token);
+        localStorage.setItem(RT_COOKIE_NAME, refresh_token);
         await apiAuthRequest.auth({
           access_token,
           refresh_token,

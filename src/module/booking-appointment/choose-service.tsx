@@ -1,5 +1,6 @@
 "use client";
 import apiService from "@/apiRequest/ApiService";
+import {BOOKING, STEP_NAME, TYPE_SERVICE} from "@/apiRequest/common";
 import {Button} from "@/components/ui/button";
 import {
   Dialog,
@@ -123,11 +124,11 @@ export default function ChooseService({
   });
 
   const result = services?.payload?.data?.filter((v) => {
-    if (feature === "booking.vaccine") {
-      return v.type === "vaccine";
+    if (feature === BOOKING.VACCINE) {
+      return v.type === TYPE_SERVICE.VACCINE;
     }
-    if (feature === "booking.package") {
-      return v.type === "package";
+    if (feature === BOOKING.PACKAGE) {
+      return v.type === TYPE_SERVICE.PACKAGE;
     }
     return v.specialty?._id === specialtyId;
   });
@@ -185,7 +186,7 @@ export default function ChooseService({
                               feature,
                               hospitalId,
                               specialtyId,
-                              stepName: "date",
+                              stepName: STEP_NAME.DATE,
                               doctorId,
                               serviceId: service._id,
                             },
@@ -234,7 +235,7 @@ export default function ChooseService({
                             feature,
                             hospitalId,
                             specialtyId,
-                            stepName: "date",
+                            stepName: STEP_NAME.DATE,
                             doctorId,
                             serviceId: service._id,
                           },

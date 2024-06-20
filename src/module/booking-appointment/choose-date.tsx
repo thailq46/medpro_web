@@ -2,7 +2,14 @@
 import {IDoctorBody} from "@/apiRequest/ApiDoctor";
 import apiSchedule from "@/apiRequest/ApiSchedule";
 import {IServiceBody} from "@/apiRequest/ApiService";
-import {QUERY_PARAMS, RoleType, VerifyStatus} from "@/apiRequest/common";
+import {
+  BOOKING,
+  PARAMS,
+  QUERY_PARAMS,
+  RoleType,
+  STEP_NAME,
+  VerifyStatus,
+} from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {ModalConfirmCustom} from "@/components/ModalComfirm";
 import {Button} from "@/components/ui/button";
@@ -30,16 +37,18 @@ export default function ChooseDate({
   doctors,
   services,
 }: IChooseDateProps) {
-  const {user} = useContext(AppContext);
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [selected, setSelected] = useState<Date>();
   const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
   const [isModalBookingOpen, setIsModalBookingOpen] = useState(false);
   const [timeAppointment, setTimeAppointment] = useState<string>("");
-  const doctorId = searchParams.get("doctorId");
-  const feature = searchParams.get("feature");
+
+  const {user} = useContext(AppContext);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const doctorId = searchParams.get(PARAMS.DOCTOR_ID);
+  const feature = searchParams.get(PARAMS.FEATURE);
 
   const date = selected ? dayjs(selected).format("DD/MM/YYYY") : "";
 
@@ -61,7 +70,7 @@ export default function ChooseDate({
   useEffect(() => {
     if (selected) {
       const params = new URLSearchParams(searchParams.toString());
-      params.set("stepName", "time");
+      params.set(PARAMS.STEP_NAME, STEP_NAME.TIME);
       router.push(`${pathname}?${params.toString()}`, undefined);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,8 +116,8 @@ export default function ChooseDate({
       />
       <div className="calender-container">
         {schedule ||
-        feature === "booking.vaccine" ||
-        feature === "booking.package" ? (
+        feature === BOOKING.VACCINE ||
+        feature === BOOKING.PACKAGE ? (
           <DayPicker
             mode="single"
             locale={vi}
@@ -119,10 +128,7 @@ export default function ChooseDate({
               const date = dayjs(e).format("DD/MM/YYYY");
               onChooseDate(date);
               setSelected(e);
-              if (
-                feature === "booking.vaccine" ||
-                feature === "booking.package"
-              ) {
+              if (feature === BOOKING.VACCINE || feature === BOOKING.PACKAGE) {
                 const timeWork = addAmPmSuffix(
                   services?.hospital?.start_time +
                     " - " +
@@ -167,10 +173,10 @@ export default function ChooseDate({
         ) : (
           <DisplayNoSchedule />
         )}
-        {searchParams.get("stepName") === "time" &&
+        {searchParams.get(PARAMS.STEP_NAME) === STEP_NAME.TIME &&
           selected &&
-          feature !== "booking.vaccine" &&
-          feature !== "booking.package" && (
+          feature !== BOOKING.VACCINE &&
+          feature !== BOOKING.PACKAGE && (
             <div className={styles.timeline}>
               {isLoading ? (
                 <>

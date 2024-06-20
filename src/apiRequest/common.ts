@@ -68,6 +68,36 @@ export const QUERY_PARAMS = {
   limit: 99,
 } as const;
 
+export const PARAMS = {
+  FEATURE: "feature",
+  HOSPITAL_ID: "hospitalId",
+  STEP_NAME: "stepName",
+  SPECIALTY_ID: "specialtyId",
+  DOCTOR_ID: "doctorId",
+  SERVICE_ID: "serviceId",
+} as const;
+
+export const BOOKING = {
+  DATE: "booking.date",
+  DOCTOR: "booking.doctor",
+  VACCINE: "booking.vaccine",
+  PACKAGE: "booking.package",
+} as const;
+
+export const STEP_NAME = {
+  SUBJECT: "subject",
+  DOCTOR: "doctor",
+  SERVICE: "service",
+  DATE: "date",
+  TIME: "time",
+} as const;
+
+export const TYPE_SERVICE = {
+  SERVICE: "service",
+  PACKAGE: "package",
+  VACCINE: "vaccine",
+} as const;
+
 export const LIST_POSITION_DOCTOR = [
   {
     value: PositionType.MASTER,

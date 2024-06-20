@@ -77,7 +77,6 @@ export default function SecurityForm() {
       });
     } catch (error) {
       handleErrorApi({error, duration: 3000});
-      setLoading(false);
     } finally {
       setLoading(false);
     }

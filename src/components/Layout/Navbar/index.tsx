@@ -1,7 +1,11 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import apiCategoryRequest, {ICategoryBody} from "@/apiRequest/ApiCategory";
-import {QUERY_PARAMS} from "@/apiRequest/common";
+import {
+  AT_COOKIE_NAME,
+  QUERY_PARAMS,
+  RT_COOKIE_NAME,
+} from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {ModalConfirmCustom} from "@/components/ModalComfirm";
 import {
@@ -108,8 +112,8 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       await apiAuthRequest.logoutFromNextClientToNextServer();
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+      localStorage.removeItem(AT_COOKIE_NAME);
+      localStorage.removeItem(RT_COOKIE_NAME);
       toast({
         title: "Thành công",
         description: "Đăng xuất thành công",

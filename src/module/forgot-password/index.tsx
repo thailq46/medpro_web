@@ -55,7 +55,6 @@ export default function ForgotPassword() {
       router.refresh();
     } catch (error) {
       handleErrorApi({error});
-      setLoading(false);
     } finally {
       setLoading(false);
     }

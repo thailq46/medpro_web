@@ -1,5 +1,6 @@
 "use client";
 import {ISpecialtyBody} from "@/apiRequest/ApiSpecialty";
+import {STEP_NAME} from "@/apiRequest/common";
 import {Input} from "@/components/ui/input";
 import {Skeleton} from "@/components/ui/skeleton";
 import useDebounce from "@/hooks/useDebounce";
@@ -57,7 +58,7 @@ export default function ChooseSubject({
                     query: {
                       feature,
                       hospitalId,
-                      stepName: "doctor",
+                      stepName: STEP_NAME.DOCTOR,
                       specialtyId: v._id,
                     },
                   }}
