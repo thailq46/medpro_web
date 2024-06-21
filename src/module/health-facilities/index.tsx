@@ -85,6 +85,10 @@ export default function HealthFacilities({slug}: {slug?: string}) {
     }
   }, [hospitals?.payload?.data, slug]);
 
+  useEffect(() => {
+    document.body.scrollIntoView({behavior: "smooth", block: "start"});
+  }, [currentPage]);
+
   const hospitalInfomation = Boolean(hospitalSelected)
     ? hospitalSelected
     : hospitals?.payload.data[0];

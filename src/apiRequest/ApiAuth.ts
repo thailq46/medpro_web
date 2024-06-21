@@ -75,12 +75,13 @@ const path = {
   resendVerifyEmail: "/auth/resend-verify-email",
   verifyEmail: "/auth/verify-email",
   changePassword: "/auth/change-password",
-  getMe: "/users/me",
-  updateMe: "/users/me",
   logout: "/auth/logout",
   forgotPassword: "/auth/forgot-password",
   verifyForgotPassword: "/auth/verify-forgot-password",
   resetPassword: "/auth/reset-password",
+  getMe: "/users/me",
+  getUserByUsername: "/users",
+  updateMe: "/users/me",
 };
 
 const apiAuthRequest = {
@@ -104,6 +105,9 @@ const apiAuthRequest = {
       cache: "no-cache",
     }),
 
+  getUserByUsername: (username: string) =>
+    http.get<IGetMeResBody>(`${path.getUserByUsername}/${username}`),
+
   updateMe: (body: IUpdateMeBody) =>
     http.patch<IGetMeResBody>(path.updateMe, body),
 
@@ -118,6 +122,7 @@ const apiAuthRequest = {
       email_verify_token,
     }),
 
+  // signal phòng trường hợp có strict mode nó gọi 2 lần
   logoutFromNextClientToNextServer: (
     force?: boolean | undefined,
     signal?: AbortSignal | undefined
