@@ -96,13 +96,14 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (!user || !user._id) return;
-    socket.auth = {_id: user._id};
-    socket.connect();
     socket.on("receive_message", (data: any) => {
       console.log(data);
       const {payload} = data;
       setMessages((message) => [...message, payload]);
       scrollToBottom();
+    });
+    socket.on("connect_error", (err: any) => {
+      console.log(err.data);
     });
     return () => {
       socket.disconnect();
