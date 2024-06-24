@@ -27,16 +27,17 @@ import styles from "./Chat.module.scss";
 
 const username = ["user666998f28d477b9b06aec7a5", "lqthai123"];
 
-export default function ChatPage() {
+export default function Chat() {
   const {user} = useContext(AppContext);
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState("");
   const [messages, setMessages] = useState<IConversationBody[]>([]);
   const [userName, setUserName] = useState<string>("");
-  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-  const chatContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isTextareaScrolled, setIsTextareaScrolled] = useState(false);
+
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -60,9 +61,11 @@ export default function ChatPage() {
     };
     if (textareaRef.current) {
       textareaRef.current.addEventListener("input", adjustTextareaHeight);
+      textareaRef.current.style.height = "auto";
     }
     return () => {
       if (textareaRef.current) {
+        textareaRef.current.style.height = "auto";
         textareaRef.current.removeEventListener("input", adjustTextareaHeight);
       }
     };
@@ -106,21 +109,19 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (!conversations) return;
-    const newConversations = conversations.pages
-      ?.map((conversation) => {
-        return conversation.payload.data;
+    const newMessages = conversations.pages
+      ?.map((page) => {
+        return page.payload.data;
       })
       .flat();
-    setMessages((prevConversations) => {
-      const mergedConversations = [
-        ...prevConversations,
-        ...newConversations,
-      ].reverse();
-      const uniqueConversations = Array.from(
-        new Map(mergedConversations.map((msg) => [msg._id, msg])).values()
+    setMessages((prevMessages) => {
+      const mergedMessages = [...prevMessages, ...newMessages].reverse();
+      const uniqueMessages = Array.from(
+        new Map(mergedMessages.map((msg) => [msg._id, msg])).values()
       );
-      return uniqueConversations;
+      return uniqueMessages;
     });
+
     if (isFirstLoad && chatContainerRef) {
       scrollToBottom();
       setIsFirstLoad(false);
@@ -169,10 +170,6 @@ export default function ChatPage() {
       },
     ]);
     scrollToBottom();
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      setIsTextareaScrolled(false);
-    }
   };
 
   const handleScroll = (e: UIEvent<HTMLDivElement>) => {
@@ -307,10 +304,9 @@ export default function ChatPage() {
                       <textarea
                         ref={textareaRef}
                         placeholder="Aa"
-                        dir="auto"
                         rows={1}
+                        dir="auto"
                         className={styles.messageBox}
-                        value={value}
                         onChange={(e) => setValue(e.target.value)}
                       />
                     </div>

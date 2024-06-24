@@ -1,5 +1,6 @@
 export {default as CalendarIcon} from "@/components/Icon/calender-icon";
 export {default as CameraIcon} from "@/components/Icon/camera-icon";
+export {default as CirclePlusIcon} from "@/components/Icon/circle-plus-icon";
 export {default as CircleUserIcon} from "@/components/Icon/circle-user-icon";
 export {default as DoctorIcon} from "@/components/Icon/doctor-icon";
 export {default as DollarIcon} from "@/components/Icon/dollar-icon";
@@ -9,6 +10,7 @@ export {default as GoogleIcon} from "@/components/Icon/google-icon";
 export {default as HandHoldingMedicalIcon} from "@/components/Icon/hand-holding-medical-icon";
 export {default as HospitalIcon} from "@/components/Icon/hospital-icon";
 export {default as LocationIcon} from "@/components/Icon/location-icon";
+export {default as PaperPlaneIcon} from "@/components/Icon/paper-plane-icon";
 export {default as SecurityIcon} from "@/components/Icon/security-icon";
 export {default as SpinnerIcon} from "@/components/Icon/spinner-icon";
 export {default as StethoscopeIcon} from "@/components/Icon/stethoscope-icon";
