@@ -1,6 +1,9 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
-import apiConversation, {IConversationBody} from "@/apiRequest/ApiConversation";
+import apiConversation, {
+  IConversationBody,
+  IGetUserChatWithMeBody,
+} from "@/apiRequest/ApiConversation";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {CirclePlusIcon, PaperPlaneIcon, SpinnerIcon} from "@/components/Icon";
 import {
@@ -14,6 +17,8 @@ import socket from "@/lib/socket";
 import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
 import {useInfiniteQuery, useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import {
   FormEvent,
@@ -25,13 +30,20 @@ import {
 } from "react";
 import styles from "./Chat.module.scss";
 
-const username = ["user666998f28d477b9b06aec7a5", "lqthai123"];
+dayjs.extend(relativeTime);
 
-export default function ChatPage() {
+interface IOnlineUsers {
+  user_id: string;
+  last_online: Date | null;
+}
+
+export default function ChatTest() {
   const {user} = useContext(AppContext);
   const [value, setValue] = useState<string>("");
   const [messages, setMessages] = useState<IConversationBody[]>([]);
-  const [userName, setUserName] = useState<string>("");
+  const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
+  const [userSelected, setUserSelected] =
+    useState<IGetUserChatWithMeBody | null>(null);
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -49,29 +61,11 @@ export default function ChatPage() {
     }, 30);
   };
 
-  useEffect(() => {
-    const adjustTextareaHeight = () => {
-      const textarea = textareaRef.current;
-      if (textarea) {
-        textarea.style.height = "auto";
-        textarea.style.height = `${textarea.scrollHeight}px`;
-        setIsTextareaScrolled(textarea.scrollHeight >= 53);
-      }
-    };
-    if (textareaRef.current) {
-      textareaRef.current.addEventListener("input", adjustTextareaHeight);
-    }
-    return () => {
-      if (textareaRef.current) {
-        textareaRef.current.removeEventListener("input", adjustTextareaHeight);
-      }
-    };
-  }, []);
-
   const {data: userByUsername} = useQuery({
-    queryKey: [QUERY_KEY.GET_USER_BY_USERNAME, userName],
-    queryFn: () => apiAuthRequest.getUserByUsername(userName),
-    enabled: !!userName,
+    queryKey: [QUERY_KEY.GET_USER_BY_USERNAME, userSelected?.username],
+    queryFn: () =>
+      apiAuthRequest.getUserByUsername(userSelected?.username as string),
+    enabled: !!userSelected?.username,
   });
 
   const {
@@ -103,6 +97,30 @@ export default function ChatPage() {
     },
     enabled: !!userByUsername?.payload?.data?._id,
   });
+
+  const {data: conversationsMe} = useQuery({
+    queryKey: [QUERY_KEY.GET_CONVERSATION_OF_ME],
+    queryFn: () => apiConversation.getConversationsChatWithMe(),
+  });
+
+  useEffect(() => {
+    const adjustTextareaHeight = () => {
+      const textarea = textareaRef.current;
+      if (textarea) {
+        textarea.style.height = "auto";
+        textarea.style.height = `${textarea.scrollHeight}px`;
+        setIsTextareaScrolled(textarea.scrollHeight >= 53);
+      }
+    };
+    if (textareaRef.current) {
+      textareaRef.current.addEventListener("input", adjustTextareaHeight);
+    }
+    return () => {
+      if (textareaRef.current) {
+        textareaRef.current.removeEventListener("input", adjustTextareaHeight);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (!conversations) return;
@@ -150,6 +168,14 @@ export default function ChatPage() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!user || !user._id) return;
+    socket.on("online_users", (data: IOnlineUsers[]) => {
+      console.log("online_users", data);
+      setOnlineUsers(data);
+    });
+  }, [user]);
+
   const send = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const conversation = {
@@ -185,19 +211,27 @@ export default function ChatPage() {
     }
   };
 
+  const checkUserOnline = (user_id: string) => {
+    if (!onlineUsers) return false;
+    return onlineUsers.some(
+      (user) => user.user_id === user_id && user.last_online === null
+    );
+  };
+
+  const renderUserStatus = (user_id: string) => {
+    const user = onlineUsers.find((user) => user.user_id === user_id);
+    if (user) {
+      if (user.last_online) {
+        const lastOnline = dayjs(user.last_online).fromNow();
+        return `Last online: ${lastOnline}`;
+      }
+      return "Online";
+    }
+    return "Offline";
+  };
+
   return (
     <>
-      <div className="pt-5 flex items-center justify-center">
-        {username.map((username) => (
-          <button
-            key={username}
-            onClick={() => setUserName(username)}
-            className="border border-blue-400 mb-4 p-1 rounded-xl"
-          >
-            Chat with {username}
-          </button>
-        ))}
-      </div>
       <div className={styles.wrapper}>
         <div className={styles.container}>
           <div className={styles.sideBar}>
@@ -207,29 +241,41 @@ export default function ChatPage() {
               <input type="search" placeholder="Search Messenger" />
             </div>
             <div className={styles.chatContainer}>
-              {Array.from({length: 10}).map((_, index) => (
+              {conversationsMe?.payload?.data?.map((user) => (
                 <div
-                  className={clsx(styles.chatBox, index === 0 && styles.active)}
-                  key={index}
+                  className={clsx(
+                    styles.chatBox,
+                    user.username === userSelected?.username && styles.active
+                  )}
+                  key={user?._id}
+                  role="button"
+                  onClick={() => {
+                    setUserSelected(user);
+                    if (userSelected?.username !== user.username) {
+                      setMessages([]);
+                    }
+                  }}
                 >
                   <TooltipProvider delayDuration={100}>
                     <div className={styles.avatar}>
                       <Image
-                        src="/img/avatar/avatar.jpg"
+                        src={user?.avatar || "/img/avatar/avatar.jpg"}
                         alt="avatar"
                         width={150}
                         height={150}
                       />
-                      <div className={styles.circle}>
-                        <div className={styles.online}></div>
-                      </div>
+                      {checkUserOnline(user?._id as string) && (
+                        <div className={styles.circle}>
+                          <div className={styles.online}></div>
+                        </div>
+                      )}
                     </div>
                     <div>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <h3 className={styles.name}>Lê Quang Thái</h3>
+                          <h3 className={styles.name}>{user?.name}</h3>
                         </TooltipTrigger>
-                        <TooltipContent>Lê Quang Thái</TooltipContent>
+                        <TooltipContent>{user?.name}</TooltipContent>
                       </Tooltip>
                       <p className={styles.msg}>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -244,93 +290,102 @@ export default function ChatPage() {
               ))}
             </div>
           </div>
-          <div className={styles.main}>
-            <nav className={styles.nav}>
-              <div className={styles.navAvatar}>
-                <Image
-                  src="/img/avatar/avatar.jpg"
-                  alt="avatar"
-                  width={150}
-                  height={150}
-                />
-                <div className={styles.circle}>
-                  <div className={styles.online}></div>
-                </div>
-              </div>
-              <div>
-                <h3 className={styles.name}>Lê Quang Thái</h3>
-                <p className={styles.msg}>Hoạt động 6 phút trước</p>
-              </div>
-            </nav>
-            <div
-              className={styles.messageDisplay}
-              onScroll={handleScroll}
-              ref={chatContainerRef}
-            >
-              {status === "pending" ? (
-                <p>Loading....</p>
-              ) : status === "error" ? (
-                <p>Error: {error.message}</p>
-              ) : (
-                <>
-                  {isFetchingNextPage && (
-                    <div className="flex items-center justify-center">
-                      <SpinnerIcon className="w-5 h-5 animate-spin" />
+          {userSelected && (
+            <div className={styles.main}>
+              <nav className={styles.nav}>
+                <div className={styles.navAvatar}>
+                  <Image
+                    src={userSelected?.avatar || "/img/avatar/avatar.jpg"}
+                    alt="avatar"
+                    width={150}
+                    height={150}
+                  />
+                  {checkUserOnline(userSelected?._id as string) && (
+                    <div className={styles.circle}>
+                      <div className={styles.online}></div>
                     </div>
                   )}
-                  {messages.map((conversation) => (
-                    <div key={conversation?._id}>
-                      <div className="flex">
-                        <div
-                          className={`bg-blue-400 max-w-[200px] mb-1 p-1 mt-auto ${
-                            user?._id === conversation?.sender_id
-                              ? "ml-auto"
-                              : ""
-                          }`}
-                        >
-                          <p>{conversation.content}</p>
-                        </div>
+                </div>
+                <div>
+                  <h3 className={styles.name}>{userSelected?.name}</h3>
+                  <p className={styles.msg}>
+                    {renderUserStatus(userSelected?._id as string)}
+                  </p>
+                </div>
+              </nav>
+              <div
+                className={styles.messageDisplay}
+                onScroll={handleScroll}
+                ref={chatContainerRef}
+              >
+                {status === "pending" ? (
+                  <p>Loading....</p>
+                ) : status === "error" ? (
+                  <p>Error: {error.message}</p>
+                ) : (
+                  <>
+                    {isFetchingNextPage && (
+                      <div className="flex items-center justify-center">
+                        <SpinnerIcon className="w-5 h-5 animate-spin" />
                       </div>
+                    )}
+                    <div className="flex flex-col gap-2 py-2 mx-2">
+                      {messages.map((conversation) => (
+                        <div
+                          className={clsx(
+                            "p-1 py-1 rounded w-fit max-w-[380px] md:max-w-sm lg:max-w-md",
+                            user?._id === conversation?.sender_id
+                              ? "ml-auto bg-teal-100"
+                              : "bg-white"
+                          )}
+                          key={conversation._id}
+                        >
+                          <p className="px-2">{conversation.content}</p>
+                          <p className="text-xs ml-auto w-fit">
+                            {dayjs(conversation.created_at).format("hh:mm")}
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </>
-              )}
-            </div>
-            <div className={styles.footer}>
-              <form onSubmit={send} className="w-full">
-                <div className="flex items-center justify-between gap-5">
-                  <div className="flex items-center">
-                    <CirclePlusIcon className="w-6 h-6" />
-                  </div>
-                  <div className={styles.inputMsg}>
-                    <div className="flex flex-1 w-full">
-                      <textarea
-                        ref={textareaRef}
-                        placeholder="Aa"
-                        dir="auto"
-                        rows={1}
-                        className={styles.messageBox}
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
+                  </>
+                )}
+              </div>
+              <div className={styles.footer}>
+                <form onSubmit={send} className="w-full">
+                  <div className="flex items-center justify-between gap-5">
+                    <div className="flex items-center">
+                      <CirclePlusIcon className="w-6 h-6" />
+                    </div>
+                    <div className={styles.inputMsg}>
+                      <div className="flex flex-1 w-full">
+                        <textarea
+                          ref={textareaRef}
+                          placeholder="Aa"
+                          dir="auto"
+                          rows={1}
+                          className={styles.messageBox}
+                          value={value}
+                          onChange={(e) => setValue(e.target.value)}
+                        />
+                      </div>
+                      <CirclePlusIcon
+                        className={clsx(
+                          "w-6 h-6",
+                          isTextareaScrolled && "self-end"
+                        )}
                       />
                     </div>
-                    <CirclePlusIcon
-                      className={clsx(
-                        "w-6 h-6",
-                        isTextareaScrolled && "self-end"
-                      )}
-                    />
+                    <button
+                      type="submit"
+                      className="flex items-center justify-center mr-3 p-2 cursor-pointer"
+                    >
+                      <PaperPlaneIcon className="w-5 h-5 text-textSecondary" />
+                    </button>
                   </div>
-                  <button
-                    type="submit"
-                    className="flex items-center justify-center mr-3 p-2 cursor-pointer"
-                  >
-                    <PaperPlaneIcon className="w-5 h-5 text-textSecondary" />
-                  </button>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>

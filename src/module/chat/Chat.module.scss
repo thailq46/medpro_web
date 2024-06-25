@@ -198,9 +198,30 @@
   }
 }
 .messageDisplay {
-  padding: 5px;
+  position: relative;
   height: 400px;
-  overflow-y: scroll;
-  background: url("/img/avatar/wallapaper.jpeg") no-repeat center center;
+  overflow: hidden scroll;
+  background-color: #f0f3f7;
+  background-opacity: 0.5;
+  // background: url("/img/avatar/wallapaper.jpeg") no-repeat center center;
   background-size: cover;
+  scrollbar-color: unset !important;
+  &::-webkit-scrollbar {
+    width: 20px !important;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent !important;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #d6dee1 !important;
+    border-radius: 20px !important;
+    border: 6px solid transparent !important;
+    background-clip: content-box !important;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #a8bbbf !important;
+  }
 }
