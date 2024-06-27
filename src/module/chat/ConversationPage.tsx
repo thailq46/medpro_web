@@ -19,10 +19,11 @@ import {
   renderUserStatus,
   scrollToBottom,
 } from "@/module/chat/helper";
-import {ImageIcon, PaperPlaneIcon} from "@radix-ui/react-icons";
+import {FaceIcon, ImageIcon, PaperPlaneIcon} from "@radix-ui/react-icons";
 import {useInfiniteQuery, useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
 import dayjs from "dayjs";
+import EmojiPicker, {EmojiStyle} from "emoji-picker-react";
 import Image from "next/image";
 import {
   FormEvent,
@@ -63,6 +64,7 @@ export default function ConversationPage({
   const [value, setValue] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
   const [preview, setPreview] = useState("");
+  const [emojiPickerOpen, setEmojiPickerOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const adjustTextareaHeight = () => {
@@ -218,6 +220,7 @@ export default function ConversationPage({
       setValue("");
       setImageUrl("");
       setPreview("");
+      setEmojiPickerOpen(false);
       setMessages((message) => [
         ...message,
         {
@@ -337,8 +340,7 @@ export default function ConversationPage({
               {openImageVideoUpload && (
                 <div
                   className="bg-white shadow rounded absolute bottom-14 w-36 p-2
-                  z-[9999]
-                "
+                  z-[9999]"
                 >
                   <form>
                     <label
@@ -384,12 +386,30 @@ export default function ConversationPage({
                   onChange={(e) => setValue(e.target.value)}
                 />
               </div>
-              <CirclePlusIcon
+              <div
                 className={clsx(
-                  "w-6 h-6",
+                  "relative",
                   (isTextareaScrolled || preview) && "self-end"
                 )}
-              />
+              >
+                <FaceIcon
+                  className="w-6 h-6 cursor-pointer"
+                  onClick={() => setEmojiPickerOpen((prev) => !prev)}
+                />
+                <EmojiPicker
+                  // reactionsDefaultOpen={true}
+                  open={emojiPickerOpen}
+                  className="!absolute !bottom-0 !right-9"
+                  onEmojiClick={(e) => setValue((prev) => prev + e.emoji)}
+                  lazyLoadEmojis={true}
+                  skinTonesDisabled={true}
+                  previewConfig={{
+                    showPreview: false,
+                  }}
+                  width={300}
+                  emojiStyle={EmojiStyle.FACEBOOK}
+                />
+              </div>
             </div>
             <button
               type="submit"
