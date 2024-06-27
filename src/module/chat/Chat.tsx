@@ -1,7 +1,7 @@
 "use client";
 import {
   IConversationBody,
-  IGetUserChatWithMeBody,
+  IConversationWithLastMessage,
 } from "@/apiRequest/ApiConversation";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/tooltip";
 import socket from "@/lib/socket";
 import ConversationPage from "@/module/chat/ConversationPage";
-import {checkUserOnline} from "@/module/chat/helper";
+import {IOnlineUsers, checkUserOnline} from "@/module/chat/helper";
 import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
 import clsx from "clsx";
 import dayjs from "dayjs";
@@ -23,26 +23,13 @@ import styles from "./Chat.module.scss";
 
 dayjs.extend(relativeTime);
 
-interface IOnlineUsers {
-  user_id: string;
-  last_online: Date | null;
-}
-
-interface IConversation {
-  _id: string;
-  avatar: string;
-  name: string;
-  username: string;
-  lastMessage: IConversationBody;
-}
-
 export default function ChatTest() {
   const {user} = useContext(AppContext);
   const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
   const [messages, setMessages] = useState<IConversationBody[]>([]);
   const [userSelected, setUserSelected] =
-    useState<IGetUserChatWithMeBody | null>(null);
-  const [allUser, setAllUser] = useState<IConversation[]>([]);
+    useState<IConversationWithLastMessage | null>(null);
+  const [allUser, setAllUser] = useState<IConversationWithLastMessage[]>([]);
 
   useEffect(() => {
     if (!user || !user._id) return;
@@ -55,7 +42,7 @@ export default function ChatTest() {
   useEffect(() => {
     if (!user || !user._id) return;
     socket.emit("sidebar", user._id);
-    socket.on("conversation", (data: IConversation[]) => {
+    socket.on("conversation", (data: IConversationWithLastMessage[]) => {
       setAllUser(data);
     });
   }, [user]);
@@ -112,7 +99,13 @@ export default function ChatTest() {
                       </Tooltip>
                       <p className={styles.msg}>
                         {user?.lastMessage?.sender_id !== user._id
-                          ? `Bạn: ${user?.lastMessage?.content}`
+                          ? user?.lastMessage?.imgUrl &&
+                            user?.lastMessage?.content === ""
+                            ? "Bạn vừa gửi một hình ảnh"
+                            : `Bạn: ${user?.lastMessage?.content}`
+                          : user?.lastMessage?.imgUrl &&
+                            user?.lastMessage?.content === ""
+                          ? `${user?.name} vừa gửi một hình ảnh`
                           : user?.lastMessage?.content}
                       </p>
                     </div>

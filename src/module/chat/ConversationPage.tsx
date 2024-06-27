@@ -1,20 +1,25 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import apiConversation, {
   IConversationBody,
-  IGetUserChatWithMeBody,
+  IConversationWithLastMessage,
 } from "@/apiRequest/ApiConversation";
+import ApiUploadImage from "@/apiRequest/ApiUploadImage";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {CirclePlusIcon, SpinnerIcon} from "@/components/Icon";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import socket from "@/lib/socket";
 import {
   IOnlineUsers,
   checkUserOnline,
+  getImageData,
   renderUserStatus,
   scrollToBottom,
 } from "@/module/chat/helper";
-import {ImageIcon, PaperPlaneIcon, VideoIcon} from "@radix-ui/react-icons";
+import {ImageIcon, PaperPlaneIcon} from "@radix-ui/react-icons";
 import {useInfiniteQuery, useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
 import dayjs from "dayjs";
@@ -30,7 +35,7 @@ import {
 import styles from "./Chat.module.scss";
 
 interface IConversationProps {
-  userSelected: IGetUserChatWithMeBody;
+  userSelected: IConversationWithLastMessage;
   onlineUsers: IOnlineUsers[];
   messages: IConversationBody[];
   setMessages: (
@@ -47,13 +52,17 @@ export default function ConversationPage({
   setMessages,
 }: IConversationProps) {
   const {user} = useContext(AppContext);
+
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   const [isTextareaScrolled, setIsTextareaScrolled] = useState<boolean>(false);
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
   const [openImageVideoUpload, setOpenImageVideoUpload] =
     useState<boolean>(false);
   const [value, setValue] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const [preview, setPreview] = useState("");
 
   useEffect(() => {
     const adjustTextareaHeight = () => {
@@ -70,6 +79,33 @@ export default function ConversationPage({
     return () => {
       if (textareaRef.current) {
         textareaRef.current.removeEventListener("input", adjustTextareaHeight);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "a" && event.ctrlKey) {
+        event.preventDefault();
+        if (textareaRef.current) {
+          textareaRef.current.select();
+        }
+      } else if (
+        event.key === "Backspace" &&
+        textareaRef.current?.selectionStart === 0 &&
+        textareaRef.current?.selectionEnd === textareaRef.current.value.length
+      ) {
+        setValue("");
+        textareaRef.current.style.height = "auto";
+        setIsTextareaScrolled(false);
+      }
+    };
+    if (textareaRef.current) {
+      textareaRef.current.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      if (textareaRef.current) {
+        textareaRef.current.removeEventListener("keydown", handleKeyDown);
       }
     };
   }, []);
@@ -113,22 +149,18 @@ export default function ConversationPage({
 
   useEffect(() => {
     if (!user || !user._id) return;
-
     socket.on("receive_message", (data: any) => {
       console.log(data);
       const {payload} = data;
       setMessages((message) => [...message, payload]);
       scrollToBottom(chatContainerRef);
     });
-
     socket.on("connect_error", (err: any) => {
       console.log(err.data);
     });
-
     socket.on("disconnect", (reason) => {
       console.log(reason);
     });
-
     return () => {
       socket.disconnect();
     };
@@ -157,32 +189,47 @@ export default function ConversationPage({
     }
   }, [conversations, isFirstLoad, setMessages]);
 
+  const handleUploadImage = async (file: File) => {
+    const formData = new FormData();
+    if (file) {
+      formData.append("image", file);
+      const uploadPhoto = await ApiUploadImage.uploadImage(formData);
+      setOpenImageVideoUpload(false);
+      setImageUrl(uploadPhoto.payload.data[0].url as string);
+    }
+  };
+
   const handleUploadImageVideoOpen = () => {
     setOpenImageVideoUpload((preve) => !preve);
   };
 
   const send = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const conversation = {
-      content: value,
-      sender_id: user?._id,
-      receiver_id: userByUsername?.payload?.data?._id,
-    };
-    socket.emit("send_message", {
-      payload: conversation,
-    });
-    setValue("");
-    setMessages((message) => [
-      ...message,
-      {
-        ...conversation,
-        _id: new Date().getTime().toString(),
-      },
-    ]);
-    scrollToBottom(chatContainerRef);
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      setIsTextareaScrolled(false);
+    if (value || imageUrl) {
+      const conversation = {
+        content: value.trim(),
+        sender_id: user?._id,
+        receiver_id: userByUsername?.payload?.data?._id,
+        imgUrl: imageUrl,
+      };
+      socket.emit("send_message", {
+        payload: conversation,
+      });
+      setValue("");
+      setImageUrl("");
+      setPreview("");
+      setMessages((message) => [
+        ...message,
+        {
+          ...conversation,
+          _id: new Date().getTime().toString(),
+        },
+      ]);
+      scrollToBottom(chatContainerRef);
+      if (textareaRef.current) {
+        textareaRef.current.style.height = "auto";
+        setIsTextareaScrolled(false);
+      }
     }
   };
 
@@ -252,14 +299,14 @@ export default function ConversationPage({
                   )}
                   key={conversation._id}
                 >
-                  {/* <div className="w-full relative">
-                {true && (
-                  <img
-                    src={userSelected?.avatar}
-                    className="w-full h-full object-scale-down"
-                  />
-                )}
-              </div> */}
+                  <div className="w-full relative">
+                    {conversation.imgUrl && (
+                      <img
+                        src={conversation?.imgUrl}
+                        className="w-full h-full object-scale-down"
+                      />
+                    )}
+                  </div>
                   <p className="px-2">{conversation.content}</p>
                   <p className="text-xs ml-auto w-fit">
                     {dayjs(conversation.created_at).format("hh:mm")}
@@ -272,7 +319,12 @@ export default function ConversationPage({
       </div>
       <div className={styles.footer}>
         <div className="flex items-center justify-between gap-5">
-          <div className="flex items-center">
+          <div
+            className={clsx(
+              "flex items-center",
+              (preview || isTextareaScrolled) && "self-end"
+            )}
+          >
             <div className="relative ">
               <button
                 onClick={handleUploadImageVideoOpen}
@@ -283,7 +335,11 @@ export default function ConversationPage({
 
               {/**video and image */}
               {openImageVideoUpload && (
-                <div className="bg-white shadow rounded absolute bottom-14 w-36 p-2">
+                <div
+                  className="bg-white shadow rounded absolute bottom-14 w-36 p-2
+                  z-[9999]
+                "
+                >
                   <form>
                     <label
                       htmlFor="uploadImage"
@@ -294,26 +350,14 @@ export default function ConversationPage({
                       </div>
                       <p>Image</p>
                     </label>
-                    <label
-                      htmlFor="uploadVideo"
-                      className="flex items-center p-2 px-3 gap-3 hover:bg-slate-200 cursor-pointer"
-                    >
-                      <div className="text-purple-500">
-                        <VideoIcon className="w-5 h-5" />
-                      </div>
-                      <p>Video</p>
-                    </label>
                     <input
                       type="file"
                       id="uploadImage"
-                      onChange={() => console.log(123)}
-                      className="hidden"
-                    />
-
-                    <input
-                      type="file"
-                      id="uploadVideo"
-                      onChange={() => console.log(123)}
+                      onChange={(e) => {
+                        const {files, displayUrl} = getImageData(e);
+                        handleUploadImage(files[0]);
+                        setPreview(displayUrl);
+                      }}
                       className="hidden"
                     />
                   </form>
@@ -323,7 +367,13 @@ export default function ConversationPage({
           </div>
           <form onSubmit={send} className="w-full flex items-center">
             <div className={styles.inputMsg}>
-              <div className="flex flex-1 w-full">
+              <div className="flex flex-1 flex-col w-full max-h-[250px]">
+                {preview && (
+                  <Avatar className="w-24 h-24 border border-black rounded-sm">
+                    <AvatarImage src={preview} />
+                    <AvatarFallback>TH</AvatarFallback>
+                  </Avatar>
+                )}
                 <textarea
                   ref={textareaRef}
                   placeholder="Aa"
@@ -335,12 +385,18 @@ export default function ConversationPage({
                 />
               </div>
               <CirclePlusIcon
-                className={clsx("w-6 h-6", isTextareaScrolled && "self-end")}
+                className={clsx(
+                  "w-6 h-6",
+                  (isTextareaScrolled || preview) && "self-end"
+                )}
               />
             </div>
             <button
               type="submit"
-              className="flex items-center justify-center mr-3 p-2 cursor-pointer"
+              className={clsx(
+                "flex items-center justify-center mr-3 p-2 cursor-pointer",
+                (preview || isTextareaScrolled) && "self-end"
+              )}
             >
               <PaperPlaneIcon className="w-5 h-5 text-textSecondary" />
             </button>

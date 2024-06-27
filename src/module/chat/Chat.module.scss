@@ -188,11 +188,11 @@
   line-height: normal;
   width: 100%;
   resize: none;
-  flex: 1;
   overflow: auto;
   white-space: pre-wrap;
   word-wrap: break-word;
   max-height: 150px;
+  height: auto;
   &:focus {
     outline: none;
   }

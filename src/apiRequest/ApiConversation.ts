@@ -6,21 +6,15 @@ export interface IConversationBody extends ICommonAuditable {
   sender_id?: string;
   receiver_id?: string;
   content?: string;
+  imgUrl?: string;
 }
 
-export interface IGetUserChatWithMeBody extends ICommonAuditable {
-  _id?: string;
-  name?: string;
-  email?: string;
-  date_of_birth?: string;
-  gender?: number;
-  verify?: number;
-  address?: string;
-  username?: string;
-  avatar?: string;
-  role?: number;
-  phone_number?: string;
-  position?: number;
+export interface IConversationWithLastMessage {
+  _id: string;
+  avatar: string;
+  name: string;
+  username: string;
+  lastMessage: IConversationBody;
 }
 interface IParamsConversation {
   limit?: number;
@@ -31,13 +25,9 @@ interface GetConversationRes {
   data: IConversationBody[];
   meta: IMetaData;
 }
-interface IGetConversationChatWithMeRes {
-  message: string;
-  data: IGetUserChatWithMeBody[];
-}
+
 const path = {
   getByReceiverId: "/conversations/receivers",
-  getConversationsChatWithMe: "/conversations/me",
 };
 
 const apiConversation = {
@@ -51,9 +41,6 @@ const apiConversation = {
     http.get<GetConversationRes>(`${path.getByReceiverId}/${receiver_id}`, {
       params: params as CommonParams<IParamsConversation>,
     }),
-
-  getConversationsChatWithMe: () =>
-    http.get<IGetConversationChatWithMeRes>(path.getConversationsChatWithMe),
 };
 
 export default apiConversation;
