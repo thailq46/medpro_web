@@ -12,7 +12,11 @@ import {
 } from "@/components/ui/tooltip";
 import socket from "@/lib/socket";
 import ConversationPage from "@/module/chat/ConversationPage";
-import {IOnlineUsers, checkUserOnline} from "@/module/chat/helper";
+import {
+  IOnlineUsers,
+  checkUserOnline,
+  normalizeString,
+} from "@/module/chat/helper";
 import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
 import clsx from "clsx";
 import dayjs from "dayjs";
@@ -30,6 +34,7 @@ export default function ChatPage() {
   const [userSelected, setUserSelected] =
     useState<IConversationWithLastMessage | null>(null);
   const [allUser, setAllUser] = useState<IConversationWithLastMessage[]>([]);
+  const [searchValue, setSearchValue] = useState<string>("");
 
   useEffect(() => {
     if (!user || !user._id) return;
@@ -47,6 +52,10 @@ export default function ChatPage() {
     });
   }, [user]);
 
+  const filteredUsers = allUser.filter((user) =>
+    normalizeString(user.name).includes(normalizeString(searchValue.trim()))
+  );
+
   return (
     <>
       <div className={styles.wrapper}>
@@ -55,10 +64,14 @@ export default function ChatPage() {
             <h2 className={styles.title}>Đoạn chat</h2>
             <div className={styles.search}>
               <MagnifyingGlassIcon className="w-6 h-6 flex-shrink-0" />
-              <input type="search" placeholder="Search Messenger" />
+              <input
+                type="search"
+                placeholder="Search Messenger"
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
             </div>
             <div className={styles.chatContainer}>
-              {allUser.map((user) => (
+              {filteredUsers.map((user) => (
                 <div
                   className={clsx(
                     styles.chatBox,

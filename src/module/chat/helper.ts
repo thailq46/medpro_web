@@ -64,3 +64,10 @@ export function getImageData(event: ChangeEvent<HTMLInputElement>) {
 
   return {files, displayUrl};
 }
+
+export const normalizeString = (str: string): string => {
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+};
