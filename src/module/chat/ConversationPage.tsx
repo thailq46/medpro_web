@@ -59,11 +59,10 @@ export default function ConversationPage({
 
   const [isTextareaScrolled, setIsTextareaScrolled] = useState<boolean>(false);
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
-  const [openImageVideoUpload, setOpenImageVideoUpload] =
-    useState<boolean>(false);
+  const [openImageUpload, setOpenImageUpload] = useState<boolean>(false);
   const [value, setValue] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
-  const [preview, setPreview] = useState("");
+  const [preview, setPreview] = useState<string>("");
   const [emojiPickerOpen, setEmojiPickerOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -151,7 +150,7 @@ export default function ConversationPage({
 
   useEffect(() => {
     if (!user || !user._id) return;
-    socket.on("receive_message", (data: any) => {
+    socket.on("receive_message", (data: {payload: IConversationBody}) => {
       console.log(data);
       const {payload} = data;
       setMessages((message) => [...message, payload]);
@@ -196,13 +195,13 @@ export default function ConversationPage({
     if (file) {
       formData.append("image", file);
       const uploadPhoto = await ApiUploadImage.uploadImage(formData);
-      setOpenImageVideoUpload(false);
+      setOpenImageUpload(false);
       setImageUrl(uploadPhoto.payload.data[0].url as string);
     }
   };
 
-  const handleUploadImageVideoOpen = () => {
-    setOpenImageVideoUpload((preve) => !preve);
+  const handleUploadImageOpen = () => {
+    setOpenImageUpload((preve) => !preve);
   };
 
   const send = (e: FormEvent<HTMLFormElement>) => {
@@ -328,16 +327,15 @@ export default function ConversationPage({
               (preview || isTextareaScrolled) && "self-end"
             )}
           >
-            <div className="relative ">
+            <div className="relative">
               <button
-                onClick={handleUploadImageVideoOpen}
+                onClick={handleUploadImageOpen}
                 className="flex justify-center items-center w-11 h-11 rounded-full"
               >
                 <CirclePlusIcon className="w-6 h-6" />
               </button>
 
-              {/**video and image */}
-              {openImageVideoUpload && (
+              {openImageUpload && (
                 <div
                   className="bg-white shadow rounded absolute bottom-14 w-36 p-2
                   z-[9999]"

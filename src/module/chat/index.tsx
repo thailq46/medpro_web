@@ -23,7 +23,7 @@ import styles from "./Chat.module.scss";
 
 dayjs.extend(relativeTime);
 
-export default function ChatTest() {
+export default function ChatPage() {
   const {user} = useContext(AppContext);
   const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
   const [messages, setMessages] = useState<IConversationBody[]>([]);

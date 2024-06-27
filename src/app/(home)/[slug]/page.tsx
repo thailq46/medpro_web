@@ -3,7 +3,7 @@ import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {AT_COOKIE_NAME} from "@/apiRequest/common";
 import Custom404 from "@/components/Layout/ErrorLayout/404";
 import VerifyLayout from "@/components/Layout/VerifyLayout";
-import ChatTest from "@/module/chat/Chat";
+import ChatPage from "@/module/chat";
 import ForgotPassword from "@/module/forgot-password";
 import ResetPassword from "@/module/reset-password";
 import {cookies} from "next/headers";
@@ -79,7 +79,7 @@ export default async function Page({
     );
   }
   if (slug === "chat") {
-    return <ChatTest />;
+    return <ChatPage />;
   }
   return <Custom404 />;
 }
