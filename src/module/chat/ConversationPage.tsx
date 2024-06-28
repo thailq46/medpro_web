@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 "use client";
@@ -44,6 +45,7 @@ interface IConversationProps {
       | IConversationBody[]
       | ((prev: IConversationBody[]) => IConversationBody[])
   ) => void;
+  username: string;
 }
 
 export default function ConversationPage({
@@ -51,6 +53,7 @@ export default function ConversationPage({
   onlineUsers,
   messages,
   setMessages,
+  username,
 }: IConversationProps) {
   const {user} = useContext(AppContext);
 
@@ -111,11 +114,12 @@ export default function ConversationPage({
     };
   }, []);
 
+  const usenameSelected = username ? username : userSelected?.username;
+
   const {data: userByUsername} = useQuery({
-    queryKey: [QUERY_KEY.GET_USER_BY_USERNAME, userSelected?.username],
-    queryFn: () =>
-      apiAuthRequest.getUserByUsername(userSelected?.username as string),
-    enabled: !!userSelected?.username,
+    queryKey: [QUERY_KEY.GET_USER_BY_USERNAME, usenameSelected],
+    queryFn: () => apiAuthRequest.getUserByUsername(usenameSelected),
+    enabled: !!usenameSelected,
   });
 
   const {
@@ -250,14 +254,16 @@ export default function ConversationPage({
       <nav className={styles.nav}>
         <div className={styles.navAvatar}>
           <Image
-            src={userSelected?.avatar || "/img/avatar/avatar.jpg"}
+            src={
+              userByUsername?.payload?.data?.avatar || "/img/avatar/avatar.jpg"
+            }
             alt="avatar"
             width={150}
             height={150}
           />
           {checkUserOnline({
             onlineUsers,
-            user_id: userSelected?._id as string,
+            user_id: userByUsername?.payload?.data?._id as string,
           }) && (
             <div className={styles.circle}>
               <div className={styles.online}></div>
@@ -265,11 +271,11 @@ export default function ConversationPage({
           )}
         </div>
         <div>
-          <h3 className={styles.name}>{userSelected?.name}</h3>
+          <h3 className={styles.name}>{userByUsername?.payload?.data?.name}</h3>
           <p className={styles.msg}>
             {renderUserStatus({
               onlineUsers,
-              user_id: userSelected?._id as string,
+              user_id: userByUsername?.payload?.data?._id as string,
             })}
           </p>
         </div>

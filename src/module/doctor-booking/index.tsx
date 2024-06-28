@@ -7,7 +7,9 @@ import {
   LIST_POSITION_DOCTOR,
   PAGE,
   PARAMS,
+  VerifyStatus,
 } from "@/apiRequest/common";
+import {AppContext} from "@/app/(home)/AppProvider";
 import {ButtonGlobal} from "@/components/ButtonGlobal";
 import {LocationIcon} from "@/components/Icon";
 import EmptyList from "@/components/Layout/EmptyList";
@@ -21,13 +23,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {Skeleton} from "@/components/ui/skeleton";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
+import useDebounce from "@/hooks/useDebounce";
 import {getStepNameAndServiceId, renderPosition} from "@/lib/utils";
 import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import styles from "./DoctorBooking.module.scss";
 
 const useServiceData = (hospitalId: string) => {
@@ -39,6 +48,8 @@ const useServiceData = (hospitalId: string) => {
 };
 
 export default function DoctorBooking() {
+  const {user} = useContext(AppContext);
+
   const [currentPage, setCurrentPage] = useState<number>(PAGE);
   const [itemsPerPage, _] = useState<number>(LIMIT);
   const [search, setSearch] = useState<string>("");
@@ -47,16 +58,27 @@ export default function DoctorBooking() {
 
   const router = useRouter();
 
+  const searchValueDebounce = useDebounce(search, 500);
+
+  useEffect(() => {
+    document.body.scrollIntoView({behavior: "smooth", block: "start"});
+  }, [currentPage]);
+
   const {data: doctors, isLoading} = useQuery({
     queryKey: [
       QUERY_KEY.GET_LIST_DOCTOR,
-      {page: currentPage, limit: itemsPerPage, search, position},
+      {
+        page: currentPage,
+        limit: itemsPerPage,
+        search: searchValueDebounce,
+        position,
+      },
     ],
     queryFn: () =>
       apiDoctor.getListDoctor({
         page: currentPage,
         limit: itemsPerPage,
-        search,
+        search: searchValueDebounce,
         position,
       }),
   });
@@ -81,6 +103,12 @@ export default function DoctorBooking() {
       router.refresh();
     }
   };
+
+  const disabledButton =
+    !user ||
+    user?.verify === VerifyStatus.UNVERIFIED ||
+    user?.verify === VerifyStatus.BANNED;
+
   return (
     <>
       <div className={styles.bannerWrapper}>
@@ -147,7 +175,7 @@ export default function DoctorBooking() {
                     key={doctor._id}
                   >
                     <div className="p-3 bg-white flex items-start gap-5">
-                      <div className="w-[120px] h-[120px]">
+                      <div className="w-[120px] h-[120px] flex-shrink-0">
                         <Image
                           src={doctor?.avatar || "/img/avatar/avatar.jpg"}
                           alt="Avatar"
@@ -156,7 +184,7 @@ export default function DoctorBooking() {
                           className="w-full h-full object-contain rounded-lg"
                         />
                       </div>
-                      <div>
+                      <div className="w-full">
                         <h3 className="text-[#11a2f3] text-xl">
                           {renderPosition(doctor?.position!)}{" "}
                           <span className="font-bold">
@@ -174,6 +202,37 @@ export default function DoctorBooking() {
                         <div>
                           <strong>Giá khám: </strong>
                           {doctor?.price?.toLocaleString("vi-VN")}đ
+                        </div>
+                        <div className="w-full mt-2">
+                          <strong>Liên hệ: </strong>
+                          <TooltipProvider delayDuration={100}>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  className="w-fit bg-textSecondary text-white p-1 rounded-sm transition-all hover:bg-opacity-80
+                                  disabled:bg-opacity-50 disabled:cursor-not-allowed disabled:text-white disabled:hover:bg-opacity-50
+                                  "
+                                  onClick={() =>
+                                    router.push(
+                                      `/chat?username=${doctor.username}`
+                                    )
+                                  }
+                                  disabled={disabledButton}
+                                >
+                                  Nhắn tin với bác sĩ
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                {user?.verify === VerifyStatus.UNVERIFIED
+                                  ? "Vui lòng xác thực tài khoản để dùng tính năng này"
+                                  : user?.verify === VerifyStatus.BANNED
+                                  ? "Tài khoản của bạn đã bị cấm"
+                                  : !user
+                                  ? "Vui lòng đăng nhập để dùng tính năng này"
+                                  : "Nhắn tin với bác sĩ để được tư vấn"}
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         </div>
                       </div>
                     </div>

@@ -6,6 +6,7 @@ import {
   CATE,
   QUERY_PARAMS,
   RT_COOKIE_NAME,
+  VerifyStatus,
 } from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {ModalConfirmCustom} from "@/components/ModalComfirm";
@@ -42,6 +43,7 @@ import {useToast} from "@/components/ui/use-toast";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import AccountManagement from "@/module/account-management";
 import {
+  ChatBubbleIcon,
   ExitIcon,
   HamburgerMenuIcon,
   PersonIcon,
@@ -230,6 +232,18 @@ export default function Navbar() {
                   Quản lý tài khoản
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
+                {user?.verify === VerifyStatus.VERIFIED && (
+                  <>
+                    <DropdownMenuItem
+                      className="cursor-pointer"
+                      onClick={() => router.push("/chat")}
+                    >
+                      <ChatBubbleIcon className="mr-2 h-4 w-4" />
+                      Tin nhắn
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
                 <DropdownMenuItem
                   className="cursor-pointer"
                   onClick={() => setIsModalConfirmOpen(true)}

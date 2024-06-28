@@ -22,6 +22,7 @@ import clsx from "clsx";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
+import {useRouter, useSearchParams} from "next/navigation";
 import {useContext, useEffect, useState} from "react";
 import styles from "./Chat.module.scss";
 
@@ -29,12 +30,19 @@ dayjs.extend(relativeTime);
 
 export default function ChatPage() {
   const {user} = useContext(AppContext);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const username = searchParams.get("username");
   const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
   const [messages, setMessages] = useState<IConversationBody[]>([]);
   const [userSelected, setUserSelected] =
     useState<IConversationWithLastMessage | null>(null);
   const [allUser, setAllUser] = useState<IConversationWithLastMessage[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
+
+  useEffect(() => {
+    socket.connect();
+  }, []);
 
   useEffect(() => {
     if (!user || !user._id) return;
@@ -75,7 +83,9 @@ export default function ChatPage() {
                 <div
                   className={clsx(
                     styles.chatBox,
-                    user.username === userSelected?.username && styles.active
+                    (user.username === userSelected?.username ||
+                      user.username === username) &&
+                      styles.active
                   )}
                   key={user?._id}
                   role="button"
@@ -83,6 +93,9 @@ export default function ChatPage() {
                     setUserSelected(user);
                     if (userSelected?.username !== user.username) {
                       setMessages([]);
+                    }
+                    if (searchParams) {
+                      router.push("/chat");
                     }
                   }}
                 >
@@ -127,12 +140,13 @@ export default function ChatPage() {
               ))}
             </div>
           </div>
-          {userSelected && (
+          {(userSelected || username) && (
             <ConversationPage
-              userSelected={userSelected}
+              userSelected={userSelected as IConversationWithLastMessage}
               onlineUsers={onlineUsers}
               messages={messages}
               setMessages={setMessages}
+              username={username || ""}
             />
           )}
         </div>
