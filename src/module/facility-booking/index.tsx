@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
+import useDebounce from "@/hooks/useDebounce";
 import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
@@ -47,12 +48,18 @@ export default function FacilityBooking() {
   const [search, setSearch] = useState<string>("");
   const router = useRouter();
 
+  const searchValueDebounce = useDebounce(search, 500);
+
   const page = active === TYPE.ALL ? currentPage : PAGE;
   const limit = active === TYPE.ALL ? itemsPerPage : 99;
 
   const {data: hospitals, isLoading: isLoadingHospital} = useQuery({
-    queryKey: [QUERY_KEY.GET_LIST_HOSPITALS, {page, limit, search}],
-    queryFn: async () => apiHospital.getListHospital({page, limit, search}),
+    queryKey: [
+      QUERY_KEY.GET_LIST_HOSPITALS,
+      {page, limit, search: searchValueDebounce},
+    ],
+    queryFn: async () =>
+      apiHospital.getListHospital({page, limit, search: searchValueDebounce}),
   });
 
   const hospitalDataFilter = hospitals?.payload?.data?.filter((v) => {

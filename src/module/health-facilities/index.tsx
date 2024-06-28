@@ -22,6 +22,7 @@ import {
 import {Input} from "@/components/ui/input";
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
+import useDebounce from "@/hooks/useDebounce";
 import {generateDescription} from "@/lib/utils";
 import {ClockIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
@@ -50,6 +51,8 @@ export default function HealthFacilities({slug}: {slug?: string}) {
   const [itemsPerPage, _] = useState<number>(LIMIT);
   const [searchValue, setSearchValue] = useState<string>("");
 
+  const searchValueDebounce = useDebounce(searchValue, 500);
+
   const pathname = usePathname();
   const isActivePath = slug
     ? pathname === `/${CATE.CSYT}/${slug}`
@@ -67,7 +70,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
         page: currentPage,
         limit: itemsPerPage,
         types: type,
-        search: searchValue,
+        search: searchValueDebounce,
       },
     ],
     queryFn: async () =>
@@ -75,7 +78,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
         page: currentPage,
         limit: itemsPerPage,
         types: type,
-        search: searchValue,
+        search: searchValueDebounce,
       }),
   });
 

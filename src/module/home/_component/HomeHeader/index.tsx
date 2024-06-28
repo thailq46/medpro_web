@@ -3,6 +3,7 @@ import apiSearch from "@/apiRequest/ApiSearch";
 import {Input} from "@/components/ui/input";
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
+import useDebounce from "@/hooks/useDebounce";
 import HomeInfo from "@/module/home/_component/HomeHeader/HomeInfo";
 import HomeService from "@/module/home/_component/HomeHeader/HomeService";
 import HomeStatistic from "@/module/home/_component/HomeHeader/HomeStatistic";
@@ -16,13 +17,20 @@ const LIMIT = 4;
 
 export default function HomeHeader() {
   const [value, setValue] = useState("");
+
+  const searchValueDebounce = useDebounce(value, 500);
+
   const {data, isLoading} = useQuery({
     queryKey: [
       QUERY_KEY.GET_SEARCH,
-      {category: "all", limit: LIMIT, search_key: value},
+      {category: "all", limit: LIMIT, search_key: searchValueDebounce},
     ],
     queryFn: () =>
-      apiSearch.search({category: "all", limit: LIMIT, search_key: value}),
+      apiSearch.search({
+        category: "all",
+        limit: LIMIT,
+        search_key: searchValueDebounce,
+      }),
   });
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -40,7 +48,7 @@ export default function HomeHeader() {
           </h3>
           <div className={styles.search}>
             <Input
-              type="text"
+              type="search"
               placeholder="Tìm kiếm cơ sở y tế"
               className="home-header_search"
               value={value}
