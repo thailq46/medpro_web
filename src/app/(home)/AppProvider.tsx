@@ -1,9 +1,9 @@
 "use client";
 import {User} from "@/apiRequest/ApiAuth";
 import {clientAccessToken} from "@/apiRequest/http";
-import React, {useContext, useState} from "react";
-import {createContext} from "react";
+import socket from "@/lib/socket";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import React, {createContext, useContext, useState} from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,6 +43,8 @@ export default function AppProvider({
   useState(() => {
     if (typeof window !== "undefined") {
       clientAccessToken.value = initialAccessToken;
+      socket.connect();
+      console.log("connect socket");
     }
   });
   return (
