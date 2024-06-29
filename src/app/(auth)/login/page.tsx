@@ -1,12 +1,13 @@
 import {AT_COOKIE_NAME} from "@/apiRequest/common";
-import Login from "@/module/login";
+import dynamic from "next/dynamic";
 import {cookies} from "next/headers";
-import {redirect} from "next/navigation";
+const Login = dynamic(() => import("@/module/login"));
 
-export default function index() {
+export default async function index() {
   const cookieStorage = cookies();
   const isLogin = Boolean(cookieStorage.get(AT_COOKIE_NAME));
   if (isLogin) {
+    const {redirect} = await import("next/navigation");
     redirect("/");
   }
   return <Login />;

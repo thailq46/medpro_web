@@ -13,7 +13,6 @@ import {AppContext} from "@/app/(home)/AppProvider";
 import {ButtonGlobal} from "@/components/ButtonGlobal";
 import {LocationIcon} from "@/components/Icon";
 import EmptyList from "@/components/Layout/EmptyList";
-import PaginationSection from "@/components/PaginationSection";
 import {
   Select,
   SelectContent,
@@ -34,10 +33,15 @@ import useDebounce from "@/hooks/useDebounce";
 import {getStepNameAndServiceId, renderPosition} from "@/lib/utils";
 import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import {useContext, useEffect, useState} from "react";
 import styles from "./DoctorBooking.module.scss";
+const PaginationSection = dynamic(
+  () => import("@/components/PaginationSection"),
+  {ssr: false}
+);
 
 const useServiceData = (hospitalId: string) => {
   return useQuery({

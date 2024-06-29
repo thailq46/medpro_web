@@ -11,7 +11,6 @@ import {
 } from "@/apiRequest/common";
 import {ButtonGlobal, ButtonViewDetail} from "@/components/ButtonGlobal";
 import {LocationIcon} from "@/components/Icon";
-import PaginationSection from "@/components/PaginationSection";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -27,10 +26,15 @@ import {generateDescription} from "@/lib/utils";
 import {ClockIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import {usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
 import styles from "./HealthFacilities.module.scss";
+const PaginationSection = dynamic(
+  () => import("@/components/PaginationSection"),
+  {ssr: false}
+);
 
 const typeMapping = {
   "benh-vien-cong": HospitalsType.BENHVIENCONG,

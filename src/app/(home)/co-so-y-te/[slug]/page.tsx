@@ -1,4 +1,5 @@
-import HealthFacilities from "@/module/health-facilities";
+import dynamic from "next/dynamic";
+const HealthFacilities = dynamic(() => import("@/module/health-facilities"));
 
 export default function Page({params}: {params: {slug: string}}) {
   const {slug} = params;

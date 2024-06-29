@@ -58,7 +58,7 @@ interface IModalBookingAppointmentProps {
   service?: IServiceBody;
 }
 
-export function ModalBookingAppointment({
+export default function ModalBookingAppointment({
   isOpen,
   setIsOpen,
   handleOke,

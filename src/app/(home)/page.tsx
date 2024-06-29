@@ -1,6 +1,6 @@
-import React from "react";
-import Home from "@/module/home";
+import dynamic from "next/dynamic";
+const Home = dynamic(() => import("@/module/home"));
 
-export default function index() {
+export default function Page() {
   return <Home />;
 }

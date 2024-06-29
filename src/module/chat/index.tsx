@@ -11,7 +11,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import socket from "@/lib/socket";
-import ConversationPage from "@/module/chat/ConversationPage";
 import {
   IOnlineUsers,
   checkUserOnline,
@@ -21,10 +20,15 @@ import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
 import clsx from "clsx";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import {useRouter, useSearchParams} from "next/navigation";
 import {useContext, useEffect, useState} from "react";
 import styles from "./Chat.module.scss";
+const ConversationPage = dynamic(
+  () => import("@/module/chat/ConversationPage"),
+  {ssr: false}
+);
 
 dayjs.extend(relativeTime);
 

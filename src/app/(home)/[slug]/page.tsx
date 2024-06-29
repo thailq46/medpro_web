@@ -1,12 +1,11 @@
-import apiAppointment from "@/apiRequest/ApiAppointment";
-import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {AT_COOKIE_NAME} from "@/apiRequest/common";
-import Custom404 from "@/components/Layout/ErrorLayout/404";
-import VerifyLayout from "@/components/Layout/VerifyLayout";
-import ChatPage from "@/module/chat";
-import ForgotPassword from "@/module/forgot-password";
-import ResetPassword from "@/module/reset-password";
+import dynamic from "next/dynamic";
 import {cookies} from "next/headers";
+const Custom404 = dynamic(() => import("@/components/Layout/ErrorLayout/404"));
+const VerifyLayout = dynamic(() => import("@/components/Layout/VerifyLayout"));
+const ChatPage = dynamic(() => import("@/module/chat"));
+const ForgotPassword = dynamic(() => import("@/module/forgot-password"));
+const ResetPassword = dynamic(() => import("@/module/reset-password"));
 
 export default async function Page({
   params,
@@ -22,6 +21,7 @@ export default async function Page({
     const {token} = searchParams;
     let isError = false;
     try {
+      const apiAuthRequest = (await import("@/apiRequest/ApiAuth")).default;
       await apiAuthRequest.verifyEmail(token as string);
     } catch (error) {
       isError = true;
@@ -39,6 +39,7 @@ export default async function Page({
     const {token} = searchParams;
     let isError = false;
     try {
+      const apiAuthRequest = (await import("@/apiRequest/ApiAuth")).default;
       await apiAuthRequest.verifyForgotPassword(token as string);
     } catch (error) {
       isError = true;
@@ -58,6 +59,8 @@ export default async function Page({
     const isSuccess = Number(resultCode) === 0;
     if (isSuccess && access_token) {
       try {
+        const apiAppointment = (await import("@/apiRequest/ApiAppointment"))
+          .default;
         await apiAppointment.updatePaymentNextServerToServer({
           order_id: orderId as string,
           access_token: access_token?.value,

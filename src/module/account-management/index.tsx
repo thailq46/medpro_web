@@ -2,11 +2,21 @@
 import {CircleUserIcon, SecurityIcon} from "@/components/Icon";
 import {Dialog, DialogContent} from "@/components/ui/dialog";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import AppointmentForm from "@/module/account-management/appointments";
-import SecurityForm from "@/module/account-management/security";
-import UpdateMeForm from "@/module/account-management/update-me";
 import {CalendarIcon} from "@radix-ui/react-icons";
+import dynamic from "next/dynamic";
 import styles from "./Account.module.scss";
+const AppointmentForm = dynamic(
+  () => import("@/module/account-management/appointments"),
+  {ssr: false}
+);
+const SecurityForm = dynamic(
+  () => import("@/module/account-management/security"),
+  {ssr: false}
+);
+const UpdateMeForm = dynamic(
+  () => import("@/module/account-management/update-me"),
+  {ssr: false}
+);
 
 export default function AccountManagement({
   isOpen,

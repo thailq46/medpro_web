@@ -16,15 +16,19 @@ import {Button} from "@/components/ui/button";
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import sortTimes, {addAmPmSuffix} from "@/lib/SortTimesHelper";
-import {ModalBookingAppointment} from "@/module/booking-appointment/modal-booking";
 import {useQuery} from "@tanstack/react-query";
 import {vi} from "date-fns/locale";
 import dayjs from "dayjs";
+import dynamic from "next/dynamic";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import {useContext, useEffect, useState} from "react";
 import {DayPicker} from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import styles from "./BookingAppointment.module.scss";
+const ModalBookingAppointment = dynamic(
+  () => import("@/module/booking-appointment/modal-booking"),
+  {ssr: false}
+);
 
 interface IChooseDateProps {
   onChooseDate: (date: string) => void;

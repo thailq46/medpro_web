@@ -41,7 +41,6 @@ import {
 } from "@/components/ui/sheet";
 import {useToast} from "@/components/ui/use-toast";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
-import AccountManagement from "@/module/account-management";
 import {
   ChatBubbleIcon,
   ExitIcon,
@@ -50,11 +49,15 @@ import {
   TriangleDownIcon,
 } from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {useContext, useMemo, useState} from "react";
 import styles from "./Navbar.module.scss";
+const AccountManagement = dynamic(() => import("@/module/account-management"), {
+  ssr: false,
+});
 
 export default function Navbar() {
   const [isModalAccountOpen, setIsModalAccountOpen] = useState(false);

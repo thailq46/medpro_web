@@ -5,14 +5,17 @@ import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import useDebounce from "@/hooks/useDebounce";
 import HomeInfo from "@/module/home/_component/HomeHeader/HomeInfo";
-import HomeService from "@/module/home/_component/HomeHeader/HomeService";
 import HomeStatistic from "@/module/home/_component/HomeHeader/HomeStatistic";
 import {useQuery} from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import {ChangeEvent, useState} from "react";
 import styles from "./HomeHeader.module.scss";
-
+const HomeService = dynamic(
+  () => import("@/module/home/_component/HomeHeader/HomeService"),
+  {ssr: false}
+);
 const LIMIT = 4;
 
 export default function HomeHeader() {

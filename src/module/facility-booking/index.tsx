@@ -9,7 +9,6 @@ import {
 import {ButtonGlobal, ButtonViewDetail} from "@/components/ButtonGlobal";
 import {LocationIcon} from "@/components/Icon";
 import EmptyList from "@/components/Layout/EmptyList";
-import PaginationSection from "@/components/PaginationSection";
 import {
   Select,
   SelectContent,
@@ -24,10 +23,15 @@ import useDebounce from "@/hooks/useDebounce";
 import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import styles from "./FacilityBooking.module.scss";
+const PaginationSection = dynamic(
+  () => import("@/components/PaginationSection"),
+  {ssr: false}
+);
 
 const TYPE = {
   ALL: "all",
@@ -61,6 +65,10 @@ export default function FacilityBooking() {
     queryFn: async () =>
       apiHospital.getListHospital({page, limit, search: searchValueDebounce}),
   });
+
+  useEffect(() => {
+    document.body.scrollIntoView({behavior: "smooth", block: "start"});
+  }, [currentPage]);
 
   const hospitalDataFilter = hospitals?.payload?.data?.filter((v) => {
     switch (active) {

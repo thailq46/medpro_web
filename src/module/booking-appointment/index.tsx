@@ -20,18 +20,30 @@ import {
 import {Button} from "@/components/ui/button";
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
-import ChooseDate from "@/module/booking-appointment/choose-date";
-import ChooseDoctor, {
-  DoctorFilter,
-} from "@/module/booking-appointment/choose-doctor";
-import ChooseService from "@/module/booking-appointment/choose-service";
-import ChooseSubject from "@/module/booking-appointment/choose-subject";
+import {DoctorFilter} from "@/module/booking-appointment/choose-doctor";
 import {CalendarIcon, ResetIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
 import {useRouter, useSearchParams} from "next/navigation";
 import {useCallback, useState} from "react";
 import styles from "./BookingAppointment.module.scss";
+const ChooseDate = dynamic(
+  () => import("@/module/booking-appointment/choose-date"),
+  {ssr: false}
+);
+const ChooseDoctor = dynamic(
+  () => import("@/module/booking-appointment/choose-doctor"),
+  {ssr: false}
+);
+const ChooseService = dynamic(
+  () => import("@/module/booking-appointment/choose-service"),
+  {ssr: false}
+);
+const ChooseSubject = dynamic(
+  () => import("@/module/booking-appointment/choose-subject"),
+  {ssr: false}
+);
 
 export default function BookingAppointment() {
   const [dateSelected, setDateSelected] = useState<string>("");
