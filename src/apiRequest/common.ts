@@ -1,5 +1,8 @@
-export const RT_COOKIE_NAME = "refreshToken";
-export const AT_COOKIE_NAME = "accessToken";
+export const REFRESH_TOKEN = "refreshToken";
+export const ACCESS_TOKEN = "accessToken";
+export const ACCESS_TOKEN_EXPIRED = "accessTokenExpired";
+
+export const isClient = typeof window !== "undefined";
 
 export type ParamsType = Record<
   string,

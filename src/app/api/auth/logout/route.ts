@@ -1,5 +1,5 @@
 import apiAuthRequest from "@/apiRequest/ApiAuth";
-import {AT_COOKIE_NAME, IStatus, RT_COOKIE_NAME} from "@/apiRequest/common";
+import {ACCESS_TOKEN, IStatus, REFRESH_TOKEN} from "@/apiRequest/common";
 import {HttpError} from "@/apiRequest/http";
 import {cookies} from "next/headers";
 
@@ -9,15 +9,15 @@ export async function POST(request: Request) {
   const force = body.force as boolean | undefined;
   // Nếu mà body truyền force lên thì sẽ tự động đăng xuất mà ko cần hỏi
   if (force) {
-    cookies().delete(RT_COOKIE_NAME);
-    cookies().delete(AT_COOKIE_NAME);
+    cookies().delete(REFRESH_TOKEN);
+    cookies().delete(ACCESS_TOKEN);
     return Response.json(
       {message: "Bạn buộc phải đăng xuất"},
       {status: IStatus.SUCCESS}
     );
   }
-  const accessToken = cookieStore.get(AT_COOKIE_NAME);
-  const refreshToken = cookieStore.get(RT_COOKIE_NAME);
+  const accessToken = cookieStore.get(ACCESS_TOKEN);
+  const refreshToken = cookieStore.get(REFRESH_TOKEN);
   if (!accessToken || !refreshToken) {
     return Response.json(
       {message: "Không nhận được access_token và refresh_token"},
@@ -29,8 +29,8 @@ export async function POST(request: Request) {
       accessToken: accessToken.value,
       refreshToken: refreshToken.value,
     });
-    cookies().delete(RT_COOKIE_NAME);
-    cookies().delete(AT_COOKIE_NAME);
+    cookies().delete(REFRESH_TOKEN);
+    cookies().delete(ACCESS_TOKEN);
     return Response.json(res.payload, {
       status: IStatus.SUCCESS,
       // headers: {

@@ -1,5 +1,12 @@
 import displayError from "@/apiRequest/ErrorMessage/errors";
-import {IStatus, ParamsType} from "@/apiRequest/common";
+import {
+  ACCESS_TOKEN,
+  ACCESS_TOKEN_EXPIRED,
+  IStatus,
+  ParamsType,
+  REFRESH_TOKEN,
+  isClient,
+} from "@/apiRequest/common";
 import {toast} from "@/components/ui/use-toast";
 import {redirect} from "next/navigation";
 
@@ -56,31 +63,6 @@ interface IFetcherOptions extends RequestInit {
   params?: ParamsType;
 }
 
-class AccessToken {
-  private token = "";
-  private _expiresAt = 0;
-  get value() {
-    return this.token;
-  }
-  set value(token: string) {
-    // Nếu gọi method này ở server thì sẽ bị lỗi
-    if (typeof window === "undefined") {
-      throw new Error("Cannot set token on server side");
-    }
-    this.token = token;
-  }
-  get expiresAt() {
-    return this._expiresAt;
-  }
-  set expiresAt(_expiresAt: number) {
-    if (typeof window === "undefined") {
-      throw new Error("Cannot set token on server side");
-    }
-    this._expiresAt = _expiresAt;
-  }
-}
-export const clientAccessToken = new AccessToken();
-
 let clientLogoutRequest: null | Promise<any> = null;
 
 const request = async <TResponse>(
@@ -105,21 +87,25 @@ const request = async <TResponse>(
   }
   // fullUrl = http://localhost:4004/users?limit=5&page=1
 
-  // Đối với upload file thì ko thể dùng JSON.stringify nên phải check xem body có FormData hay không
-  const body = options?.body
-    ? options?.body instanceof FormData
-      ? options?.body
-      : JSON.stringify(options.body)
-    : undefined;
-  const baseHeaders =
-    options?.body instanceof FormData
-      ? {
-          Authorization: `Bearer ${clientAccessToken.value}`,
-        }
-      : {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${clientAccessToken.value}`,
-        };
+  let body: FormData | string | undefined = undefined;
+
+  if (options?.body instanceof FormData) {
+    body = options.body;
+  } else if (options?.body) {
+    body = JSON.stringify(options.body);
+  }
+
+  const baseHeaders: {
+    [key: string]: string;
+  } = body instanceof FormData ? {} : {"Content-Type": "application/json"};
+
+  if (isClient) {
+    const accessToken = localStorage.getItem(ACCESS_TOKEN);
+    if (accessToken) {
+      baseHeaders.Authorization = `Bearer ${accessToken}`;
+    }
+  }
+
   const res = await fetch(fullUrl, {
     ...options,
     headers: {
@@ -161,11 +147,16 @@ const request = async <TResponse>(
               ...baseHeaders,
             } as any,
           });
-          await clientLogoutRequest;
-          clientLogoutRequest = null;
-          clientAccessToken.value = "";
-          clientAccessToken.expiresAt = 0;
-          location.href = "/login";
+          try {
+            await clientLogoutRequest;
+          } catch (error) {
+          } finally {
+            localStorage.removeItem(ACCESS_TOKEN);
+            localStorage.removeItem(REFRESH_TOKEN);
+            localStorage.removeItem(ACCESS_TOKEN_EXPIRED);
+            clientLogoutRequest = null;
+            location.href = "/login";
+          }
         } else {
           redirect(`/login`);
         }

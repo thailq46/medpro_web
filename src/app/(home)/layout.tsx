@@ -1,12 +1,11 @@
-import apiAuthRequest, {IGetMeResBody} from "@/apiRequest/ApiAuth";
-import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
-import {AT_COOKIE_NAME} from "@/apiRequest/common";
 import AppProvider from "@/app/(home)/AppProvider";
-import DashBoardLayout from "@/components/Layout/DashBoardLayout";
+import Content from "@/components/Layout/Content";
+import Footer from "@/components/Layout/Footer";
+import Navbar from "@/components/Layout/Navbar";
 import {Toaster} from "@/components/ui/toaster";
 import type {Metadata} from "next";
 import {Manrope} from "next/font/google";
-import {cookies} from "next/headers";
+import NextTopLoader from "nextjs-toploader";
 import "../global.scss";
 
 const manrope = Manrope({
@@ -24,24 +23,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = cookies();
-  const access_token = cookieStore.get(AT_COOKIE_NAME);
-  let user: IGetMeResBody["data"] | null = null;
-  try {
-    if (access_token) {
-      const data = await apiAuthRequest.getMeFromNextServerToServer(
-        access_token?.value
-      );
-      user = data?.payload?.data;
-    }
-  } catch (error) {
-    handleErrorApi({error});
-  }
   return (
     <html lang="en">
       <body className={manrope.className}>
-        <AppProvider initialAccessToken={access_token?.value} user={user}>
-          <DashBoardLayout>{children}</DashBoardLayout>
+        <AppProvider>
+          <div className="wrapper">
+            <NextTopLoader color="#00b5f1" />
+            <Navbar />
+            <Content>{children}</Content>
+            <Footer />
+          </div>
           <Toaster />
         </AppProvider>
       </body>

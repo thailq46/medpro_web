@@ -1,3 +1,4 @@
+import AppProvider from "@/app/(home)/AppProvider";
 import {Toaster} from "@/components/ui/toaster";
 import type {Metadata} from "next";
 import {Manrope} from "next/font/google";
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
   description: "Medpro | Phần mềm đăng ký khám chữa bệnh online",
 };
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -21,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={manrope.className}>
-        {children}
+        <AppProvider>{children}</AppProvider>
         <Toaster />
       </body>
     </html>

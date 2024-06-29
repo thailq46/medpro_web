@@ -1,4 +1,4 @@
-import {IStatus, RT_COOKIE_NAME} from "@/apiRequest/common";
+import {IStatus, REFRESH_TOKEN} from "@/apiRequest/common";
 import {cookies} from "next/headers";
 
 export async function POST(request: Request) {
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       {status: IStatus.ERROR}
     );
   }
-  cookies().set(RT_COOKIE_NAME, refresh_token, {
+  cookies().set(REFRESH_TOKEN, refresh_token, {
     httpOnly: true,
     path: "/",
     secure: true,

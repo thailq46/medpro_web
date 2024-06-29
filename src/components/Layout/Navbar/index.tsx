@@ -2,10 +2,10 @@
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import apiCategoryRequest, {ICategoryBody} from "@/apiRequest/ApiCategory";
 import {
-  AT_COOKIE_NAME,
+  ACCESS_TOKEN,
   CATE,
   QUERY_PARAMS,
-  RT_COOKIE_NAME,
+  REFRESH_TOKEN,
   VerifyStatus,
 } from "@/apiRequest/common";
 import {AppContext} from "@/app/(home)/AppProvider";
@@ -66,6 +66,7 @@ export default function Navbar() {
   const router = useRouter();
   const {toast} = useToast();
   const {user} = useContext(AppContext);
+  console.log("Navbar ~ user", user);
   const {data} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_CATEGORY],
     queryFn: async () => await apiCategoryRequest.getListCategory(QUERY_PARAMS),
@@ -118,8 +119,8 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       await apiAuthRequest.logoutFromNextClientToNextServer();
-      localStorage.removeItem(AT_COOKIE_NAME);
-      localStorage.removeItem(RT_COOKIE_NAME);
+      localStorage.removeItem(ACCESS_TOKEN);
+      localStorage.removeItem(REFRESH_TOKEN);
       toast({
         title: "Thành công",
         description: "Đăng xuất thành công",

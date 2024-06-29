@@ -1,4 +1,4 @@
-import {AT_COOKIE_NAME} from "@/apiRequest/common";
+import {ACCESS_TOKEN} from "@/apiRequest/common";
 import dynamic from "next/dynamic";
 import {cookies} from "next/headers";
 const Custom404 = dynamic(() => import("@/components/Layout/ErrorLayout/404"));
@@ -15,7 +15,7 @@ export default async function Page({
   searchParams: {[key: string]: string | string[] | undefined};
 }) {
   const cookieStore = cookies();
-  const access_token = cookieStore.get(AT_COOKIE_NAME);
+  const access_token = cookieStore.get(ACCESS_TOKEN);
   const {slug} = params;
   if (slug === "verify-email") {
     const {token} = searchParams;

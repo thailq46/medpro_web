@@ -1,8 +1,13 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
-import {AT_COOKIE_NAME, IStatus, RT_COOKIE_NAME} from "@/apiRequest/common";
-import {clientAccessToken} from "@/apiRequest/http";
+import {
+  ACCESS_TOKEN,
+  ACCESS_TOKEN_EXPIRED,
+  IStatus,
+  REFRESH_TOKEN,
+} from "@/apiRequest/common";
+import {useAppContext} from "@/app/(home)/AppProvider";
 import {ButtonSubmit} from "@/components/ButtonGlobal";
 import {FacebookIcon, GoogleIcon} from "@/components/Icon";
 import PasswordInput from "@/components/InputPassword";
@@ -41,6 +46,7 @@ export default function Login() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const {toast} = useToast();
+  const {setUser} = useAppContext();
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
     defaultValues: {
@@ -61,15 +67,19 @@ export default function Login() {
         });
         const {access_token, refresh_token} = result.payload.data;
         const decoded = jwtDecode(access_token);
-        const expiredAt = decoded.exp;
-        localStorage.setItem(AT_COOKIE_NAME, access_token);
-        localStorage.setItem(RT_COOKIE_NAME, refresh_token);
-        await apiAuthRequest.auth({
-          access_token,
-          refresh_token,
-          expiresAt: expiredAt as number,
-        });
-        clientAccessToken.expiresAt = expiredAt as number;
+        const expiredAt = decoded.exp ? decoded.exp : 0;
+        localStorage.setItem(ACCESS_TOKEN, access_token);
+        localStorage.setItem(REFRESH_TOKEN, refresh_token);
+        localStorage.setItem(ACCESS_TOKEN_EXPIRED, expiredAt.toString());
+        const [_, user] = await Promise.all([
+          await apiAuthRequest.auth({
+            access_token,
+            refresh_token,
+            expiresAt: expiredAt as number,
+          }),
+          await apiAuthRequest.getMe(access_token),
+        ]);
+        setUser(user.payload.data);
         router.push("/");
         router.refresh();
       } else {

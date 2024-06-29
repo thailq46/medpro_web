@@ -1,9 +1,14 @@
 "use client";
 import {User} from "@/apiRequest/ApiAuth";
-import {clientAccessToken} from "@/apiRequest/http";
 import socket from "@/lib/socket";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import React, {createContext, useContext, useState} from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,23 +35,26 @@ export const useAppContext = () => {
   return context;
 };
 
-export default function AppProvider({
-  children,
-  initialAccessToken = "",
-  user: userProp,
-}: {
-  children: React.ReactNode;
-  user: User | null;
-  initialAccessToken?: string;
-}) {
-  const [user, setUser] = useState<User | null>(userProp);
+export default function AppProvider({children}: {children: React.ReactNode}) {
+  const [user, setUserState] = useState<User | null>(() => null);
   useState(() => {
     if (typeof window !== "undefined") {
-      clientAccessToken.value = initialAccessToken;
       socket.connect();
-      console.log("connect socket");
     }
   });
+  const setUser = useCallback(
+    (user: User | null) => {
+      setUserState(user);
+      localStorage.setItem("user", JSON.stringify(user));
+    },
+    [setUserState]
+  );
+
+  useEffect(() => {
+    const _user = localStorage.getItem("user");
+    setUserState(_user ? JSON.parse(_user) : null);
+  }, [setUserState]);
+
   return (
     <AppContext.Provider value={{user, setUser}}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
