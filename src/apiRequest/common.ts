@@ -1,6 +1,7 @@
 export const REFRESH_TOKEN = "refreshToken";
 export const ACCESS_TOKEN = "accessToken";
 export const ACCESS_TOKEN_EXPIRED = "accessTokenExpired";
+export const PROFILE = "user";
 
 export const isClient = typeof window !== "undefined";
 

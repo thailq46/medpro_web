@@ -3,6 +3,7 @@ import {
   ACCESS_TOKEN,
   ACCESS_TOKEN_EXPIRED,
   IStatus,
+  PROFILE,
   ParamsType,
   REFRESH_TOKEN,
   isClient,
@@ -154,6 +155,7 @@ const request = async <TResponse>(
             localStorage.removeItem(ACCESS_TOKEN);
             localStorage.removeItem(REFRESH_TOKEN);
             localStorage.removeItem(ACCESS_TOKEN_EXPIRED);
+            localStorage.removeItem(PROFILE);
             clientLogoutRequest = null;
             location.href = "/login";
           }

@@ -1,5 +1,6 @@
 "use client";
 import {User} from "@/apiRequest/ApiAuth";
+import {PROFILE} from "@/apiRequest/common";
 import socket from "@/lib/socket";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import React, {
@@ -45,13 +46,13 @@ export default function AppProvider({children}: {children: React.ReactNode}) {
   const setUser = useCallback(
     (user: User | null) => {
       setUserState(user);
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem(PROFILE, JSON.stringify(user));
     },
     [setUserState]
   );
 
   useEffect(() => {
-    const _user = localStorage.getItem("user");
+    const _user = localStorage.getItem(PROFILE);
     setUserState(_user ? JSON.parse(_user) : null);
   }, [setUserState]);
 
