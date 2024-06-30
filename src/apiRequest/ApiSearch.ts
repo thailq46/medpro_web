@@ -16,7 +16,7 @@ interface IHospitalSearch
   booking_forms?: string[];
   categoryId?: string;
 }
-interface ISearchResponse {
+export interface ISearchResponse {
   message?: string;
   data: {
     category?: string;
