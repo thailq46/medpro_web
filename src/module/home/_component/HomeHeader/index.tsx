@@ -10,8 +10,7 @@ import Link from "next/link";
 import {Suspense} from "react";
 import styles from "./HomeHeader.module.scss";
 const HomeService = dynamic(
-  () => import("@/module/home/_component/HomeHeader/HomeService"),
-  {ssr: false}
+  () => import("@/module/home/_component/HomeHeader/HomeService")
 );
 const LIMIT = 4;
 

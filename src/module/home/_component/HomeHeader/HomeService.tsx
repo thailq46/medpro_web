@@ -1,5 +1,6 @@
-"use client";
-import apiMedicalBookingForms from "@/apiRequest/ApiMedicalBookingForms";
+import apiMedicalBookingForms, {
+  IGetListMedicalBookingFormsRes,
+} from "@/apiRequest/ApiMedicalBookingForms";
 import {QUERY_PARAMS} from "@/apiRequest/common";
 import {Card, CardContent} from "@/components/ui/card";
 import {
@@ -9,22 +10,25 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import {QUERY_KEY} from "@/hooks/QUERY_KEY";
-import {useQuery} from "@tanstack/react-query";
 import Image from "next/image";
 import styles from "./HomeHeader.module.scss";
 
-export default function HomeService() {
-  const {data: medicalBookingForms} = useQuery({
-    queryKey: [QUERY_KEY.GET_LIST_MEDICAL_BOOKING_FORMS],
-    queryFn: async () =>
-      await apiMedicalBookingForms.getListMedicalBookingForms(QUERY_PARAMS),
-  });
+export default async function HomeService() {
+  let medicalBookingForms: IGetListMedicalBookingFormsRes["data"] | null = null;
+  try {
+    const result = await apiMedicalBookingForms.getListMedicalBookingForms(
+      QUERY_PARAMS
+    );
+    medicalBookingForms = result?.payload?.data;
+  } catch (error) {
+    medicalBookingForms = null;
+    console.log("HomeService", error);
+  }
   return (
     <div className={styles.services}>
       <Carousel opts={{align: "center"}} className={styles.carousel}>
         <CarouselContent>
-          {medicalBookingForms?.payload?.data.map((v) => (
+          {medicalBookingForms?.map((v) => (
             <CarouselItem key={v._id} className={styles.carouselItem}>
               <div className="p-1">
                 <Card>
@@ -51,7 +55,7 @@ export default function HomeService() {
       {/* TABLET */}
       <div className={styles.tablet_servicesContainer}>
         <div className={styles.tablet_services}>
-          {medicalBookingForms?.payload?.data.map((v) => (
+          {medicalBookingForms?.map((v) => (
             <div key={v._id} className={styles.tablet_serviceBox}>
               <Image
                 src={v.image ?? "/img/logo.png"}
