@@ -1,5 +1,4 @@
-"use client";
-import apiHospital from "@/apiRequest/ApiHospital";
+import apiHospital, {IGetListHospitalRes} from "@/apiRequest/ApiHospital";
 import {QUERY_PARAMS} from "@/apiRequest/common";
 import {Card, CardContent} from "@/components/ui/card";
 import {
@@ -9,16 +8,18 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import {QUERY_KEY} from "@/hooks/QUERY_KEY";
-import {useQuery} from "@tanstack/react-query";
 import Image from "next/image";
 import styles from "./HomeHospital.module.scss";
 
-export default function HomeHospital() {
-  const {data: hospitals} = useQuery({
-    queryKey: [QUERY_KEY.GET_LIST_HOSPITALS],
-    queryFn: async () => apiHospital.getListHospital(QUERY_PARAMS),
-  });
+export default async function HomeHospital() {
+  let hospitals: IGetListHospitalRes["data"] | null = null;
+  try {
+    const result = await apiHospital.getListHospital(QUERY_PARAMS);
+    hospitals = result?.payload?.data;
+  } catch (error) {
+    hospitals = null;
+    console.log("HomeHospital", error);
+  }
 
   return (
     <section className={styles.container}>
@@ -28,7 +29,7 @@ export default function HomeHospital() {
       </span>
       <Carousel opts={{align: "start"}} className={styles.carousel}>
         <CarouselContent>
-          {hospitals?.payload?.data.map((v) => (
+          {hospitals?.map((v) => (
             <CarouselItem key={v._id} className={styles.carouselItem}>
               <div className="p-1">
                 <Card className="shadow-none border-none">

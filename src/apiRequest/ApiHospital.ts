@@ -31,7 +31,7 @@ export interface IParamsHospital {
   types?: string;
 }
 
-interface IGetListHospitalRes {
+export interface IGetListHospitalRes {
   message: string;
   data: IHospitalBody[];
   meta: IMetaData;
