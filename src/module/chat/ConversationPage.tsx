@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import apiConversation, {
@@ -309,9 +306,12 @@ export default function ConversationPage({
                 >
                   <div className="w-full relative">
                     {conversation.imgUrl && (
-                      <img
+                      <Image
                         src={conversation?.imgUrl}
+                        alt="Avatar"
                         className="w-full h-full object-scale-down"
+                        width={1000}
+                        height={1000}
                       />
                     )}
                   </div>

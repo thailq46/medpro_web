@@ -30,7 +30,7 @@ export default async function HomeHeader({searchKey}: {searchKey?: string}) {
           <h3 className={styles.title}>
             Kết nối người dân với Cơ sở - Dịch vụ Y tế
           </h3>
-          <div className={styles.search}>
+          <div className={styles.searchContainer}>
             <HomeSearch placeholder="Tìm kiếm cơ sở y tế" />
             <div className={styles.searchBox}>
               <Suspense fallback={<SkeletionLoading />}>

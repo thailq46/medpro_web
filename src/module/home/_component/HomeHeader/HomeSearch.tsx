@@ -1,8 +1,10 @@
 "use client";
 import {Input} from "@/components/ui/input";
+import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import React from "react";
 import {useDebouncedCallback} from "use-debounce";
+import styles from "./HomeHeader.module.scss";
 
 export default function HomeSearch({placeholder}: {placeholder: string}) {
   const searchParams = useSearchParams();
@@ -22,12 +24,18 @@ export default function HomeSearch({placeholder}: {placeholder: string}) {
   }
 
   return (
-    <Input
-      type="search"
-      placeholder={placeholder}
-      className="home-header_search"
-      onChange={(e) => debounced(e)}
-      defaultValue={searchParams.get("search_key")?.toString()}
-    />
+    <div className={styles.searchInput}>
+      <MagnifyingGlassIcon className="w-6 h-6 ml-3" />
+      <div className="w-full relative">
+        <Input
+          type="search"
+          placeholder={""}
+          className="home-header_search"
+          onChange={(e) => debounced(e)}
+          defaultValue={searchParams.get("search_key")?.toString()}
+        />
+        <label className={styles.placeholder}>{placeholder}</label>
+      </div>
+    </div>
   );
 }
