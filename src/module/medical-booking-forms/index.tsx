@@ -1,4 +1,3 @@
-"use client";
 import {IGetHospitalRes} from "@/apiRequest/ApiHospital";
 import {BOOKING, CATE, PARAMS, STEP_NAME} from "@/apiRequest/common";
 import Custom500 from "@/components/Layout/ErrorLayout/500";
