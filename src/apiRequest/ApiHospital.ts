@@ -22,6 +22,7 @@ export interface IHospitalBody extends ICommonAuditable {
     name?: string;
     image?: string;
   }[];
+  description_detail?: string | null;
 }
 
 export interface IParamsHospital {
