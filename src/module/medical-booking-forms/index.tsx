@@ -1,5 +1,5 @@
 import {IGetHospitalRes} from "@/apiRequest/ApiHospital";
-import {BOOKING, CATE, PARAMS, STEP_NAME} from "@/apiRequest/common";
+import {CATE} from "@/apiRequest/common";
 import Custom500 from "@/components/Layout/ErrorLayout/500";
 import {
   Breadcrumb,
@@ -9,6 +9,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import {Button} from "@/components/ui/button";
+import {generateQueryString} from "@/lib/utils";
 import {ResetIcon} from "@radix-ui/react-icons";
 import clsx from "clsx";
 import Image from "next/image";
@@ -21,36 +22,6 @@ export default function MedicalBookingForms({
   hospital: IGetHospitalRes["data"];
 }) {
   if (!hospital) return <Custom500 />;
-  const generateQueryString = (name: string) => {
-    const query = new URLSearchParams();
-    let feature = "";
-    let stepName = "";
-    switch (name.trim()) {
-      case "Đặt khám theo chuyên khoa":
-        feature = BOOKING.DATE;
-        stepName = STEP_NAME.SUBJECT;
-        break;
-      case "Đặt khám theo bác sĩ":
-        feature = BOOKING.DOCTOR;
-        stepName = STEP_NAME.DOCTOR;
-        break;
-      case "Tiêm chủng":
-        feature = BOOKING.VACCINE;
-        stepName = STEP_NAME.SERVICE;
-        break;
-      case "Gói khám sức khoẻ":
-        feature = BOOKING.PACKAGE;
-        stepName = STEP_NAME.SERVICE;
-        break;
-      default:
-        feature = "";
-        break;
-    }
-    query.append(PARAMS.FEATURE, feature);
-    query.append(PARAMS.HOSPITAL_ID, hospital._id as string);
-    query.append(PARAMS.STEP_NAME, stepName);
-    return "/chon-lich-kham?" + query.toString();
-  };
   return (
     <div className="bg-[#e8f2f7]">
       <div>
@@ -90,7 +61,10 @@ export default function MedicalBookingForms({
           <div className={styles.bookingList}>
             {hospital?.booking_forms?.map((v) => (
               <Link
-                href={generateQueryString(v.name ?? "")}
+                href={generateQueryString({
+                  name: v.name ?? "",
+                  hospitalId: hospital._id || "",
+                })}
                 key={v.id}
                 className={styles.bookingLink}
               >

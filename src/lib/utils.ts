@@ -1,5 +1,5 @@
 import {IServiceBody} from "@/apiRequest/ApiService";
-import {PositionType} from "@/apiRequest/common";
+import {BOOKING, PARAMS, PositionType, STEP_NAME} from "@/apiRequest/common";
 import {clsx, type ClassValue} from "clsx";
 import {twMerge} from "tailwind-merge";
 
@@ -51,6 +51,43 @@ export const getStepNameAndServiceId = ({
     ? ""
     : services.find((v) => v.specialty === null && v.type === "service")?._id;
   return {stepName, serviceId};
+};
+
+export const generateQueryString = ({
+  name,
+  hospitalId,
+}: {
+  name: string;
+  hospitalId: string;
+}) => {
+  const query = new URLSearchParams();
+  let feature = "";
+  let stepName = "";
+  switch (name.trim()) {
+    case "Đặt khám theo chuyên khoa":
+      feature = BOOKING.DATE;
+      stepName = STEP_NAME.SUBJECT;
+      break;
+    case "Đặt khám theo bác sĩ":
+      feature = BOOKING.DOCTOR;
+      stepName = STEP_NAME.DOCTOR;
+      break;
+    case "Tiêm chủng":
+      feature = BOOKING.VACCINE;
+      stepName = STEP_NAME.SERVICE;
+      break;
+    case "Gói khám sức khoẻ":
+      feature = BOOKING.PACKAGE;
+      stepName = STEP_NAME.SERVICE;
+      break;
+    default:
+      feature = "";
+      break;
+  }
+  query.append(PARAMS.FEATURE, feature);
+  query.append(PARAMS.HOSPITAL_ID, hospitalId as string);
+  query.append(PARAMS.STEP_NAME, stepName);
+  return "/chon-lich-kham?" + query.toString();
 };
 
 export function generateDescription(slug: string): string {

@@ -1,4 +1,5 @@
-import {ACCESS_TOKEN} from "@/apiRequest/common";
+import apiHospital from "@/apiRequest/ApiHospital";
+import {ACCESS_TOKEN, QUERY_PARAMS} from "@/apiRequest/common";
 import dynamic from "next/dynamic";
 import {cookies} from "next/headers";
 const Custom404 = dynamic(() => import("@/components/Layout/ErrorLayout/404"));
@@ -6,6 +7,7 @@ const VerifyLayout = dynamic(() => import("@/components/Layout/VerifyLayout"));
 const ChatPage = dynamic(() => import("@/module/chat"));
 const ForgotPassword = dynamic(() => import("@/module/forgot-password"));
 const ResetPassword = dynamic(() => import("@/module/reset-password"));
+const HospitalDetail = dynamic(() => import("@/module/hospital-detail"));
 
 export default async function Page({
   params,
@@ -17,6 +19,8 @@ export default async function Page({
   const cookieStore = cookies();
   const access_token = cookieStore.get(ACCESS_TOKEN);
   const {slug} = params;
+  const hospitals = await apiHospital.getListHospital(QUERY_PARAMS);
+  const hospital = hospitals.payload.data.find((value) => value.slug === slug);
   if (slug === "verify-email") {
     const {token} = searchParams;
     let isError = false;
@@ -84,5 +88,8 @@ export default async function Page({
   if (slug === "chat") {
     return <ChatPage />;
   }
-  return <Custom404 />;
+  if (!hospital) {
+    return <Custom404 />;
+  }
+  return <HospitalDetail hospital={hospital} />;
 }

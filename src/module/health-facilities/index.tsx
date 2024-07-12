@@ -224,7 +224,10 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                             {v.address}
                           </div>
                           <div className={styles.leftBtnControl}>
-                            <ButtonViewDetail title="Xem chi tiết" />
+                            <ButtonViewDetail
+                              title="Xem chi tiết"
+                              href={`/${v.slug}`}
+                            />
                             <ButtonGlobal
                               title="Đặt khám ngay"
                               href={`/${v.slug}/${HINH_THUC_DAT_KHAM}`}
@@ -238,6 +241,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                           <ButtonViewDetail
                             title="Xem chi tiết"
                             className={styles.btnViewDetail}
+                            href={`/${v.slug}`}
                           />
                           <ButtonGlobal
                             title="Đặt khám ngay"

@@ -43,7 +43,7 @@ export default async function HomeHeader({searchKey}: {searchKey?: string}) {
                             <div className="flex items-center justify-between p-3 bg-[#e6f2ff]">
                               <h3 className="font-bold">Cơ sở y tế</h3>
                               <Link
-                                href="#"
+                                href="/co-so-y-te"
                                 className="text-sm italic text-textSecondary hover:underline"
                               >
                                 Xem tất cả
@@ -51,7 +51,8 @@ export default async function HomeHeader({searchKey}: {searchKey?: string}) {
                             </div>
                             {searchData?.payload?.data.hospital?.map(
                               (value) => (
-                                <div
+                                <Link
+                                  href={`/${value.slug}`}
                                   className={styles.searchBoxItem}
                                   key={value._id}
                                 >
@@ -73,7 +74,7 @@ export default async function HomeHeader({searchKey}: {searchKey?: string}) {
                                       {value.address}
                                     </span>
                                   </div>
-                                </div>
+                                </Link>
                               )
                             )}
                           </>
@@ -91,7 +92,8 @@ export default async function HomeHeader({searchKey}: {searchKey?: string}) {
                               </Link>
                             </div>
                             {searchData?.payload?.data.doctor?.map((value) => (
-                              <div
+                              <Link
+                                href={`#`}
                                 className={styles.searchBoxItem}
                                 key={value._id}
                               >
@@ -114,7 +116,7 @@ export default async function HomeHeader({searchKey}: {searchKey?: string}) {
                                     {value.specialty?.name}
                                   </span>
                                 </div>
-                              </div>
+                              </Link>
                             ))}
                           </>
                         )}
