@@ -47,7 +47,7 @@ export default function VerifyLayout({
           <p className="mt-3 font-medium">
             {description
               ? description
-              : "Bạn đã xác thực tài khoản thành công. Bây giờ bạn có thể đặt lịch khám bệnh với bác sĩ ngay bây giờ..."}
+              : "Bạn đã xác thực tài khoản thành công. Vui lòng đăng nhập lại để thể đặt lịch khám bệnh với bác sĩ ngay bây giờ..."}
           </p>
         </>
       )}

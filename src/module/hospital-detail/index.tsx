@@ -22,6 +22,7 @@ import {TimerIcon} from "@radix-ui/react-icons";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+import {twMerge} from "tailwind-merge";
 import styles from "./HospitalDetail.module.scss";
 
 export default async function HospitalDetail({
@@ -30,7 +31,7 @@ export default async function HospitalDetail({
   hospital: IHospitalBody;
 }) {
   return (
-    <>
+    <div>
       <div className={styles.breadcrumb}>
         <div className={styles.breadcrumbContainer}>
           <Breadcrumb className={styles.breadcrumbs}>
@@ -101,7 +102,7 @@ export default async function HospitalDetail({
                       hospital?.images.map((img, index) => (
                         <CarouselItem
                           key={index}
-                          className="!w-full !h-[477px] rounded-2xl"
+                          className={styles.carouselItem}
                         >
                           <Image
                             src={img || "/img/avatar/avatar.jpg"}
@@ -113,8 +114,16 @@ export default async function HospitalDetail({
                         </CarouselItem>
                       ))}
                   </CarouselContent>
-                  <CarouselPrevious className="left-5" />
-                  <CarouselNext className="right-5" />
+                  <CarouselPrevious
+                    className={twMerge(
+                      "!hidden !invisible lg:!inline-flex lg:!visible lg:left-5"
+                    )}
+                  />
+                  <CarouselNext
+                    className={twMerge(
+                      "!hidden !invisible lg:!inline-flex lg:!visible lg:right-5"
+                    )}
+                  />
                 </Carousel>
               </div>
             )}
@@ -171,6 +180,6 @@ export default async function HospitalDetail({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

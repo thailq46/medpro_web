@@ -167,15 +167,13 @@ export default function AppointmentForm() {
                           alt="avatar"
                           width={80}
                           height={80}
-                          className="rounded-full w-full h-full object-cover"
+                          className="rounded-full w-full h-full object-cover flex-shrink-0"
                         />
                       </div>
                       <div className="text-sm font-medium">
                         <p className="font-bold">
-                          {renderPosition(value.doctor?.position as number) +
-                            " " +
-                            value.doctor?.name}{" "}
-                          - {hospitalName}
+                          {renderPosition(value.doctor?.position as number)}{" "}
+                          {value.doctor?.name || "Bác sĩ thuộc bệnh viện"}
                         </p>
                         <p>
                           {value.date} - {value.time}

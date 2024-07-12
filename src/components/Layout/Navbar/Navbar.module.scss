@@ -44,21 +44,20 @@
     padding-bottom: 10px;
   }
   .nav {
-    display: none;
-    visibility: hidden;
+    display: none !important;
+    visibility: hidden !important;
   }
-
   .btnLogin {
-    display: none;
-    visibility: hidden;
+    display: none !important;
+    visibility: hidden !important;
   }
   .tablet {
-    display: block;
-    visibility: visible;
+    display: block !important;
+    visibility: visible !important;
   }
   .navTablet {
-    z-index: 99999;
-    padding: 0;
+    z-index: 99999 !important;
+    padding: 0 !important;
     max-width: 60vw !important;
   }
   .accordionTrigger {
@@ -80,7 +79,7 @@
     padding-right: 10px;
   }
   .navTablet {
-    max-width: 200vw !important;
-    width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 }
