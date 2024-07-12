@@ -9,6 +9,7 @@ export {default as GenderIcon} from "@/components/Icon/gender-icon";
 export {default as GoogleIcon} from "@/components/Icon/google-icon";
 export {default as HandHoldingMedicalIcon} from "@/components/Icon/hand-holding-medical-icon";
 export {default as HospitalIcon} from "@/components/Icon/hospital-icon";
+export {default as HotlineIcon} from "@/components/Icon/hotline-icon";
 export {default as LocationIcon} from "@/components/Icon/location-icon";
 export {default as PaperPlaneIcon} from "@/components/Icon/paper-plane-icon";
 export {default as SecurityIcon} from "@/components/Icon/security-icon";
