@@ -13,11 +13,11 @@
   }
 }
 .btnViewDetail {
-  color: #00b5f1;
-  border: 1px solid #00b5f1;
+  color: $text-secondary;
+  border: 1px solid $text-secondary;
   background-color: transparent;
 }
 .btnGlobal {
-  background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
-  color: #fff;
+  @include bg-linear-gradient();
+  color: white;
 }

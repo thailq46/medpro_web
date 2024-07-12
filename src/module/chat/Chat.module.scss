@@ -12,7 +12,7 @@
 .container {
   width: 100%;
   background-color: white;
-  border: 1px solid #e0e0e0;
+  border: 1px solid $text-graye0;
   display: flex;
 }
 .sideBar {
@@ -71,7 +71,7 @@
   border-radius: 12px;
   transition: all 0.3s ease;
   &:hover {
-    background-color: #e0e0e0;
+    background-color: $text-graye0;
   }
 }
 .active {

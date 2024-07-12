@@ -23,7 +23,7 @@
     margin-bottom: 4px;
     font-size: 14px;
     line-height: 22px;
-    color: #003553;
+    color: $text-primary;
     span {
       font-weight: 800;
     }
@@ -41,7 +41,7 @@
   font-weight: 700;
   font-size: 14px;
   line-height: 148.51%;
-  color: #003553;
+  color: $text-primary;
   margin-bottom: 0;
 }
 
@@ -51,10 +51,10 @@
       font-weight: 300;
       font-size: 14px;
       line-height: 148.51%;
-      color: #003553;
+      color: $text-primary;
       transition: all 0.4s;
       &:hover {
-        color: #00b5f1;
+        color: $text-secondary;
       }
     }
   }
@@ -72,8 +72,8 @@
 }
 
 .coppyRight {
-  background: linear-gradient(82.98deg, #00b5f1 33.22%, #00e0ff 135.46%);
-  color: #fff;
+  @include bg-linear-gradient(82.98deg, $percent1: 33.22%, $percent2: 135.46%);
+  color: white;
   font-size: 14px;
   text-align: center;
   padding: 16px 0 14px;

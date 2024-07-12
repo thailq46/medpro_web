@@ -202,7 +202,7 @@ export default function BookingAppointment() {
     {label: generateBookingName() as string, isActive: true},
   ];
   return (
-    <div className="bg-[#e8f2f7]">
+    <div className="bg-textGrayE8">
       <BreadcrumbGlobal items={breadcrumb} />
       <div className={styles.container}>
         <div className={styles.content}>

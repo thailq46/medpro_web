@@ -1,6 +1,6 @@
 .paginationItem {
   background-color: white !important;
-  color: #00b5f1;
+  color: $text-secondary;
   border-radius: 8px;
   overflow: hidden;
   &:hover {
@@ -8,6 +8,6 @@
   }
 }
 .active {
-  background: linear-gradient(98.96deg, #00b5f1 40.75%, #00e0ff 129.57%);
+  @include bg-linear-gradient(98.96deg, $percent1: 40.75%, $percent2: 129.57%);
   color: white;
 }

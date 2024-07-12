@@ -1,5 +1,5 @@
 .wrapper {
-  background-color: #e8f2f7;
+  background-color: $text-graye8;
 }
 .container {
   max-width: 1180px !important;
@@ -11,16 +11,16 @@
   padding: 25px 0;
 }
 .breadcrumbLink {
-  color: #003553;
+  color: $text-primary;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   &:hover {
-    color: #00b5f1;
+    color: $text-secondary;
   }
 }
 .activeLink {
-  color: #00b5f1;
+  color: $text-secondary;
 }
 @media (max-width: 1024.98px) {
   .breadcrumbs {

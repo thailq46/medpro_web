@@ -47,7 +47,7 @@
   font-weight: 700;
   line-height: normal;
   text-align: left;
-  background: linear-gradient(40deg, #00b5f1, #00e0ff);
+  @include bg-linear-gradient(40deg, $percent1: 0%, $percent2: 100%);
   color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
@@ -65,8 +65,8 @@
 }
 
 .body {
-  background: #e8f2f7;
-  color: #003553;
+  background: $text-graye8;
+  color: $text-primary;
 }
 .container {
   max-width: 1100px;
@@ -122,7 +122,7 @@
   border: 1px solid transparent;
   transition: all 0.15s ease;
   &:hover {
-    border: 1px solid #00b5f1;
+    border: 1px solid $text-secondary;
     background-color: inherit;
   }
 }
@@ -170,7 +170,7 @@
   gap: 5px;
   font-size: 17px;
   line-height: 21px;
-  color: #858585;
+  color: $text-gray85;
 }
 .hospitalIcon {
   width: 16px;
@@ -185,8 +185,8 @@
 }
 
 .active {
-  background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
-  color: #fff;
+  @include bg-linear-gradient();
+  color: white;
 }
 .mobile {
   display: none;

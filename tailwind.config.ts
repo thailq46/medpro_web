@@ -21,6 +21,8 @@ const config = {
       colors: {
         textPrimary: "#003553",
         textSecondary: "#00b5f1",
+        textLightOrange: "#ffb54a",
+        textGrayE8: "#e8f2f7",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

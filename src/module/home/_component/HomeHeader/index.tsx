@@ -1,4 +1,5 @@
 import apiSearch from "@/apiRequest/ApiSearch";
+import {CATE} from "@/apiRequest/common";
 import {Skeleton} from "@/components/ui/skeleton";
 import HomeInfo from "@/module/home/_component/HomeHeader/HomeInfo";
 import HomeSearch from "@/module/home/_component/HomeHeader/HomeSearch";
@@ -43,7 +44,7 @@ export default async function HomeHeader({searchKey}: {searchKey?: string}) {
                             <div className="flex items-center justify-between p-3 bg-[#e6f2ff]">
                               <h3 className="font-bold">Cơ sở y tế</h3>
                               <Link
-                                href="/co-so-y-te"
+                                href={`/${CATE.CSYT}`}
                                 className="text-sm italic text-textSecondary hover:underline"
                               >
                                 Xem tất cả

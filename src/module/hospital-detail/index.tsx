@@ -51,15 +51,15 @@ export default async function HospitalDetail({
               </div>
               <div className={styles.info}>
                 <div className={styles.infoItem}>
-                  <LocationIcon className="w-4 h-4 flex-shrink-0 text-[#ffb54a]" />
+                  <LocationIcon className="w-4 h-4 flex-shrink-0 text-textLightOrange" />
                   <span>{hospital?.address}</span>
                 </div>
                 <div className={styles.infoItem}>
-                  <TimerIcon className="w-5 h-5 flex-shrink-0 text-[#ffb54a]" />
+                  <TimerIcon className="w-5 h-5 flex-shrink-0 text-textLightOrange" />
                   <span>{hospital?.session}</span>
                 </div>
                 <div className={styles.infoItem}>
-                  <HotlineIcon className="w-5 h-5 flex-shrink-0 text-[#ffb54a]" />
+                  <HotlineIcon className="w-5 h-5 flex-shrink-0 text-textLightOrange" />
                   <span>Hỗ trợ đặt khám: {hospital?.hotline}</span>
                 </div>
                 <ButtonGlobal

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Custom404() {
   return (
-    <div className=" bg-[#e8f2f7] min-h-[65vh] text-textPrimary">
+    <div className=" bg-textGrayE8 min-h-[65vh] text-textPrimary">
       <div className="max-w-[1140px] w-full mx-auto flex items-center justify-center flex-col">
         <div className="w-[500px] h-[500px]">
           <Image

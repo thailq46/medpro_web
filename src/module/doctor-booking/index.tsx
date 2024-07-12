@@ -175,7 +175,7 @@ export default function DoctorBooking() {
               {!isLoading ? (
                 doctors?.payload?.data.map((doctor) => (
                   <div
-                    className={`rounded-2xl w-full border-2 hover:border-[#00b5f1] transition-all overflow-hidden`}
+                    className={`rounded-2xl w-full border-2 hover:border-textSecondary transition-all overflow-hidden `}
                     key={doctor._id}
                   >
                     <div className="p-3 bg-white flex items-start gap-5">

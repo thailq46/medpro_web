@@ -158,7 +158,7 @@ export default function FacilityBooking() {
               hospitalData?.map((v) => (
                 <div
                   key={v._id}
-                  className={`bg-white rounded-2xl w-full h-full border-2 hover:border-[#00b5f1] transition-all`}
+                  className={`bg-white rounded-2xl w-full h-full border-2 hover:border-textSecondary transition-all`}
                   role="button"
                   onClick={() =>
                     router.push(`/${v.slug}/${HINH_THUC_DAT_KHAM}`)

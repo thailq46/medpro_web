@@ -20,7 +20,7 @@
 }
 
 .title {
-  color: #003553;
+  color: $text-primary;
   text-shadow: 0 4px 4px rgba(104, 125, 199, 0.2);
   font-size: 36px;
   font-weight: 700;
@@ -148,13 +148,13 @@
   gap: 3px;
 }
 .searchBoxTitle {
-  color: #003553;
+  color: $text-primary;
   font-weight: 600;
   line-height: 19px;
   margin-bottom: 0;
 }
 .searchBoxDesc {
-  color: #858585;
+  color: $text-gray85;
   font-size: 14px;
   line-height: 16px;
 }
@@ -239,13 +239,13 @@
   font-weight: 500;
 }
 .homeDesc {
-  color: #858585;
+  color: $text-gray85;
   font-size: 16px;
 }
 
 .statistic {
   margin-top: 50px;
-  background: linear-gradient(84.1deg, #00b5f1 33.44%, #00e0ff 132.9%);
+  @include bg-linear-gradient(84.1deg, $percent1: 33.44%, $percent2: 132.9%);
   border-radius: 20px;
   padding: 29.5px 58.25px;
 }
@@ -276,7 +276,7 @@
   font-weight: 700;
   font-size: 38px;
   line-height: 46px;
-  color: #fff;
+  color: white;
   flex: 1;
 }
 .statisticTitle {
@@ -382,7 +382,7 @@
       font-size: 18px;
       font-weight: 500;
       &::placeholder {
-        color: #858585;
+        color: $text-gray85;
       }
     }
   }

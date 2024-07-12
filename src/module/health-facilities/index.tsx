@@ -176,8 +176,8 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                     <div
                       key={v._id}
                       className={`bg-white rounded-2xl w-full border-2 ${
-                        v._id === isActive ? "border-[#00b5f1]" : ""
-                      } hover:border-[#00b5f1] transition-all`}
+                        v._id === isActive ? "border-textSecondary" : ""
+                      } hover:border-textSecondary transition-all`}
                       role="button"
                       onClick={() => {
                         setHospitalSelected(v);
@@ -248,7 +248,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
                     {hospitalInfomation?.name || "Chưa cập nhật!!"}
                   </h3>
                   <div className={styles.rightSession}>
-                    <ClockIcon className="w-5 h-5 text-[#ffb54a] inline-block" />
+                    <ClockIcon className="w-5 h-5 text-textLightOrange inline-block" />
                     <span>{hospitalInfomation?.session}</span>
                   </div>
                 </div>

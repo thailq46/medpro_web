@@ -21,7 +21,7 @@ export default function MedicalBookingForms({
     {label: "Hình thức đặt khám", isActive: true},
   ];
   return (
-    <div className="bg-[#e8f2f7]">
+    <div className="bg-textGrayE8">
       <BreadcrumbGlobal items={breadcrumb} />
       <div className="booking-container">
         <div className={styles.bookingContent}>

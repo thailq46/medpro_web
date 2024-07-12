@@ -4,7 +4,7 @@
   margin: 0 auto;
 }
 .container {
-  background-color: #e8f2f7;
+  background-color: $text-graye8;
   padding-top: 30px;
   padding-bottom: 30px;
 }
@@ -13,7 +13,7 @@
   text-align: center;
 }
 .hospitalTitle {
-  color: #00b5f1;
+  color: $text-secondary;
   font-weight: 700;
   font-size: 39px;
   margin-bottom: 8px;
@@ -23,7 +23,7 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 18.75px;
-  color: #003553;
+  color: $text-primary;
 }
 .search {
   background: url("/img/search_icon.svg") no-repeat 15px 50%;
@@ -64,14 +64,14 @@
   border: 1px solid transparent;
   transition: all 0.15s ease;
   &:hover {
-    border: 1px solid #00b5f1;
+    border: 1px solid $text-secondary;
     background-color: inherit;
   }
 }
 
 .activeTagItem {
-  background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
-  color: #fff;
+  @include bg-linear-gradient();
+  color: white;
 }
 
 .listHospital {
@@ -124,7 +124,7 @@
   gap: 5px;
   font-size: 17px;
   line-height: 21px;
-  color: #858585;
+  color: $text-gray85;
 }
 .leftIcon {
   width: 16px;
@@ -165,7 +165,7 @@
   font-weight: 700;
   font-size: 20px;
   line-height: 23px;
-  background: linear-gradient(40deg, #00b5f1, #00e0ff);
+  @include bg-linear-gradient(40deg, $percent1: 0%, $percent2: 100%);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -173,7 +173,7 @@
 .rightSession {
   font-size: 16px;
   line-height: 19px;
-  color: #003553;
+  color: $text-primary;
 }
 
 .rightDesc {
@@ -187,7 +187,7 @@
   h4 {
     font-size: 20px;
     font-weight: 600;
-    color: #003553;
+    color: $text-primary;
   }
 }
 .rightImageList {

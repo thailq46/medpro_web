@@ -5,7 +5,7 @@
   padding: 0 16px;
 }
 .bookingTitle {
-  color: #00b5f1;
+  color: $text-secondary;
   font-weight: 700;
   font-size: 39px;
   margin-bottom: 8px;
@@ -16,7 +16,7 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 18.75px;
-  color: #003553;
+  color: $text-primary;
 }
 
 .bookingList {
@@ -50,8 +50,8 @@
   border: 1px solid transparent;
   box-shadow: 4px 8px 30px 0 rgba(177, 196, 218, 0.35);
   &:hover {
-    color: #00b5f1;
-    border-color: #00b5f1;
+    color: $text-secondary;
+    border-color: $text-secondary;
   }
 }
 

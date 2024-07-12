@@ -23,7 +23,7 @@
 .rightHeader {
   color: #fff;
   padding: 10px 14px;
-  background: linear-gradient(36deg, #00b5f1, #00e0ff);
+  @include bg-linear-gradient(36deg, $percent1: 0%, $percent2: 100%);
   font-size: 20px;
   font-weight: 500;
   line-height: normal;
@@ -41,7 +41,7 @@
     margin-top: 10px;
   }
   .address {
-    color: #858585;
+    color: $text-gray85;
     font-size: 15px;
     font-style: normal;
     line-height: normal;
@@ -96,7 +96,7 @@
   line-height: 27.2px;
   animation: styles_slide-in-blurred-right 0.2s;
   &:hover {
-    color: #00b5f1;
+    color: $text-secondary;
   }
 }
 .itemName {
@@ -117,11 +117,7 @@
 .selectTrigger {
   max-width: 150px;
   width: 100%;
-  background: linear-gradient(
-    83.63deg,
-    #00b5f1 33.34%,
-    #00e0ff 113.91%
-  ) !important;
+  @include bg-linear-gradient();
   color: #fff !important;
   border: none !important;
   border-radius: 5px !important;
@@ -150,7 +146,7 @@
   font-weight: 500;
 }
 .highlight {
-  color: #ffb54a !important;
+  color: $text-light-orange !important;
   font-weight: 700 !important;
 }
 // CHOOSE SERVICE
@@ -162,7 +158,7 @@
 }
 .dialogHeader {
   padding: 16px;
-  background: linear-gradient(40deg, #00b5f1, #00e0ff) !important;
+  @include bg-linear-gradient(40deg, $percent1: 0%, $percent2: 100%);
   color: white;
   text-transform: uppercase;
 }
@@ -187,7 +183,7 @@
 // CHOOSE CALENDAR
 .timeline {
   padding: 16px;
-  border-top: 2px solid #00b5f1;
+  border-top: 2px solid $text-secondary;
   h3 {
     font-size: 20px;
     font-weight: bold;

@@ -20,7 +20,7 @@
   font-weight: 800;
   font-size: 45px;
   line-height: 48px;
-  color: #00b5f1;
+  color: $text-secondary;
   margin-top: 45px;
   margin-bottom: 20px;
 }
@@ -28,7 +28,7 @@
   font-weight: 400;
   font-size: 20px;
   line-height: 23px;
-  color: #003553;
+  color: $text-primary;
   margin-bottom: 20px;
 }
 
@@ -38,17 +38,13 @@
   font-weight: 700;
   color: white;
   line-height: 19px;
-  background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
+  @include bg-linear-gradient();
   border-radius: 30px;
   text-align: center;
   border-color: transparent;
   transition: all 0.5s;
   &:hover {
-    background: linear-gradient(
-      83.63deg,
-      #1ea0ff 33.34%,
-      #00bfff 113.91%
-    ) !important;
+    @include bg-linear-gradient();
   }
 }
 .overlay {
