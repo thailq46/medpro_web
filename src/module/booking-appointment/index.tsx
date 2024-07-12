@@ -4,26 +4,19 @@ import apiHospital from "@/apiRequest/ApiHospital";
 import apiService, {IServiceBody} from "@/apiRequest/ApiService";
 import apiSpecialty from "@/apiRequest/ApiSpecialty";
 import {PARAMS, STEP_NAME} from "@/apiRequest/common";
+import BreadcrumbGlobal from "@/components/BreadcrumbGlobal";
 import {
   HandHoldingMedicalIcon,
   HospitalIcon,
   StethoscopeIcon,
   SuitcaseMedicalIcon,
 } from "@/components/Icon";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import {Button} from "@/components/ui/button";
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
 import {DoctorFilter} from "@/module/booking-appointment/choose-doctor";
 import {CalendarIcon, ResetIcon} from "@radix-ui/react-icons";
 import {useQuery} from "@tanstack/react-query";
-import clsx from "clsx";
 import dynamic from "next/dynamic";
 import {useRouter, useSearchParams} from "next/navigation";
 import {useCallback, useState} from "react";
@@ -203,34 +196,14 @@ export default function BookingAppointment() {
     hospital?.payload?.data?.name,
   ]);
 
+  const breadcrumb = [
+    {label: "Trang chủ", href: "/"},
+    {label: hospital?.payload?.data?.name || ""},
+    {label: generateBookingName() as string, isActive: true},
+  ];
   return (
     <div className="bg-[#e8f2f7]">
-      <div className={styles.breadcrumbContainer}>
-        <Breadcrumb className={styles.breadcrumbs}>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/" className={styles.breadcrumbLink}>
-                Trang chủ
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink className={styles.breadcrumbLink}>
-                {hospital?.payload?.data?.name ?? ""}
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                className={clsx(styles.breadcrumbLink, styles.activeLink)}
-              >
-                {generateBookingName()}
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-
+      <BreadcrumbGlobal items={breadcrumb} />
       <div className={styles.container}>
         <div className={styles.content}>
           <div className="booking-appointment_left">

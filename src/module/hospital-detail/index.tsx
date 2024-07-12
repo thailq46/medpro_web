@@ -1,14 +1,9 @@
 import {IHospitalBody} from "@/apiRequest/ApiHospital";
 import {HINH_THUC_DAT_KHAM} from "@/apiRequest/common";
+import BreadcrumbGlobal from "@/components/BreadcrumbGlobal";
 import {ButtonGlobal} from "@/components/ButtonGlobal";
 import {HotlineIcon, LocationIcon} from "@/components/Icon";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import Custom500 from "@/components/Layout/ErrorLayout/500";
 import {Card, CardContent} from "@/components/ui/card";
 import {
   Carousel,
@@ -30,29 +25,14 @@ export default async function HospitalDetail({
 }: {
   hospital: IHospitalBody;
 }) {
+  if (!hospital) return <Custom500 />;
+  const breadcrumb = [
+    {label: "Trang chủ", href: "/"},
+    {label: hospital?.name ?? "", isActive: true},
+  ];
   return (
-    <div>
-      <div className={styles.breadcrumb}>
-        <div className={styles.breadcrumbContainer}>
-          <Breadcrumb className={styles.breadcrumbs}>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/" className={styles.breadcrumbLink}>
-                  Trang chủ
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink
-                  className={clsx(styles.breadcrumbLink, styles.activeLink)}
-                >
-                  {hospital?.name}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-      </div>
+    <>
+      <BreadcrumbGlobal items={breadcrumb} />
       <div className={styles.container}>
         <div className={styles.content}>
           <div className="left">
@@ -180,6 +160,6 @@ export default async function HospitalDetail({
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

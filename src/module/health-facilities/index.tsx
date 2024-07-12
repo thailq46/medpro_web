@@ -9,15 +9,9 @@ import {
   PAGE,
   QUERY_PARAMS,
 } from "@/apiRequest/common";
+import BreadcrumbGlobal from "@/components/BreadcrumbGlobal";
 import {ButtonGlobal, ButtonViewDetail} from "@/components/ButtonGlobal";
 import {LocationIcon} from "@/components/Icon";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import {Input} from "@/components/ui/input";
 import {Skeleton} from "@/components/ui/skeleton";
 import {QUERY_KEY} from "@/hooks/QUERY_KEY";
@@ -116,32 +110,14 @@ export default function HealthFacilities({slug}: {slug?: string}) {
     (v) => v.parent_id === parentCategory?._id
   );
 
+  const breadcrumb = [
+    {label: "Trang chủ", href: "/"},
+    {label: getNameCategory() as string, isActive: true},
+  ];
+
   return (
     <>
-      <div className={styles.breadcrumb}>
-        <div className={styles.breadcrumbContainer}>
-          <Breadcrumb className={styles.breadcrumbs}>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/" className={styles.breadcrumbLink}>
-                  Trang chủ
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink
-                  className={clsx(
-                    styles.breadcrumbLink,
-                    isActivePath && styles.activeLink
-                  )}
-                >
-                  {getNameCategory()}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-      </div>
+      <BreadcrumbGlobal items={breadcrumb} classNames="!bg-white" />
       <div className={styles.hospitalContainer}>
         <div className={styles.header}>
           {isLoadingCategory ? (

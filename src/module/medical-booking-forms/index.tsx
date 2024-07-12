@@ -1,17 +1,10 @@
 import {IGetHospitalRes} from "@/apiRequest/ApiHospital";
 import {CATE} from "@/apiRequest/common";
+import BreadcrumbGlobal from "@/components/BreadcrumbGlobal";
 import Custom500 from "@/components/Layout/ErrorLayout/500";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import {Button} from "@/components/ui/button";
 import {generateQueryString} from "@/lib/utils";
 import {ResetIcon} from "@radix-ui/react-icons";
-import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./Booking.module.scss";
@@ -22,35 +15,14 @@ export default function MedicalBookingForms({
   hospital: IGetHospitalRes["data"];
 }) {
   if (!hospital) return <Custom500 />;
+  const breadcrumb = [
+    {label: "Trang chủ", href: "/"},
+    {label: hospital?.name ?? ""},
+    {label: "Hình thức đặt khám", isActive: true},
+  ];
   return (
     <div className="bg-[#e8f2f7]">
-      <div>
-        <div className={styles.breadcrumbContainer}>
-          <Breadcrumb className={styles.breadcrumbs}>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/" className={styles.breadcrumbLink}>
-                  Trang chủ
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink className={styles.breadcrumbLink}>
-                  {hospital?.name ?? ""}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink
-                  className={clsx(styles.breadcrumbLink, styles.activeLink)}
-                >
-                  Hình thức đặt khám
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-      </div>
+      <BreadcrumbGlobal items={breadcrumb} />
       <div className="booking-container">
         <div className={styles.bookingContent}>
           <h1 className={styles.bookingTitle}>Các hình thức đặt khám</h1>

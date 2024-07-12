@@ -1,37 +1,16 @@
-.breadcrumbContainer,
 .content {
   max-width: 1180px !important;
   width: 100%;
   margin: 0 auto;
-}
-.breadcrumb,
-.container {
-  background-color: #e8f2f7;
-}
-.container {
-  padding-top: 30px;
-  padding-bottom: 30px;
-}
-.breadcrumbs {
-  padding: 25px 0;
-}
-.breadcrumbLink {
-  color: #003553;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  &:hover {
-    color: #00b5f1;
-  }
-}
-.activeLink {
-  color: #00b5f1;
-}
-
-.content {
   display: grid;
   grid-template-columns: 0.7fr 1.3fr;
   column-gap: 20px;
+}
+
+.container {
+  background-color: #e8f2f7;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 .infoWrapper,
@@ -213,13 +192,10 @@
 }
 
 @media (max-width: 1024.98px) {
-  .breadcrumb,
-  .container {
-    padding-left: 18px;
-    padding-right: 18px;
-  }
   .container {
     padding-top: 0;
+    padding-left: 18px;
+    padding-right: 18px;
   }
   .content {
     grid-template-columns: 1fr;
