@@ -1,4 +1,5 @@
 import AppProvider from "@/app/(home)/AppProvider";
+import {baseOpenGraph} from "@/app/(home)/shared-metadata";
 import Content from "@/components/Layout/Content";
 import Footer from "@/components/Layout/Footer";
 import Navbar from "@/components/Layout/Navbar";
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
     default: "Phần mềm đăng ký khám chữa bệnh online",
   },
   description: "Được tạo bởi Lê Quang Thái",
+  openGraph: baseOpenGraph,
 };
 
 export default async function RootLayout({

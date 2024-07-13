@@ -1,5 +1,6 @@
 import apiHospital from "@/apiRequest/ApiHospital";
 import {ACCESS_TOKEN, QUERY_PARAMS} from "@/apiRequest/common";
+import {baseOpenGraph} from "@/app/(home)/shared-metadata";
 import {Metadata} from "next";
 import dynamic from "next/dynamic";
 import {cookies} from "next/headers";
@@ -24,10 +25,31 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
   const hospitals = payload?.data;
   const hospital = hospitals.find((item) => item.slug === slug);
   if (hospital) {
+    const url = `https://lequangthai-medpro/${hospital.slug}`;
     return {
       category: "Cơ sở y tế",
       title: hospital.name,
       description: hospital.description,
+      openGraph: {
+        title: hospital.name,
+        description: hospital.description,
+        url, // URL khi deploy lên production
+        siteName: "Cơ sở y tế - Đặt lịch khám bệnh",
+        images: [
+          {
+            url: hospital.avatar || "",
+            width: 1800,
+            height: 1600,
+            alt: hospital.name,
+          },
+        ],
+        ...baseOpenGraph,
+      },
+      alternates: {
+        canonical: {
+          url,
+        },
+      },
     };
   }
   return {};
