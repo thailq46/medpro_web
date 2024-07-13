@@ -1,7 +1,9 @@
 import apiHospital from "@/apiRequest/ApiHospital";
 import {ACCESS_TOKEN, QUERY_PARAMS} from "@/apiRequest/common";
+import {Metadata} from "next";
 import dynamic from "next/dynamic";
 import {cookies} from "next/headers";
+import {cache} from "react";
 const Custom404 = dynamic(() => import("@/components/Layout/ErrorLayout/404"));
 const VerifyLayout = dynamic(() => import("@/components/Layout/VerifyLayout"));
 const ChatPage = dynamic(() => import("@/module/chat"));
@@ -9,18 +11,35 @@ const ForgotPassword = dynamic(() => import("@/module/forgot-password"));
 const ResetPassword = dynamic(() => import("@/module/reset-password"));
 const HospitalDetail = dynamic(() => import("@/module/hospital-detail"));
 
-export default async function Page({
-  params,
-  searchParams,
-}: {
+type Props = {
   params: {slug: string};
   searchParams: {[key: string]: string | string[] | undefined};
-}) {
+};
+
+const getListHospital = cache(apiHospital.getListHospital);
+
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+  const {slug} = params;
+  const {payload} = await getListHospital(QUERY_PARAMS);
+  const hospitals = payload?.data;
+  const hospital = hospitals.find((item) => item.slug === slug);
+  if (hospital) {
+    return {
+      category: "Cơ sở y tế",
+      title: hospital.name,
+      description: hospital.description,
+    };
+  }
+  return {};
+}
+
+export default async function Page({params, searchParams}: Props) {
   const cookieStore = cookies();
   const access_token = cookieStore.get(ACCESS_TOKEN);
   const {slug} = params;
-  const hospitals = await apiHospital.getListHospital(QUERY_PARAMS);
+  const hospitals = await getListHospital(QUERY_PARAMS);
   const hospital = hospitals.payload.data.find((value) => value.slug === slug);
+
   if (slug === "verify-email") {
     const {token} = searchParams;
     let isError = false;

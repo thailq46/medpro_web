@@ -22,7 +22,6 @@ import {useQuery} from "@tanstack/react-query";
 import clsx from "clsx";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import {usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
 import styles from "./HealthFacilities.module.scss";
 const PaginationSection = dynamic(
@@ -50,11 +49,6 @@ export default function HealthFacilities({slug}: {slug?: string}) {
   const [searchValue, setSearchValue] = useState<string>("");
 
   const searchValueDebounce = useDebounce(searchValue, 500);
-
-  const pathname = usePathname();
-  const isActivePath = slug
-    ? pathname === `/${CATE.CSYT}/${slug}`
-    : pathname === `/${CATE.CSYT}`;
 
   const {data: categories, isLoading: isLoadingCategory} = useQuery({
     queryKey: [QUERY_KEY.GET_LIST_CATEGORY],
@@ -130,7 +124,7 @@ export default function HealthFacilities({slug}: {slug?: string}) {
               <h1 className={styles.hospitalTitle}>{getNameCategory()}</h1>
               <span className={styles.hospitalDesc}>
                 {slug
-                  ? generateDescription(slug)
+                  ? generateDescription(slug).desc
                   : "Với những cơ sở Y Tế hàng đầu sẽ giúp trải nghiệm khám, chữa bệnh của bạn tốt hơn"}
               </span>
             </>

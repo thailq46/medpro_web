@@ -90,37 +90,63 @@ export const generateQueryString = ({
   return "/chon-lich-kham?" + query.toString();
 };
 
-export function generateDescription(slug: string): string {
-  let desc = "";
+export function generateDescription(slug: string): {
+  desc: string;
+  metadata: string;
+} {
+  let obj = {
+    desc: "",
+    metadata: "",
+  };
   switch (slug) {
     case "benh-vien-cong":
-      desc =
-        "Đặt khám dễ dàng, không lo chờ đợi tại các bệnh viện công hàng đầu Việt Nam";
+      obj = {
+        desc: "Đặt khám dễ dàng, không lo chờ đợi tại các bệnh viện công hàng đầu Việt Nam",
+        metadata: "Đặt khám dễ dàng, đi khám khoẻ re",
+      };
       break;
     case "benh-vien-tu":
-      desc = "Tận hưởng dịch vụ y tế tư nhân, chăm sóc sức khỏe chuyên nghiệp";
+      obj = {
+        desc: "Tận hưởng dịch vụ y tế tư nhân, chăm sóc sức khỏe chuyên nghiệp",
+        metadata: "Chăm sóc sức khỏe chuyên nghiệp",
+      };
       break;
     case "phong-kham":
-      desc =
-        "Trải nghiệm chăm sóc y tế tập trung và gần gũi tại phòng khám chuyên khoa";
+      obj = {
+        desc: "Trải nghiệm chăm sóc y tế tập trung và gần gũi tại phòng khám chuyên khoa",
+        metadata: "Chăm sóc cá nhân chuyên nghiệp",
+      };
       break;
     case "phong-mach":
-      desc =
-        "Chẩn đoán và điều trị chất lượng với bác sĩ chuyên khoa được nhiều người tin tưởng";
+      obj = {
+        desc: "Chẩn đoán và điều trị chất lượng với bác sĩ chuyên khoa được nhiều người tin tưởng",
+        metadata: "Dịch vụ y tế cá nhân uy tín, chuyên sâu",
+      };
       break;
     case "xet-nghiem":
-      desc =
-        "Xét nghiệm chính xác, nhanh chóng và hỗ trợ chẩn đoán hiệu quả với các cơ sở uy tín hàng đầu";
+      obj = {
+        desc: "Xét nghiệm chính xác, nhanh chóng và hỗ trợ chẩn đoán hiệu quả với các cơ sở uy tín hàng đầu",
+        metadata: "Xét nghiệm y tế với cơ sở uy tín, an toàn và nhanh chóng",
+      };
       break;
     case "y-te-tai-nha":
-      desc = "Chăm sóc sức khỏe tiện lợi và thoải mái ngay tại nhà";
+      obj = {
+        desc: "Chăm sóc sức khỏe tiện lợi và thoải mái ngay tại nhà",
+        metadata: "Chăm sóc sức khỏe mọi lúc mọi nơi",
+      };
       break;
     case "tiem-chung":
-      desc = "Tiêm chủng an toàn với các cơ sở bệnh viện, phòng khám uy tín";
+      obj = {
+        desc: "Tiêm chủng an toàn với các cơ sở bệnh viện, phòng khám uy tín",
+        metadata: "Tiêm chủng an toàn, phòng ngừa bệnh hiệu quả",
+      };
       break;
     default:
-      desc = "Chưa cập nhật";
+      obj = {
+        desc: "Chưa cập nhật",
+        metadata: "Chưa cập nhật",
+      };
       break;
   }
-  return desc;
+  return obj;
 }

@@ -50,12 +50,12 @@ const apiHospital = {
   getListHospital: (params: IParamsHospital) => {
     return http.get<IGetListHospitalRes>(path.root, {
       params: params as CommonParams<IParamsHospital>,
-      cache: "no-cache",
+      cache: "no-store",
     });
   },
   getHospitalBySlug: (slug: string) => {
     return http.get<IGetHospitalRes>(`${path.getBySlug}/${slug}`, {
-      cache: "no-cache",
+      cache: "no-store",
     });
   },
   getHospitalById: (id: string) => {

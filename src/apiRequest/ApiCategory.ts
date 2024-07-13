@@ -26,6 +26,7 @@ const apiCategoryRequest = {
   getListCategory: (params?: IParamsCategories) =>
     http.get<IGetListCategoryRes>(path.root, {
       params: params as CommonParams<IParamsCategories>,
+      cache: "no-store",
     }),
 };
 
