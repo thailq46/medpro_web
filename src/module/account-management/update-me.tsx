@@ -1,6 +1,7 @@
 "use client";
 import apiAuthRequest from "@/apiRequest/ApiAuth";
 import ApiUploadImage from "@/apiRequest/ApiUploadImage";
+import {VerifyStatus} from "@/apiRequest/common";
 import {handleErrorApi} from "@/apiRequest/ErrorMessage/errors";
 import {AppContext} from "@/app/(home)/AppProvider";
 import {AvatarUpload} from "@/components/AvatarUpload";
@@ -48,6 +49,10 @@ export default function UpdateMeForm() {
   const {user} = useContext(AppContext);
   const router = useRouter();
   const {toast} = useToast();
+
+  const disabled =
+    user?.verify === VerifyStatus.BANNED ||
+    user?.verify === VerifyStatus.UNVERIFIED;
 
   const form = useForm<AccountBodyType>({
     resolver: zodResolver(AccountBody),
@@ -278,9 +283,11 @@ export default function UpdateMeForm() {
               )}
             />
             <ButtonSubmit
-              title="Cập nhật thông tin"
+              title={`${
+                disabled ? "Tài khoản chưa xác thực" : "Cập nhật thông tin"
+              }`}
               loading={loading}
-              disabled={loading}
+              disabled={loading || disabled}
               className={styles.btn_submit}
               classNameLoading="mr-4 h-5 w-5"
             />
