@@ -1,0 +1,15 @@
+# https://docs.docker.com/compose/compose-file/compose-versioning/#compatibility-matrix
+# => run: docker version để biết enginer version bao nhiêu
+# version: "3.9" 
+services:
+  nginx:
+    container_name: my-nginx
+    build:
+      context: .
+    ports:
+      - 8000:80
+    # volumes:
+    #   - ./html/:/usr/share/nginx/html/
+
+#stop current running nginx
+# docker compose -p medpro up -d
