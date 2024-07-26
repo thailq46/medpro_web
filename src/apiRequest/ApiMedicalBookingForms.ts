@@ -19,7 +19,7 @@ export interface IGetListMedicalBookingFormsRes {
 }
 
 const path = {
-  root: "/medical-booking-forms",
+  root: "/api/medical-booking-forms",
 };
 
 const apiMedicalBookingForms = {

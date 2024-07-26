@@ -78,9 +78,9 @@ interface IGetAppointmentByPatientIdRes {
 }
 
 const path = {
-  create: "appointments/create",
-  getByPatientId: "appointments/patient",
-  update: "appointments/update",
+  create: "/api/appointments/create",
+  getByPatientId: "/api/appointments/patient",
+  update: "/api/appointments/update",
 };
 
 const apiAppointment = {

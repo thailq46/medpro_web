@@ -48,8 +48,8 @@ interface IGetServiceRes {
   data: IServiceBody;
 }
 const path = {
-  root: "/services",
-  getFullServiceByHospitalId: "/services/hospital",
+  root: "/api/services",
+  getFullServiceByHospitalId: "/api/services/hospital",
 };
 
 const apiService = {

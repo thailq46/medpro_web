@@ -27,7 +27,7 @@ interface GetConversationRes {
 }
 
 const path = {
-  getByReceiverId: "/conversations/receivers",
+  getByReceiverId: "/api/conversations/receivers",
 };
 
 const apiConversation = {

@@ -1,5 +1,4 @@
 import apiAuthRequest, {IGetMeResBody} from "@/apiRequest/ApiAuth";
-import {PropsLogin} from "@/app/(auth)/login/page";
 import LoginForm from "@/module/login/_component/login-form";
 import OAuthLogin from "@/module/login/_component/oauth";
 import {ArrowRightIcon} from "@radix-ui/react-icons";
@@ -9,7 +8,11 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./login.module.scss";
 
-export default async function Login({searchParams}: PropsLogin) {
+export default async function Login({
+  searchParams,
+}: {
+  searchParams: {[key: string]: string | string[] | undefined};
+}) {
   let profile: IGetMeResBody["data"] | null = null;
   let accessToken: string | null = null;
   let refreshToken: string | null = null;
@@ -21,7 +24,7 @@ export default async function Login({searchParams}: PropsLogin) {
       const decoded = jwtDecode(accessToken);
       expiredAt = decoded.exp ? decoded.exp : 0;
       const [_, user] = await Promise.all([
-        await fetch(`${process.env.NEXT_PUBLIC_URL_DEV}/api/auth`, {
+        fetch(`/api/auth`, {
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify({
@@ -30,7 +33,7 @@ export default async function Login({searchParams}: PropsLogin) {
             expiresAt: expiredAt,
           }),
         }),
-        await apiAuthRequest.getMe(accessToken),
+        apiAuthRequest.getMe(accessToken),
       ]);
       profile = user.payload.data;
     }

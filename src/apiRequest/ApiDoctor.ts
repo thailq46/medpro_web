@@ -84,9 +84,9 @@ export interface IGetListDoctorRes {
 }
 
 const path = {
-  root: "/doctors",
-  getListDoctorBySpecialtyId: "/doctors/specialty",
-  getListDoctorByHospitalId: "/doctors/hospital",
+  root: "/api/doctors",
+  getListDoctorBySpecialtyId: "/api/doctors/specialty",
+  getListDoctorByHospitalId: "/api/doctors/hospital",
 };
 
 const apiDoctor = {

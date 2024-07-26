@@ -27,7 +27,7 @@ export interface ISearchResponse {
   };
 }
 const path = {
-  search: "/search",
+  search: "/api/search",
 };
 
 const apiSearch = {

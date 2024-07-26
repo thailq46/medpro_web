@@ -13,7 +13,7 @@ interface IPaymentBody {
 }
 
 const path = {
-  root: "/payment",
+  root: "/api/payment",
 };
 
 const apiPayment = {

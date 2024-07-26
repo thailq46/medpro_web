@@ -42,8 +42,8 @@ export interface IGetHospitalRes {
   data: IHospitalBody;
 }
 const path = {
-  root: "/hospitals",
-  getBySlug: "/hospitals/slug",
+  root: "/api/hospitals",
+  getBySlug: "/api/hospitals/slug",
 };
 
 const apiHospital = {

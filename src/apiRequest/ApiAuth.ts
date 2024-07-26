@@ -70,18 +70,18 @@ export interface IGetMeResBody {
 }
 
 const path = {
-  login: "/auth/login",
-  register: "/auth/register",
-  resendVerifyEmail: "/auth/resend-verify-email",
-  verifyEmail: "/auth/verify-email",
-  changePassword: "/auth/change-password",
-  logout: "/auth/logout",
-  forgotPassword: "/auth/forgot-password",
-  verifyForgotPassword: "/auth/verify-forgot-password",
-  resetPassword: "/auth/reset-password",
-  getMe: "/users/me",
-  getUserByUsername: "/users",
-  updateMe: "/users/me",
+  login: "/api/auth/login",
+  register: "/api/auth/register",
+  resendVerifyEmail: "/api/auth/resend-verify-email",
+  verifyEmail: "/api/auth/verify-email",
+  changePassword: "/api/auth/change-password",
+  logout: "/api/auth/logout",
+  forgotPassword: "/api/auth/forgot-password",
+  verifyForgotPassword: "/api/auth/verify-forgot-password",
+  resetPassword: "/api/auth/reset-password",
+  getMe: "/api/users/me",
+  getUserByUsername: "/api/users",
+  updateMe: "/api/users/me",
 };
 
 const apiAuthRequest = {

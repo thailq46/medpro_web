@@ -100,12 +100,12 @@ export default function LoginForm(props: LoginFormProps) {
         const expiredAt = decoded.exp ? decoded.exp : 0;
         setLocalStorage({access_token, refresh_token, expired_at: expiredAt});
         const [_, user] = await Promise.all([
-          await apiAuthRequest.auth({
+          apiAuthRequest.auth({
             access_token,
             refresh_token,
             expiresAt: expiredAt as number,
           }),
-          await apiAuthRequest.getMe(access_token),
+          apiAuthRequest.getMe(access_token),
         ]);
         setUser(user.payload.data);
         router.push("/");

@@ -63,7 +63,6 @@ export default function ChatPage() {
       setAllUser(data);
     });
   }, [user]);
-
   const filteredUsers = allUser.filter((user) =>
     normalizeString(user.name).includes(normalizeString(searchValue.trim()))
   );

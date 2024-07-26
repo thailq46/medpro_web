@@ -23,8 +23,8 @@ interface IGetListScheduleResponse {
 }
 
 const path = {
-  root: "/schedules",
-  getScheduleByDoctorId: "/schedules/doctor",
+  root: "/api/schedules",
+  getScheduleByDoctorId: "/api/schedules/doctor",
 };
 
 const apiSchedule = {

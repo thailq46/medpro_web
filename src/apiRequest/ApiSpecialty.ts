@@ -38,8 +38,8 @@ export interface IGetListSpecialtyRes {
 }
 
 const path = {
-  root: "/specialties",
-  getByHospitalId: "/specialties/hospital",
+  root: "/api/specialties",
+  getByHospitalId: "/api/specialties/hospital",
 };
 
 const apiSpecialty = {

@@ -8,7 +8,7 @@ interface IUploadImageRes {
   }[];
 }
 const path = {
-  root: "/medias/upload-image",
+  root: "/api/medias/upload-image",
 };
 
 export const uploadImage = async (body: FormData) => {

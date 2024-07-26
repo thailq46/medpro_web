@@ -19,7 +19,7 @@ export interface IGetListCategoryRes {
   meta: IMetaData;
 }
 const path = {
-  root: "/categories",
+  root: "/api/categories",
 };
 
 const apiCategoryRequest = {
