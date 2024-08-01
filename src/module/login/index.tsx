@@ -24,7 +24,7 @@ export default async function Login({
       const decoded = jwtDecode(accessToken);
       expiredAt = decoded.exp ? decoded.exp : 0;
       const [_, user] = await Promise.all([
-        fetch("/api-next/auth", {
+        fetch(`http://localhost:3000/api/auth`, {
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify({
