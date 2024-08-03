@@ -79,6 +79,7 @@ export default function ConversationPage({
     }
     return () => {
       if (textareaRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         textareaRef.current.removeEventListener("input", adjustTextareaHeight);
       }
     };
@@ -106,6 +107,7 @@ export default function ConversationPage({
     }
     return () => {
       if (textareaRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         textareaRef.current.removeEventListener("keydown", handleKeyDown);
       }
     };
@@ -326,7 +328,7 @@ export default function ConversationPage({
         )}
       </div>
       <div className={styles.footer}>
-        <div className="flex items-center justify-between gap-5">
+        <div className="flex items-center justify-between">
           <div
             className={clsx(
               "flex items-center",

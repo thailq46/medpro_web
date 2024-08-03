@@ -26,6 +26,7 @@ export default async function Navbar() {
     const result = await apiCategoryRequest.getListCategory(QUERY_PARAMS);
     data = result.payload.data;
   } catch (error) {
+    console.log("Navbar", error);
     data = [];
   }
 

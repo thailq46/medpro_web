@@ -65,10 +65,6 @@ export default function UserStatus({categoryData}: UserStatusProps) {
   const handleLogout = async () => {
     try {
       await apiAuthRequest.logoutFromNextClientToNextServer();
-      localStorage.removeItem(ACCESS_TOKEN);
-      localStorage.removeItem(REFRESH_TOKEN);
-      localStorage.removeItem(ACCESS_TOKEN_EXPIRED);
-      localStorage.removeItem(PROFILE);
       toast({
         title: "Thành công",
         description: "Đăng xuất thành công",
@@ -80,6 +76,12 @@ export default function UserStatus({categoryData}: UserStatusProps) {
         .logoutFromNextClientToNextServer(true)
         .then(() => router.push("/"));
     } finally {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(ACCESS_TOKEN);
+        localStorage.removeItem(REFRESH_TOKEN);
+        localStorage.removeItem(ACCESS_TOKEN_EXPIRED);
+        localStorage.removeItem(PROFILE);
+      }
       window.location.reload();
     }
   };

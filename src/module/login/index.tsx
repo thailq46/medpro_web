@@ -73,9 +73,9 @@ export default async function Login({
             refresh_token={refreshToken}
             expired_at={expiredAt}
           />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 pb-2">
+          <div className="absolute bottom-1 left-1/2 -translate-x-1/2 pb-2 text-sm sm:text-base">
             <Link className="font-bold flex items-center" href={"/register"}>
-              <span>Create your account</span>
+              <span>Tạo tài khoản</span>
               <ArrowRightIcon className="w-4 h-4 ml-2" />
             </Link>
           </div>

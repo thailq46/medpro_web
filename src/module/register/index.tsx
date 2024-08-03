@@ -225,7 +225,7 @@ export default function Register() {
                 />
               </div>
               <div className="!mt-14 pb-1">
-                <span className="font-bold">Have an account?</span>
+                <span className="font-bold">Đã có tài khoản?</span>
                 <Button
                   variant="outline"
                   className="font-medium ml-3"

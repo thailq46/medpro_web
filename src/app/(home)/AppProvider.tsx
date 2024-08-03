@@ -46,14 +46,18 @@ export default function AppProvider({children}: {children: React.ReactNode}) {
   const setUser = useCallback(
     (user: User | null) => {
       setUserState(user);
-      localStorage.setItem(PROFILE, JSON.stringify(user));
+      if (typeof window !== "undefined") {
+        localStorage.setItem(PROFILE, JSON.stringify(user));
+      }
     },
     [setUserState]
   );
 
   useEffect(() => {
-    const _user = localStorage.getItem(PROFILE);
-    setUserState(_user ? JSON.parse(_user) : null);
+    if (typeof window !== "undefined") {
+      const _user = localStorage.getItem(PROFILE);
+      setUserState(_user ? JSON.parse(_user) : null);
+    }
   }, [setUserState]);
 
   return (
