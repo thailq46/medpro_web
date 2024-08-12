@@ -133,3 +133,9 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-height: 500.98px) {
+  .dialogContent {
+    max-height: 60vh;
+  }
+}

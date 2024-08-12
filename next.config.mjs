@@ -23,6 +23,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "be.lequangthai-medpro.io.vn",
       },
+      {
+        protocol: "https",
+        hostname: "**",
+      },
     ],
   },
   sassOptions: {

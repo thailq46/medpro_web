@@ -15,7 +15,7 @@ export const checkUserOnline = ({
   onlineUsers: IOnlineUsers[];
   user_id: string;
 }) => {
-  if (!onlineUsers) return false;
+  if (!onlineUsers.length) return false;
   return onlineUsers.some(
     (user) => user.user_id === user_id && user.last_online === null
   );
@@ -47,7 +47,7 @@ export const scrollToBottom = (ref: RefObject<HTMLDivElement>) => {
         behavior: "smooth",
       });
     }
-  }, 30);
+  }, 100);
 };
 
 export function getImageData(event: ChangeEvent<HTMLInputElement>) {

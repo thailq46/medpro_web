@@ -73,7 +73,7 @@ export default function VerifyLayout({
   }, [isVerifyEmailSuccess, me.data]);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center pb-10">
+    <div className="w-full flex flex-col items-center justify-center pb-10 py-1 text-center">
       {isError ? (
         <>
           <div className="mt-16 text-red-600">
@@ -105,10 +105,10 @@ export default function VerifyLayout({
       )}
       {!isForgotPassword ? (
         <Button
-          className="mt-4"
+          className="mt-4 text-xl p-3 inline-flex w-40 h-12"
           onClick={() => {
             router.refresh();
-            router.push("/");
+            window.location.href = "/";
           }}
         >
           Trang chủ
